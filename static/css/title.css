@@ -1,0 +1,7 @@
+header {
+    width: 100%;
+    background-color: #ffff; /* 배경색을 원하는 색으로 설정하세요 */
+    /* padding: 10px;  */
+    box-sizing: border-box; /* padding이 너비에 포함되도록 box-sizing 설정 */
+    border-bottom: 1px solid #c4c4c4;
+  }
