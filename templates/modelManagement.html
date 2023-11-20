@@ -1,23 +1,24 @@
-<!-- page1.html -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dataManagement.css')}}"/>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/dataManagement.js') }}"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/dataManagement.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/dataManagement.js') }}"
+    ></script>
     <title>DataManagement</title>
-</head>
-<body>
-
-    {% extends 'common.html' %}
-
-    {% block content %}
-    <section>
-        <div><h1>ModelManagement</h1></div>
-    
+  </head>
+  <body>
+    {% extends 'common.html' %} {% block content %}
+    <section style="margin-left: 280px">
+      <div>hihi</div>
     </section>
     {% endblock %}
-</body>
+  </body>
 </html>
