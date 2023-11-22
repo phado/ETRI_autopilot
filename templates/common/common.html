@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/common/sidebar.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/common/title.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/common.js') }}"
+    ></script>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <header>
+      <img
+        src="{{url_for('static', filename='/image/username.svg')}}"
+        alt="Image"
+        class="img-username"
+        style="float: right; padding: 20px"
+      />
+    </header>
+
+    <aside class="side-bar">
+      <ul>
+        <a href="{{ url_for('dataManagement') }}">
+          <li class="toggle" id="dataManagement">
+            <span class="'side-bar-icon">
+              <img
+                src="{{url_for('static', filename='/image/data_icon.svg')}}"
+                alt="Image"
+                class="img-fluid"
+              />
+            </span>
+            <span class="side-bar-text">데이터 관리</span>
+          </li>
+        </a>
+        <a href="{{ url_for('modelManagement') }}">
+          <li class="toggle" id="modelManagement">
+            <span class="'side-bar-icon">
+              <img
+                src="{{url_for('static', filename='/image/model_icon.svg')}}"
+                alt="Image"
+                class="img-fluid"
+              />
+            </span>
+            <span class="side-bar-text">모델 관리</span>
+          </li>
+        </a>
+        <li class="toggle" id="userManagement">
+          <img
+            src="{{url_for('static', filename='/image/user_icon.svg')}}"
+            alt="Image"
+            class="img-fluid"
+          />
+          <span class="side-bar-text">사용자 관리 </span>
+          <img
+            src="{{url_for('static', filename='/image/down.svg')}}"
+            alt="Image"
+            class="down-img"
+          />
+          <ul>
+            <a href="/systemManager">
+              <li class="sub-li" style="margin-top: 14px">시스템 관리자</li>
+            </a>
+            <a href="/dataManager">
+              <li class="sub-li">데이터 관리자</li>
+            </a>
+            <a href="/modelManager">
+              <li class="sub-li">모델 관리자</li>
+            </a>
+          </ul>
+        </li>
+        <li class="toggle" id="systemManagement">
+          <img
+            src="{{url_for('static', filename='/image/system_icon.svg')}}"
+            alt="Image"
+            class="img-fluid"
+          />
+          <span class="side-bar-text">시스템 관리 </span>
+          <img
+            src="{{url_for('static', filename='/image/down.svg')}}"
+            alt="Image"
+            class="down-img"
+          />
+          <ul>
+            <a href="/agencyManagement">
+              <li class="sub-li2" style="margin-top: 14px">기관 관리</li>
+            </a>
+            <a href="#">
+              <li class="sub-li2">데이터 관리자</li>
+            </a>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <section>{% block content %}{% endblock %}</section>
+  </body>
+</html>

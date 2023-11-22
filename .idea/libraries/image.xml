@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="image">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/static/image/delete.zip!/" />
+      <root url="jar://$PROJECT_DIR$/static/image/modify.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

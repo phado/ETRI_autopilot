@@ -1,0 +1,58 @@
+<!-- <div id="Modal" class="modal">
+              <div class="modal-content">
+                <div class="modal-title">
+                  <div class="modal-title-name">데이터셋 생성</div>
+                  <span class="close" id="closeModalBtn">&times;</span>
+                </div>
+                <div class="modal-input">
+                  <div class="modal-input1">
+                </div>
+              </div>
+            </div>
+            <script>
+              // create 모달 js
+              var modal = document.getElementById("Modal");
+              var openModalBtn = document.getElementById("openModalBtn");
+              var closeModalBtn = document.getElementById("closeModalBtn");
+
+              openModalBtn.addEventListener("click", function () {
+                modal.style.display = "block";
+              });
+
+              closeModalBtn.addEventListener("click", function () {
+                modal.style.display = "none";
+              });
+            </script> -->
+
+/* 데이터셋 생성 모달 css */ .modal { display: none; position: fixed; z-index:
+1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color:
+rgba(0, 0, 0, 0.7); } .modal-content { background-color: #fefefe; position:
+absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 784px;
+max-width: 100%; height: 484px; } .modal-title { height: 40px; /* Set the height
+of the title area */ background: #edf0ff; } .close { position: absolute; top:
+5px; right: 15px; font-size: 24px; font-weight: bold; cursor: pointer; }
+.modal-title-name { position: relative; top: 10px; left: 20px; font-size: 18px;
+font-weight: bold; } .modal-input { display: flex; justify-content:
+space-between; } .modal-input1 { width: calc((3 / 5) * 100% - 12px); /* 60%
+width minus padding */ padding: 24px; } .modal-input2 { width: calc((2 / 5) *
+100% - 12px); /* 40% width minus padding */ } .modal-input1, .modal-input2 {
+height: 444px; box-sizing: border-box; /* Include padding in width calculation
+*/ } .dataset-name-input, .dataset-root-input { width: 100%; height: 24px; }
+.labeler-option-input { width: 100%; height: 80px; } .labeler-add-button {
+width: 61px; height: 20px; background: #3d5eec; color: white; padding: 3px,
+10px, 3px, 10px; border-radius: 5px; gap: 4px; border: none; }
+.checker-option-button { width: 140px; height: 26px; border-radius: 5px; border:
+1px; background-color: white; border: 1px solid #9b9b9b; }
+.checker-search-button { width: 61px; height: 26px; background: #3d5eec; color:
+white; padding: 3px, 10px, 3px, 10px; border-radius: 5px; gap: 4px; border:
+none; } .modal-input2-box { width: 274px; height: 342px; border-radius: 5px;
+border: 1px solid #ccc; } .modal-input2-search { height: 36px; border-bottom:
+1px solid #ccc; } .labeler-add-input { margin-left: 10px; height: 32px; width:
+200px; border: none; } .labeler-add-button { width: 43px; height: 19px;
+border-radius: 5px; gap: 10px; background: #565656; color: white; }
+.labeler-add-textarea { width: 270px; height: 260px; border: none; }
+.modal-input2-button { border-top: 1px solid #ccc; } .labeler-cancel-button,
+.labeler-confirm-button { width: 43px; height: 19px; border-radius: 5px; gap:
+4px; color: white; border: none; } .labeler-cancel-button { margin-left: 170px;
+margin-top: 7px; background: #9a9a9a; } .labeler-confirm-button { background:
+#3d5eec; }
