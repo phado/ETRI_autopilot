@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/userManagement/dataManager.css')}}"
+    />
+
+    <title>DataManagement</title>
+  </head>
+  <body>
+    {% extends 'common.html' %} {% block content %}
+    <section style="margin-left: 280px">
+      <div class="search-container">
+        <div class="custom-select">
+          <select>
+            <option value="all">전체</option>
+            <option value="userID">사용자 ID</option>
+            <option value="userName">사용자 닉네임</option>
+            <option value="authority">권한</option>
+          </select>
+          <div class="select-icon">
+            <img
+              src="{{url_for('static', filename='/image/down.svg')}}"
+              alt="Dropdown"
+              class="dropdown-icon"
+            />
+          </div>
+        </div>
+
+        <input type="text" class="search-box" placeholder="검색" />
+
+        <button class="search-button">조회</button>
+      </div>
+      <div class="data-list-container">
+        <div class="data-list-title">데이터 관리자</div>
+        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <table class="data-table">
+          <thead>
+            <tr class="data-table-title">
+              <th class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -34px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />사용자ID
+              </th>
+              <th class="data-cell">닉네임</th>
+              <th class="data-cell">기관명</th>
+              <th class="data-cell">사용자이름</th>
+              <th class="data-cell">전화번호</th>
+              <th class="data-cell">Email</th>
+              <th class="data-cell">데이터 관리자</th>
+              <th class="data-cell">데이터 라벨러</th>
+              <th class="data-cell">데이터 검수자</th>
+              <th class="data-cell">마지막 접속일</th>
+              <th class="data-cell">상세정보</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _ in range(10) %}
+            <tr>
+              <td
+                class="data-cell"
+                style="text-align: left; padding-left: 60px"
+              >
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -30px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />
+                admin
+              </td>
+              <td class="data-cell">관리자</td>
+              <td class="data-cell">ETRI</td>
+              <td class="data-cell">홍길동</td>
+              <td class="data-cell">010-1234-5678</td>
+              <td class="data-cell">admin@naver.com</td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">2023-11-31 15:00:00</td>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/detail.svg')}}"
+                />
+              </th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <a href="#" class="page-link">&laquo; </a>
+        <a href="#" class="page-link">&lt; </a>
+        <a href="#" class="page-link active">1</a>
+        <a href="#" class="page-link">2</a>
+        <a href="#" class="page-link">3</a>
+        <a href="#" class="page-link">4</a>
+        <a href="#" class="page-link">5</a>
+        <a href="#" class="page-link">&gt; </a>
+        <a href="#" class="page-link"> &raquo;</a>
+      </div>
+    </section>
+    {% endblock %}
+  </body>
+</html>

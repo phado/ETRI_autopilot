@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/userManagement/systemManager.css')}}"
+    />
+
+    <title>DataManagement</title>
+  </head>
+  <body>
+    {% extends 'common.html' %} {% block content %}
+    <section style="margin-left: 280px">
+      <div class="search-container">
+        <div class="custom-select">
+          <select>
+            <option value="all">전체</option>
+            <option value="organization">기관명</option>
+            <option value="userID">사용자 ID</option>
+            <option value="userName">사용자 닉네임</option>
+            <option value="authority">권한</option>
+          </select>
+          <div class="select-icon">
+            <img
+              src="{{url_for('static', filename='/image/down.svg')}}"
+              alt="Dropdown"
+              class="dropdown-icon"
+            />
+          </div>
+        </div>
+
+        <input type="text" class="search-box" placeholder="검색" />
+
+        <button class="search-button">조회</button>
+      </div>
+      <div class="data-list-container">
+        <div class="data-list-title">시스템 관리자</div>
+        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <!-- 데이터셋 생성 모달 -->
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-title">
+              <div class="modal-title-name">시스템 관리자</div>
+              <span class="close" id="closeModalBtn">&times;</span>
+            </div>
+            <div class="modal-input">
+              <div class="modal-input1">
+                <div class="input-area">
+                  <div class="input-title">사용자 ID</div>
+                  <input type="text" />
+                  <div class="input-title">닉네임</div>
+                  <input type="text" />
+                  <div class="input-title">기관명</div>
+                  <input type="text" />
+                  <div class="input-title">사용자 이름</div>
+                  <input type="text" />
+                  <div class="input-title">휴대폰 번호</div>
+                  <input type="text" />
+                  <div class="input-title">E-mail</div>
+                  <input type="text" />
+                  <img
+                    src="{{url_for('static', filename='/image/line.svg')}}"
+                    style="margin-top: 24px"
+                  />
+                </div>
+                <div class="button-area">
+                  <button class="management-button" style="margin-top: 16px">
+                    시스템 관리자
+                  </button>
+                  <img
+                    class="box-image"
+                    src="{{url_for('static', filename='/image/box.svg')}}"
+                  /><br />
+                  <button class="management-button">데이터 관리자</button>
+                  <img
+                    class="box-image"
+                    src="{{url_for('static', filename='/image/box.svg')}}"
+                  /><br />
+                  <button class="management-button">모델 관리자</button>
+                  <img
+                    class="box-image"
+                    src="{{url_for('static', filename='/image/box.svg')}}"
+                  />
+                  <img
+                    src="{{url_for('static', filename='/image/line.svg')}}"
+                    style="margin-top: 24px"
+                  />
+                  <button class="modal-cancel-button">취소</button>
+                  <button class="modal-confirm-button">확인</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          // create 모달 js
+          var modal = document.getElementById("myModal");
+          var openModalBtn = document.getElementById("openModalBtn");
+          var closeModalBtn = document.getElementById("closeModalBtn");
+
+          openModalBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+          });
+
+          closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+          });
+        </script>
+
+        <table class="data-table">
+          <thead>
+            <tr class="data-table-title">
+              <th class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -30px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />데이터셋명
+              </th>
+              <th class="data-cell">사용자ID</th>
+              <th class="data-cell">닉네임</th>
+              <th class="data-cell">기관명</th>
+              <th class="data-cell">사용자이름</th>
+              <th class="data-cell">전화번호</th>
+              <th class="data-cell">Email</th>
+              <th class="data-cell">시스템 관리자</th>
+              <th class="data-cell">데이터 관리자</th>
+              <th class="data-cell">모델 관리자</th>
+              <th class="data-cell">마지막 접속일</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _ in range(10) %}
+            <tr>
+              <td
+                class="data-cell"
+                style="text-align: left; padding-left: 60px"
+              >
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -30px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />
+                admin
+              </td>
+              <td class="data-cell">etri</td>
+              <td class="data-cell">관리자</td>
+              <td class="data-cell">ETRI</td>
+              <td class="data-cell">홍길동</td>
+              <td class="data-cell">010-1234-5678</td>
+              <td class="data-cell">admin@naver.com</td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">
+                <img src="{{url_for('static', filename='/image/check.svg')}}" />
+              </td>
+              <td class="data-cell">2023-11-31 15:00:00</td>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <script>
+        //상세정보 모달 js
+        var detailModal = document.getElementById("detailModal");
+        var openDetailModalBtn = document.getElementById("openDetailModalBtn");
+        var closeDetailModalBtn = document.getElementById(
+          "closeDetailModalBtn"
+        );
+
+        openDetailModalBtn.addEventListener("click", function () {
+          detailModal.style.display = "block";
+        });
+
+        closeDetailModalBtn.addEventListener("click", function () {
+          detailModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+          if (event.target == detailModal) {
+            detailModal.style.display = "none";
+          }
+        });
+      </script>
+      <div class="pagination">
+        <a href="#" class="page-link">&laquo; </a>
+        <a href="#" class="page-link">&lt; </a>
+        <a href="#" class="page-link active">1</a>
+        <a href="#" class="page-link">2</a>
+        <a href="#" class="page-link">3</a>
+        <a href="#" class="page-link">4</a>
+        <a href="#" class="page-link">5</a>
+        <a href="#" class="page-link">&gt; </a>
+        <a href="#" class="page-link"> &raquo;</a>
+      </div>
+    </section>
+    {% endblock %}
+  </body>
+</html>

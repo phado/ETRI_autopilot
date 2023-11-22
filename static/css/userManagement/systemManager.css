@@ -1,0 +1,225 @@
+/* select box, 데이터 목록 테이블 css */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  margin-left: 70px;
+  margin-top: 40px;
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 171px;
+  height: 32px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-box {
+  width: 302px;
+  height: 30px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-button {
+  width: 54px;
+  height: 32px;
+  background: #565656;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-list-title {
+  display: inline-block; /* 인라인 레벨 요소로 설정 */
+  margin-top: 31px;
+  margin-left: 70px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-family: Roboto;
+}
+
+.data-list-create {
+  position: absolute;
+  right: 70px;
+
+  background-color: #3d5eec;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-table-title {
+  height: 45px;
+  padding: 0%;
+}
+.data-table {
+  border-collapse: collapse;
+  border: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  margin-top: 18px;
+  margin-left: 70px;
+  width: 1500px;
+  height: 60px;
+}
+
+.data-table .data-cell {
+  width: 150px; /* 각 영역의 너비 조절 */
+  border-bottom: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  height: 40px; /* 각 행의 높이 설정 */
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+}
+.data-table th,
+.data-table td {
+  width: 150px;
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.pagination {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 8px;
+  margin: 0 7px;
+  text-decoration: none;
+  color: #333;
+}
+
+.page-link:hover {
+  background-color: #f1f1f1;
+}
+
+.active {
+  background: #3853ff;
+  color: white;
+  border-radius: 50%; /* 동그라미 모양으로 설정 */
+  display: inline-block; /* 둥근 모양을 가진 인라인 블록 요소로 만듭니다. */
+}
+
+/* -------------------------------------------------------------------------------------------------- */
+/* 데이터셋 생성 모달 css */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 4% auto;
+  width: 486px; /* Set the width */
+  max-width: 100%; /* Ensure it doesn't exceed the viewport width */
+  height: 790px; /* Set the height */
+}
+
+.modal-title {
+  height: 40px; /* Set the height of the title area */
+  background: #edf0ff;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+  font-size: 18px;
+}
+.modal-input {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 24px;
+}
+.input-title {
+  margin-top: 20px;
+}
+
+.input-area input {
+  margin-top: 8px;
+  width: 438px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  padding: 0px;
+}
+
+.management-button {
+  width: 200px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  background-color: white;
+  margin-right: 10px; /* 버튼 간 간격 조절 */
+  margin-top: 16px; /* 버튼 간 간격 조절 */
+}
+
+.modal-cancel-button,
+.modal-confirm-button {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.modal-cancel-button {
+  margin-left: 348px;
+  background: #9a9a9a;
+}
+.modal-confirm-button {
+  background: #3d5eec;
+}
+.box-image {
+  margin-top: 19px;
+  position: absolute;
+}
+/* -------------------------------------------------------------------------------------------------- */

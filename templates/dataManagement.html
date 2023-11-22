@@ -125,20 +125,42 @@
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
-              <th class="data-cell">데이터셋명</th>
+              <th class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -38px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />데이터셋명
+              </th>
               <th class="data-cell">기관명</th>
               <th class="data-cell">작업 상태</th>
               <th class="data-cell">검수 상태</th>
               <th class="data-cell">최초 등록일</th>
               <th class="data-cell">마지막 수정일</th>
               <th class="data-cell">상세정보</th>
-              <th class="data-cell">삭제</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
             {% for _ in range(10) %}
             <tr>
-              <td class="data-cell">project name</td>
+              <td class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -30px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />project name
+              </td>
               <td class="data-cell">etri</td>
               <td class="data-cell">사원</td>
               <td class="data-cell">완료</td>
@@ -200,7 +222,11 @@
                 </div>
                 <!-- detail 모달 -->
               </td>
-              <th class="data-cell">삭제</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
             </tr>
             {% endfor %}
           </tbody>
