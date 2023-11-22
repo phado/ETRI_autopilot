@@ -1,0 +1,494 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  display: flex;
+}
+
+.login_1 {
+  width: 503px;
+}
+
+.login_2 {
+  flex: 1;
+  width: 497px;
+  height: 600px;
+}
+.login-text {
+  margin-top: 97px;
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #3d5eec;
+}
+.id-input,
+.password-input {
+  border: 1px solid #9b9b9b;
+  width: 387px;
+  height: 40px;
+  border-radius: 999px;
+  background: white;
+  outline: none;
+  margin-left: 55px;
+  text-indent: 24px;
+}
+.id-input {
+  margin-top: 56px;
+}
+.password-input {
+  margin-top: 24px;
+}
+.id-input::placeholder,
+.password-input::placeholder {
+  color: #bbbbbb;
+}
+.form-bottom {
+  margin-left: 55px;
+}
+.forget-area {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  flex-direction: column; /* 세로로 나열 */
+}
+
+.forget-area img {
+  position: absolute;
+}
+
+.forget-link-area,
+.remember-id {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+/* 각각의 요소들 간격을 원하는 대로 조절할 수 있습니다 */
+.forget-link-area {
+  margin-bottom: 6px; /* 아래 여백 추가 */
+}
+.forget-area a {
+  float: right;
+  color: #c7c7c7;
+}
+.keep-text {
+  margin-left: 35px;
+  margin-top: 2px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #848484;
+}
+.forget-pwd {
+  margin-left: 200px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: right;
+  color: #c7c7c7;
+  text-decoration: none;
+}
+.login-button {
+  margin-top: 53px;
+  width: 387px;
+  height: 45px;
+
+  padding: 10px, 167px, 10px, 167px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+
+  color: white;
+  background: #3d5eec;
+}
+.signup {
+  padding-top: 75px;
+  color: #c7c7c7;
+}
+.signup-link {
+  color: #3853ff;
+  text-decoration: none;
+}
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* 회원가입 모달 css */
+.signmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.signmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 450px;
+  height: 940px;
+  box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-title-name {
+  color: black;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 31px;
+  left: 31px;
+}
+.signmodal-input {
+  display: flex;
+  justify-content: space-between;
+}
+.input-area {
+  margin-top: 26px;
+  margin-left: 31px;
+}
+.input-title {
+  margin-top: 24px;
+}
+.input-sign {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+.signupBtn {
+  position: absolute;
+  bottom: 39px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 45px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+  color: white;
+  background: #3d5eec;
+}
+
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* 비번찾기 모달 css */
+.findpwmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.findpwmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 450px;
+  height: 940px;
+  box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.findpwmodal-title-name {
+  color: black;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 31px;
+  left: 31px;
+}
+
+.findpw-text {
+  margin-top: 45px;
+  color: var(--, #222);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.findpwmodal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.findpwBtn {
+  width: 370px;
+  height: 45px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+  color: white;
+  background: #3d5eec;
+  position: absolute;
+  bottom: 39px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.input-findpw {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* 비번재설정 모달 css */
+.replacepwmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.replacepwmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 450px;
+  height: 940px;
+  box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.replacepwmodal-title-name {
+  color: black;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 31px;
+  left: 31px;
+}
+.replacepw-text {
+  margin-top: 45px;
+  color: var(--, #222);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.replacepwmodal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.replacepwBtn {
+  width: 370px;
+  height: 45px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+  color: white;
+  background: #3d5eec;
+  position: absolute;
+  bottom: 39px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.input-replacepw {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* 비번찾기 모달 css */
+.findidmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.findidmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 450px;
+  height: 940px;
+  box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.findidmodal-title-name {
+  color: black;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 31px;
+  left: 31px;
+}
+
+.findid-text {
+  margin-top: 45px;
+  color: var(--, #222);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.findidmodal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.findidBtn {
+  width: 370px;
+  height: 45px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+  color: white;
+  background: #3d5eec;
+  position: absolute;
+  bottom: 39px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.input-findid {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+/* -------------------------------------------------------------------------------------------------------------------- */
+/* 비번재설정 모달 css */
+.replaceidmodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.replaceidmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 450px;
+  height: 940px;
+  box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);
+}
+.replaceidmodal-title-name {
+  color: black;
+  font-family: Roboto;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: relative;
+  top: 31px;
+  left: 31px;
+}
+.replaceid-text {
+  margin-top: 45px;
+  color: var(--, #222);
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.replaceidmodal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.replaceidBtn {
+  width: 370px;
+  height: 45px;
+  border-radius: 999px;
+  gap: 10px;
+  border: none;
+  color: white;
+  background: #3d5eec;
+  position: absolute;
+  bottom: 39px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.input-replaceid {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}

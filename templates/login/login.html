@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/login/login.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/login.js') }}"
+    ></script>
+  </head>
+
+  <body>
+    <div class="login_1">
+      <img src="{{url_for('static', filename='/image/login.svg')}}" />
+    </div>
+    <div class="login_2">
+      <div class="login-text">
+        Welcome!<br />
+        Sign in to your Account
+      </div>
+      <form method="POST" action="/">
+        <div class="form-group">
+          <input
+            type="text"
+            class="id-input"
+            id="username"
+            name="username"
+            placeholder="User ID"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            class="password-input"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <small id="passwordError" class="text-danger"></small>
+        </div>
+        <div class="form-bottom">
+          <div class="forget-area">
+            <div class="forget-link-area">
+              <a class="forget-id" id="fotget-id">Forget ID?</a>
+
+              <!-- 아이디 찾기 모달 -->
+              <div id="findidModal" class="findidmodal">
+                <div class="findidmodal-content">
+                  <span class="findidmodal-close" id="closefindidModalBtn"
+                    >&times;</span
+                  >
+                  <div class="findidmodal-title-name">아이디 찾기</div>
+
+                  <div class="input-area">
+                    <div class="findid-text">
+                      회원정보에 등록된 아이디와 휴대폰 번호를 입력해주세요.
+                    </div>
+                    <div class="input-title">아이디</div>
+                    <input type="text" class="input-findid" />
+                    <div class="input-title">휴대폰 번호</div>
+                    <input type="text" class="input-findid" />
+                    <button class="findidBtn" id="findidBtn">Check</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 아이디 찾기 모달 -->
+              <!-- 아이디 찾기 완료 모달 -->
+              <div id="replaceidModal" class="replaceidmodal">
+                <div class="replaceidmodal-content">
+                  <span class="replaceidmodal-close" id="closereplaceidModalBtn"
+                    >&times;</span
+                  >
+                  <div class="replaceidmodal-title-name">아이디 재설정</div>
+                  <div class="input-area">
+                    <div class="replaceid-text">
+                      회원정보와 일치하는 아이디입니다.
+                    </div>
+                    <div class="input-title">아이디</div>
+                    <input type="text" class="input-replaceid" />
+                    <div class="input-title">가입일</div>
+                    <input type="text" class="input-replaceid" />
+                    <button class="replaceidBtn" id="replaceidBtn">
+                      Check
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- 아이디 찾기 완료 모달 -->
+              <!-- 아이디 찾기 모달 스크립트 -->
+              <script>
+                var findidmodal = document.getElementById("findidModal");
+                var openfindidModalBtn = document.getElementById("fotget-id");
+                var closefindidModalBtn = document.getElementById(
+                  "closefindidModalBtn"
+                );
+                openfindidModalBtn.addEventListener("click", function () {
+                  findidmodal.style.display = "block";
+                });
+                closefindidModalBtn.addEventListener("click", function () {
+                  findidmodal.style.display = "none";
+                });
+
+                var replaceidModal = document.getElementById("replaceidModal");
+                var closereplaceidModalBtn = document.getElementById(
+                  "closereplaceidModalBtn"
+                );
+                var findidBtn = document.getElementById("findidBtn");
+
+                findidBtn.addEventListener("click", function () {
+                  findidmodal.style.display = "none";
+                  replaceidModal.style.display = "block";
+                });
+
+                closereplaceidModalBtn.addEventListener("click", function () {
+                  replaceidModal.style.display = "none";
+                });
+              </script>
+              <!-- 아이디 찾기 모달 스크립트 -->
+
+              <a class="forget-pwd" id="fotget-pwd">Forget Password?</a>
+            </div>
+            <div class="remember-id">
+              <img src="{{url_for('static', filename='/image/box.svg')}}" />
+              <div class="keep-text">Keep me signed in</div>
+            </div>
+            <!-- 비밀번호 찾기 모달 -->
+            <div id="findpwModal" class="findpwmodal">
+              <div class="findpwmodal-content">
+                <span class="findpwmodal-close" id="closefindpwModalBtn"
+                  >&times;</span
+                >
+                <div class="findpwmodal-title-name">비밀번호 찾기</div>
+
+                <div class="input-area">
+                  <div class="findpw-text">
+                    회원정보에 등록된 아이디와 휴대폰 번호를 입력해주세요.
+                  </div>
+                  <div class="input-title">아이디</div>
+                  <input type="text" class="input-findpw" />
+                  <div class="input-title">휴대폰 번호</div>
+                  <input type="text" class="input-findpw" />
+                  <div class="input-title">인증번호</div>
+                  <input type="text" class="input-findpw" />
+
+                  <button class="findpwBtn" id="findpwBtn">Check</button>
+                </div>
+              </div>
+            </div>
+            <!-- 비밀번호 찾기 모달 -->
+            <!-- 비밀번호 재설정 모달 -->
+            <div id="replacepwModal" class="replacepwmodal">
+              <div class="replacepwmodal-content">
+                <span class="replacepwmodal-close" id="closereplacepwModalBtn"
+                  >&times;</span
+                >
+                <div class="replacepwmodal-title-name">비밀번호 재설정</div>
+                <div class="input-area">
+                  <div class="replacepw-text">
+                    사용한 적 없는 안전한 비밀번호로 변경해주세요.
+                  </div>
+                  <div class="input-title">비밀번호</div>
+                  <input type="password" class="input-replacepw" />
+                  <div class="input-title">비밀번호 확인</div>
+                  <input type="password" class="input-replacepw" />
+
+                  <button class="replacepwBtn" id="replacepwBtn">Check</button>
+                </div>
+              </div>
+            </div>
+            <!-- 비밀번호 재설정 모달 -->
+          </div>
+          <!-- 비밀번호 재설정 스크립트 -->
+          <script>
+            var findpwmodal = document.getElementById("findpwModal");
+            var openfindpwModalBtn = document.getElementById("fotget-pwd");
+            var closefindpwModalBtn = document.getElementById(
+              "closefindpwModalBtn"
+            );
+            openfindpwModalBtn.addEventListener("click", function () {
+              findpwmodal.style.display = "block";
+            });
+            closefindpwModalBtn.addEventListener("click", function () {
+              findpwmodal.style.display = "none";
+            });
+
+            var replacepwModal = document.getElementById("replacepwModal");
+            var closereplacepwModalBtn = document.getElementById(
+              "closereplacepwModalBtn"
+            );
+            var findpwBtn = document.getElementById("findpwBtn");
+
+            findpwBtn.addEventListener("click", function () {
+              findpwmodal.style.display = "none";
+              replacepwModal.style.display = "block";
+            });
+
+            closereplacepwModalBtn.addEventListener("click", function () {
+              replacepwModal.style.display = "none";
+            });
+          </script>
+          <!-- 비밀번호 재설정 스크립트 -->
+
+          <a href="#" onclick="redirectToDataManagement()">
+            <button type="button" class="login-button">Login</button>
+          </a>
+          <div class="signup">
+            New User?
+            <a href="#" class="signup-link" id="signup-user">Signup</a>
+            <!-- 회원가입 모달 -->
+            <div id="signupModal" class="signmodal">
+              <div class="signmodal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+                <div class="modal-title-name">회원가입</div>
+
+                <div class="signmodal-input">
+                  <div class="input-area">
+                    <div class="input-title">아이디</div>
+                    <input type="text" class="input-sign" />
+                    <div class="input-title">닉네임</div>
+                    <input type="text" class="input-sign" />
+                    <div class="input-title">비밀번호</div>
+                    <input type="password" class="input-sign" />
+                    <div class="input-title">비밀번호 확인</div>
+                    <input type="password" class="input-sign" />
+                    <div class="input-title">이름</div>
+                    <input type="text" class="input-sign" />
+                    <div class="input-title">휴대폰 번호</div>
+                    <input type="text" class="input-sign" />
+                    <div class="input-title">E-mail</div>
+                    <input type="text" class="input-sign" />
+                    <div class="input-title">기관명</div>
+                    <input type="text" class="input-sign" />
+                    <button class="signupBtn">Signup</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <script>
+              var signupmodal = document.getElementById("signupModal");
+              var opensignupModalBtn = document.getElementById("signup-user");
+              var closesignupModalBtn =
+                document.getElementById("closeModalBtn");
+
+              opensignupModalBtn.addEventListener("click", function () {
+                signupmodal.style.display = "block";
+              });
+
+              closesignupModalBtn.addEventListener("click", function () {
+                signupmodal.style.display = "none";
+              });
+            </script>
+            <!-- 회원가입 모달 -->
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

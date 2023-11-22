@@ -1,0 +1,411 @@
+/* select box, 데이터 목록 테이블 css */
+.custom-select {
+  position: relative;
+  display: inline-block;
+  margin-left: 70px;
+  margin-top: 40px;
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 171px;
+  height: 32px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-box {
+  width: 302px;
+  height: 30px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-button {
+  width: 54px;
+  height: 32px;
+  background: #565656;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-list-title {
+  display: inline-block; /* 인라인 레벨 요소로 설정 */
+  margin-top: 31px;
+  margin-left: 70px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-family: Roboto;
+}
+
+.data-list-create {
+  position: absolute;
+  right: 70px;
+
+  background-color: #3d5eec;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-table-title {
+  height: 45px;
+  padding: 0%;
+}
+.data-table {
+  border-collapse: collapse;
+  border: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  margin-top: 18px;
+  margin-left: 70px;
+  width: 1500px;
+  height: 60px;
+}
+
+.data-table .data-cell {
+  width: 150px; /* 각 영역의 너비 조절 */
+  border-bottom: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  height: 40px; /* 각 행의 높이 설정 */
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+}
+.data-table th,
+.data-table td {
+  width: 150px;
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.pagination {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 8px;
+  margin: 0 7px;
+  text-decoration: none;
+  color: #333;
+}
+
+.page-link:hover {
+  background-color: #f1f1f1;
+}
+
+.active {
+  background: #3853ff;
+  color: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+/* 데이터셋 생성 모달 css */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  width: 784px;
+  max-width: 100%;
+  height: 484px;
+}
+
+.modal-title {
+  height: 40px;
+  background: #edf0ff;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+  font-size: 18px;
+}
+.modal-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-input1 {
+  width: calc((3 / 5) * 100% - 12px);
+  padding: 24px;
+}
+
+.modal-input2 {
+  width: calc((2 / 5) * 100% - 12px);
+}
+
+.modal-input1,
+.modal-input2 {
+  height: 444px;
+  box-sizing: border-box;
+}
+
+.model-name-input,
+.dataset-name-input,
+.dataset-root-input {
+  width: 100%;
+  height: 24px;
+}
+.labeler-option-input {
+  width: 100%;
+  height: 80px;
+}
+.dataset-search-button {
+  width: 61px;
+  height: 20px;
+  background: #3d5eec;
+  color: white;
+
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  border: none;
+}
+.developer-search-button {
+  width: 61px;
+  height: 20px;
+  background: #3d5eec;
+  color: white;
+
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  border: none;
+}
+
+.modal-input2-box {
+  width: 274px;
+  height: 342px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.modal-input2-search {
+  height: 36px;
+  border-bottom: 1px solid #ccc;
+}
+.dataset-add-input {
+  margin-left: 10px;
+  height: 32px;
+  width: 200px;
+  border: none;
+}
+.dataset-add-button {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 10px;
+  background: #565656;
+  color: white;
+}
+.dataset-add-textarea {
+  width: 270px;
+  height: 260px;
+  border: none;
+}
+.modal-input2-button {
+  border-top: 1px solid #ccc;
+}
+.dataset-cancel-button,
+.dataset-confirm-button {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.dataset-cancel-button {
+  margin-left: 170px;
+  margin-top: 7px;
+  background: #9a9a9a;
+}
+.dataset-confirm-button {
+  background: #3d5eec;
+}
+.alert-text {
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #6d6d6d;
+}
+
+/* ----------------------------------------------------------------------------------------- */
+/* 데이터셋 상세 모달 css */
+.detailModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.detailmodal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  max-width: 100%;
+  height: 480px;
+}
+
+.detailmodal-title {
+  height: 40px;
+  background: #edf0ff;
+}
+
+.detailmodal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.detailmodal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.detailmodal-input {
+  display: flex;
+  justify-content: space-between;
+  height: 440px;
+
+  flex-direction: column;
+  align-items: center;
+}
+.detaildata-table-title {
+  height: 45px;
+  padding: 0%;
+}
+.detaildata-table {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  margin-top: 18px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 1140px;
+  height: 60px;
+  width: 1150px;
+  border-radius: 5px;
+}
+
+.detaildata-table .detaildata-cell {
+  width: 150px;
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+}
+.detaildata-table th,
+.detaildata-table td {
+  width: 150px;
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+  text-align: center;
+}
+
+.detialmodal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 19px;
+  margin-top: auto;
+}
+.cancel-button {
+  width: 43px;
+  height: 20px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+  margin-top: 7px;
+  background: #9a9a9a;
+  margin-left: 1050px;
+  margin-right: 8px;
+}
+.confirm-button {
+  width: 43px;
+  height: 20px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+  margin-top: 7px;
+  background: #3d5eec;
+}
+
+/* ----------------------------------------------------------------------------------------- */

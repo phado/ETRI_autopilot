@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/dataManagement/dataManagement.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/dataManagement/dataManagement.js') }}"
+    ></script>
+    <title>DataManagement</title>
+  </head>
+  <body>
+    {% extends 'common/common.html' %} {% block content %}
+    <section style="margin-left: 280px">
+      <div class="search-container">
+        <div class="custom-select">
+          <select>
+            <option value="all">전체</option>
+            <option value="dataset">데이터셋</option>
+            <option value="organization">기관명</option>
+            <option value="labeler">라벨러</option>
+            <option value="reviewer">검수자</option>
+          </select>
+          <div class="select-icon">
+            <img
+              src="{{url_for('static', filename='/image/down.svg')}}"
+              alt="Dropdown"
+              class="dropdown-icon"
+            />
+          </div>
+        </div>
+
+        <input type="text" class="search-box" placeholder="검색" />
+
+        <button class="search-button">조회</button>
+      </div>
+      <div class="data-list-container">
+        <div class="data-list-title">데이터 목록</div>
+        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <table class="data-table">
+          <thead>
+            <tr class="data-table-title">
+              <th class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -38px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />데이터셋명
+              </th>
+              <th class="data-cell">기관명</th>
+              <th class="data-cell">작업 상태</th>
+              <th class="data-cell">검수 상태</th>
+              <th class="data-cell">최초 등록일</th>
+              <th class="data-cell">마지막 수정일</th>
+              <th class="data-cell">상세정보</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
+                />
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+          <!-- <tbody>
+            {% for _ in range(10) %}
+            <tr>
+              <td class="data-cell">
+                <img
+                  style="
+                    position: absolute;
+                    margin-left: -30px;
+                    margin-top: -3px;
+                  "
+                  src="{{url_for('static', filename='/image/box.svg')}}"
+                />project name
+              </td>
+              <td class="data-cell">etri</td>
+              <td class="data-cell">사원</td>
+              <td class="data-cell">완료</td>
+              <td class="data-cell">2023.11.20</td>
+              <td class="data-cell">2023.11.31</td>
+              <td class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/detail.svg')}}"
+                  id="openDetailModalBtn"
+                />
+              </td>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+            </tr>
+            {% endfor %}
+          </tbody> -->
+        </table>
+        <!-- 데이터셋 생성 모달 -->
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <div class="modal-title">
+              <div class="modal-title-name">데이터셋 생성</div>
+              <span class="close" id="closeModalBtn">&times;</span>
+            </div>
+            <div class="modal-input">
+              <div class="modal-input1">
+                <div>데이터셋명</div>
+                <input
+                  type="text"
+                  placeholder="5~30글자/영문,한글,숫자,특수문자"
+                  style="margin-top: 8px"
+                  class="dataset-name-input"
+                />
+                <div style="margin-top: 24px">데이터셋 경로</div>
+                <input
+                  type="text"
+                  placeholder="영문,한글,숫자,특수문자"
+                  style="margin-top: 8px"
+                  class="dataset-root-input"
+                />
+                <div
+                  style="display: flex; align-items: center; margin-top: 24px"
+                >
+                  <div style="flex-grow: 1">라벨러 설정</div>
+                  <button class="labeler-add-button">추가</button>
+                </div>
+                <input
+                  type="text"
+                  style="margin-top: 8px"
+                  class="labeler-option-input"
+                />
+                <div style="margin-top: 24px; margin-bottom: 8px">
+                  검수자 설정
+                </div>
+                <button class="checker-option-button">Nickname</button>
+                <button class="checker-search-button">search</button>
+              </div>
+              <div class="modal-input2">
+                <div style="margin-top: 24px; margin-bottom: 8px">
+                  라벨러 추가
+                </div>
+                <div class="modal-input2-box">
+                  <div class="modal-input2-search">
+                    <input
+                      type="text"
+                      class="labeler-add-input"
+                      placeholder="검색어 입력"
+                    />
+                    <button class="labeler-add-button">검색</button>
+                  </div>
+                  <textarea class="labeler-add-textarea"></textarea>
+                  <div class="modal-input2-button">
+                    <button class="labeler-cancel-button">취소</button>
+                    <button class="labeler-confirm-button">확인</button>
+                  </div>
+                </div>
+                <button class="labeler-cancel-button">취소</button>
+                <button class="labeler-confirm-button">확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <script>
+          // create 모달 js
+          var modal = document.getElementById("myModal");
+          var openModalBtn = document.getElementById("openModalBtn");
+          var closeModalBtn = document.getElementById("closeModalBtn");
+
+          openModalBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+          });
+
+          closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+          });
+        </script> -->
+
+        <!-- detail 모달 -->
+        <div id="detailModal" class="detailModal">
+          <div class="detailmodal-content">
+            <div class="detailmodal-title">
+              <div class="detailmodal-title-name">[Project 01] 상세정보</div>
+              <span class="detailmodal-close" id="closeDetailModalBtn"
+                >&times;</span
+              >
+            </div>
+            <div class="detailmodal-input">
+              <table class="detaildata-table">
+                <thead>
+                  <tr class="detaildata-table-title">
+                    <th class="detaildata-cell">라벨러</th>
+                    <th class="detaildata-cell">검수자</th>
+                    <th class="detaildata-cell">접속경로</th>
+                    <th class="detaildata-cell">진행도</th>
+                    <th class="detaildata-cell">총프레임</th>
+                    <th class="detaildata-cell">진행완료</th>
+                    <th class="detaildata-cell">검수완료</th>
+                    <th class="detaildata-cell">이슈사항</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for _ in range(5) %}
+                  <tr>
+                    <td class="detaildata-cell">고길동</td>
+                    <td class="detaildata-cell">홍길동</td>
+                    <td class="detaildata-cell">접속경로</td>
+                    <td class="detaildata-cell">100%</td>
+                    <td class="detaildata-cell">총프레임</td>
+                    <td class="detaildata-cell">진행완료</td>
+                    <td class="detaildata-cell">검수완료</td>
+                    <th class="detaildata-cell" style="width: 253px">
+                      이슈사항
+                    </th>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <div class="detialmodal-buttons">
+                <button class="cancel-button">취소</button>
+                <button class="confirm-button">확인</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- detail 모달 -->
+      </div>
+      <script>
+        //상세정보 모달 js
+        var detailModal = document.getElementById("detailModal");
+        var openDetailModalBtn = document.getElementById("openDetailModalBtn");
+        var closeDetailModalBtn = document.getElementById(
+          "closeDetailModalBtn"
+        );
+
+        openDetailModalBtn.addEventListener("click", function () {
+          detailModal.style.display = "block";
+        });
+
+        closeDetailModalBtn.addEventListener("click", function () {
+          detailModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+          if (event.target == detailModal) {
+            detailModal.style.display = "none";
+          }
+        });
+      </script>
+      <div class="pagination">
+        <a href="#" class="page-link">&laquo; </a>
+        <a href="#" class="page-link">&lt; </a>
+        <a href="#" class="page-link active">1</a>
+        <a href="#" class="page-link">2</a>
+        <a href="#" class="page-link">3</a>
+        <a href="#" class="page-link">4</a>
+        <a href="#" class="page-link">5</a>
+        <a href="#" class="page-link">&gt; </a>
+        <a href="#" class="page-link"> &raquo;</a>
+      </div>
+    </section>
+    {% endblock %}
+  </body>
+</html>

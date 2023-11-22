@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/systemManagement/agencyManagement.css')}}"
+    />
+    <title>DataManagement</title>
+  </head>
+  <body>
+    {% extends 'common/common.html' %} {% block content %}
+    <section class="agency-section">
+      <div class="agency-area">
+        <div class="agecy-title">
+          <div class="agency-title-name">
+            기관 관리
+            <img
+              src="{{url_for('static', filename='/image/etri_logo.svg')}}"
+              style="margin-left: 600px"
+            />
+          </div>
+          <img
+            class="agecy-line-img"
+            src="{{url_for('static', filename='/image/longline.svg')}}"
+          />
+        </div>
+
+        <div class="agency-content1">기관 코드와 기관명을 입력하세요.</div>
+        <div class="agency-content">
+          <div class="agency-container">
+            <div class="agency_1">
+              <div class="agency-text-title" style="margin-top: 64px">
+                기관 코드
+              </div>
+              <input
+                type="text"
+                class="agency-input-title"
+                placeholder="기관 코드 입력"
+              /><br />
+              <div class="agency-text-title">기관명</div>
+              <input
+                type="text"
+                class="agency-input-title"
+                placeholder="기관명 입력"
+              />
+            </div>
+
+            <div class="agency_2">
+              <img
+                class="agecy-line-img"
+                src="{{url_for('static', filename='/image/agency.svg')}}"
+              />
+            </div>
+          </div>
+        </div>
+        <button class="signup-button">Signup</button>
+      </div>
+    </section>
+    {% endblock %}
+  </body>
+</html>

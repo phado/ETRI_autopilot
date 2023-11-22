@@ -1,0 +1,88 @@
+/* 노멀라이즈 시작 */
+body,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none; /* 해당 태그의 list-style을 none으로 하는 것으로 ●을 제거한다 */
+}
+
+a {
+  color: inherit; /* 부모 엘리먼트의 값을 물려받는다 */
+  text-decoration: none; /* 해당 태그의 text-decoration 속성을 none 값으로 하는 것으로 밑줄을 제거한다 */
+}
+/* 노멀라이즈 끝 */
+
+.side-bar ul ul {
+  display: none; /* 초기에는 하위 ul을 숨김 */
+}
+
+.side-bar .toggle {
+  cursor: pointer;
+}
+
+.side-bar .toggle:hover {
+  background-color: #f0f0f0; /* 마우스 오버 효과 (선택사항) */
+}
+
+.side-bar {
+  position: fixed; /* Fix the sidebar position */
+  left: 0; /* Align it to the left of the page */
+  height: 100%; /* Take the full height of the viewport */
+  width: 280px; /* Set the desired width */
+  border-right: 1px solid #bcbcbc;
+}
+
+.side-bar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-bar li {
+  padding: 18px;
+}
+
+.side-bar a {
+  text-decoration: none;
+  color: #333; /* 링크 색상 설정 (선택사항) */
+}
+.img-fluid {
+  position: absolute;
+}
+
+.side-bar-text {
+  margin-top: 5px;
+  margin-left: 40px;
+  display: inline-block;
+  margin-right: 10px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.down-img {
+  vertical-align: bottom;
+}
+
+.sub-li {
+  margin-left: 20px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.sub-li2 {
+  margin-left: 24px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
