@@ -1,3 +1,6 @@
+"""
+DB 커넥션 관리
+"""
 import mysql.connector.pooling
 import dotenv
 import os
@@ -8,10 +11,10 @@ dotenv.load_dotenv(dotenv_file)
 def get_pool_conn():
     config = {
 
-        'user': os.environ['root']
-        , 'password':  os.environ['pw']
-        , 'host': os.environ['ip']
-        , 'port': os.environ['port']
+        'user':  'root'
+        , 'password': 'kpst1234'
+        , 'host':  '211.46.241.212'
+        , 'port': '31945'
         , 'database': 'Autonomous_driving'
                 }
     # Mariadb 커넥션 풀 설정
