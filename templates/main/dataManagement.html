@@ -45,16 +45,10 @@
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
-              <th class="data-cell">
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -38px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />데이터셋명
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
+              <th class="data-cell">데이터셋명</th>
               <th class="data-cell">기관명</th>
               <th class="data-cell">작업 상태</th>
               <th class="data-cell">검수 상태</th>
@@ -68,25 +62,21 @@
               </th>
             </tr>
           </thead>
-          <tbody id="tableBody"></tbody>
-          <!-- <tbody>
-            {% for _ in range(10) %}
+          <!-- <tbody id="tableBody"></tbody> -->
+          <tbody>
+            {% for _ in board_list %}
             <tr>
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
+              </th>
+              <td class="data-cell">{{_[1]}}</td>
+              <td class="data-cell">{{_[2]}}</td>
+              <td class="data-cell">{{_[3]}}</td>
               <td class="data-cell">
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -30px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />project name
+                {% if _[5] == 1 %} 확인 {% else %} 미확인 {% endif %}
               </td>
-              <td class="data-cell">etri</td>
-              <td class="data-cell">사원</td>
-              <td class="data-cell">완료</td>
-              <td class="data-cell">2023.11.20</td>
-              <td class="data-cell">2023.11.31</td>
+              <td class="data-cell">{{_[6]}}</td>
+              <td class="data-cell">{{_[7]}}</td>
               <td class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"
@@ -100,7 +90,7 @@
               </th>
             </tr>
             {% endfor %}
-          </tbody> -->
+          </tbody>
         </table>
         <!-- 데이터셋 생성 모달 -->
         <div id="myModal" class="modal">
@@ -167,7 +157,7 @@
             </div>
           </div>
         </div>
-        <!-- <script>
+        <script>
           // create 모달 js
           var modal = document.getElementById("myModal");
           var openModalBtn = document.getElementById("openModalBtn");
@@ -180,7 +170,7 @@
           closeModalBtn.addEventListener("click", function () {
             modal.style.display = "none";
           });
-        </script> -->
+        </script>
 
         <!-- detail 모달 -->
         <div id="detailModal" class="detailModal">

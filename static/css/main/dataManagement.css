@@ -1,3 +1,4 @@
+/* -------------------------------------------------------------------------------------------------- */
 /* select box, 데이터 목록 테이블 css */
 .custom-select {
   position: relative;
@@ -45,7 +46,7 @@
 }
 
 .data-list-title {
-  display: inline-block; /* 인라인 레벨 요소로 설정 */
+  display: inline-block;
   margin-top: 31px;
   margin-left: 70px;
   font-size: 16px;
@@ -88,21 +89,20 @@
 }
 
 .data-table .data-cell {
-  width: 150px; /* 각 영역의 너비 조절 */
-  border-bottom: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
-  height: 40px; /* 각 행의 높이 설정 */
+  width: 150px;
+  border-bottom: 1px solid #ccc;
+  height: 40px;
   font-family: Roboto;
   font-size: 15px;
   font-weight: 500;
   line-height: 19px;
   letter-spacing: 0em;
 }
-.data-table th,
+
 .data-table td {
-  width: 150px;
   border-bottom: 1px solid #ccc;
   height: 40px;
-  text-align: center; /* 텍스트 가운데 정렬 */
+  text-align: center;
 }
 
 .pagination {
@@ -127,11 +127,10 @@
 .active {
   background: #3853ff;
   color: white;
-  border-radius: 50%; /* 동그라미 모양으로 설정 */
-  display: inline-block; /* 둥근 모양을 가진 인라인 블록 요소로 만듭니다. */
+  border-radius: 50%;
+  display: inline-block;
 }
 
-/* 데이터셋 생성 모달 css */
 .modal {
   display: none;
   position: fixed;
@@ -182,18 +181,18 @@
 }
 
 .modal-input1 {
-  width: calc((3 / 5) * 100% - 12px); /* 60% width minus padding */
+  width: calc((3 / 5) * 100% - 12px);
   padding: 24px;
 }
 
 .modal-input2 {
-  width: calc((2 / 5) * 100% - 12px); /* 40% width minus padding */
+  width: calc((2 / 5) * 100% - 12px);
 }
 
 .modal-input1,
 .modal-input2 {
   height: 444px;
-  box-sizing: border-box; /* Include padding in width calculation */
+  box-sizing: border-box;
 }
 
 .dataset-name-input,
@@ -286,7 +285,7 @@
 .labeler-confirm-button {
   background: #3d5eec;
 }
-
+/* -------------------------------------------------------------------------------------------------- */
 /* 데이터셋 상세 모달 css */
 .detailModal {
   display: none;
@@ -349,7 +348,7 @@
 }
 .detaildata-table {
   border-collapse: collapse;
-  border: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  border: 1px solid #ccc;
   margin-top: 18px;
   margin-left: 20px;
   margin-right: 20px;
@@ -360,8 +359,8 @@
 }
 
 .detaildata-table .detaildata-cell {
-  width: 150px; /* 각 영역의 너비 조절 */
-  border-bottom: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  width: 150px;
+  border-bottom: 1px solid #ccc;
   height: 50px;
   font-family: Roboto;
   font-size: 14px;
@@ -374,13 +373,13 @@
   width: 150px;
   border-bottom: 1px solid #ccc;
   height: 40px;
-  text-align: center; /* 텍스트 가운데 정렬 */
+  text-align: center;
 }
 
 .detialmodal-buttons {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 19px; /* Adjust the margin as needed */
+  margin-bottom: 19px;
 }
 .cancel-button {
   width: 43px;
@@ -404,3 +403,4 @@
   margin-top: 7px;
   background: #3d5eec;
 }
+/* -------------------------------------------------------------------------------------------------- */
