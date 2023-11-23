@@ -18,7 +18,7 @@
       "request": "launch",
       "module": "flask",
       "env": {
-        "FLASK_APP": "/Users/kpst/Desktop/auto/ETRI_autopilot/app.py",
+        "FLASK_APP": "/Users/kpst/Desktop/ETRI_autopilot/app.py",
         "FLASK_DEBUG": "1"
       },
       "args": ["run", "--no-debugger", "--no-reload"],

@@ -10,7 +10,8 @@ from menu_system_management import *
 app = Flask(__name__)
 
 mariadb_pool = get_pool_conn()
-
+# ------------------------------------------------------------------------------------------------------
+# -----------------------------------------로그인 관련 페이지-----------------------------------------------
 @app.route('/login')
 def login():
     return render_template('login/login.html')
@@ -130,10 +131,12 @@ def resetPwd():
     return json_result
 
 
-
+# ------------------------------------------------------------------------------------------------
+# -----------------------------------------메인 페이지-----------------------------------------------
+# 1. 데이터 관리 탭
 @app.route('/dataManagement')
 def dataManagement():
-    return render_template("dataManagement/dataManagement.html")
+    return render_template("main/dataManagement.html")
     """
 
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
@@ -157,77 +160,54 @@ def dataManagement():
     except Exception as e:
         print(e)
 
-    return render_template("dataManagement/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
+    return render_template("main/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
 
+# 2. 모델 관리 탭
 @app.route('/modelManagement')
 def modelManagement():
-    return render_template("modelManagement/modelManagement.html")
+    return render_template("main/modelManagement.html")
     """
     모델 목록
     :return:
     """
     return render_template("modelManagement.html")
 
-@app.route('/userManagement')
-def userManagement():
-    """
-    회원관리
-    :return:
-    """
-    return render_template("userManagement.html")
-
-@app.route('/systemManagement')
-def systemManagement():
-    """
-    시스템 관리
-    :return:
-    """
-    return render_template("systemManagement.html")
-
-
-@app.route('/userManagement/systemManager')
+# 3. 사용자 관리 탭
+@app.route('/userManagement_systemManager')
 def userManagementSystemManager():
     """
     사용자관리 / 시스템 관리자
     :return:
     """
-    return render_template("/userManagement/systemManager.html")
+    return render_template("main/userManagement/systemManager.html")
 
-@app.route('/userManagement/dataManager')
+@app.route('/userManagement_dataManager')
 def userManagementDataManager():
     """
     사용자관리 / 데이터 관리자
     :return:
     """
-    return render_template("/userManagement/dataManager.html")
+    return render_template("main/userManagement/dataManager.html")
 
 
 
-@app.route('/userManagement/modelManager')
+@app.route('/userManagement_modelManager')
 def userManagementModelManager():
     """
     사용자관리 / 모델 관리자
     :return:
     """
-    return render_template("/userManagement/modelManager.html")
-#
-#
-@app.route('/systemManagement/agencyManager')
+    return render_template("main/userManagement/modelManager.html")
+
+# 4. 시스템 관리 탭
+@app.route('/systemManagement_agencyManagement')
 def systemManagementAgencyManager():
     """
     시스템 관리 / 기관 관리
     :return:
     """
-    return render_template("/systemManagement/agencyManager.html")
+    return render_template("main/systemManagement/agencyManagement.html")
 
-@app.route('/systemManagement/dataManager')
-def systemManagementDataManager():
-    """
-    스시템 관리 / 데이터 관리
-    :return:
-    """
-    return render_template("/systemManagement/dataManager.html")
-
-
+# ------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)

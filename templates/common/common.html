@@ -13,7 +13,7 @@
     />
     <script
       type="text/javascript"
-      src="{{ url_for('static', filename='js/common.js') }}"
+      src="{{ url_for('static', filename='js/common/common.js') }}"
     ></script>
     <meta charset="UTF-8" />
   </head>
@@ -67,13 +67,13 @@
             class="down-img"
           />
           <ul>
-            <a href="/systemManager">
+            <a href="/userManagement_systemManager">
               <li class="sub-li" style="margin-top: 14px">시스템 관리자</li>
             </a>
-            <a href="/dataManager">
+            <a href="/userManagement_dataManager">
               <li class="sub-li">데이터 관리자</li>
             </a>
-            <a href="/modelManager">
+            <a href="/userManagement_modelManager">
               <li class="sub-li">모델 관리자</li>
             </a>
           </ul>
@@ -91,7 +91,7 @@
             class="down-img"
           />
           <ul>
-            <a href="/agencyManagement">
+            <a href="/systemManagement_agencyManagement">
               <li class="sub-li2" style="margin-top: 14px">기관 관리</li>
             </a>
             <a href="#">
