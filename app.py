@@ -6,37 +6,42 @@ from menu_data_management import *
 from menu_user_management import *
 from menu_model_management import *
 from menu_system_management import *
+import os
 
 app = Flask(__name__)
-
+app.secret_key = os.urandom(24)
 mariadb_pool = get_pool_conn()
 # ------------------------------------------------------------------------------------------------------
 # -----------------------------------------로그인 관련 페이지-----------------------------------------------
 @app.route('/login')
 def login():
-    return render_template('login/login.html')
+
     """
-    로그인
-    """
-    try:
-        usr_id = request.form["usrId"]
-        usr_pwd = request.form["usrPwd"]
+        로그인
+        login_result['login'] = 실패 0 성공 1
+        login_result['login_info'] 성공시 회원 tu.usr_idx ,tu.usr_nick ,tu.grp_idx 정보
+        """
+    if request.method == 'POST':
+        try:
+            usr_id = request.form["usrId"]
+            usr_pwd = request.form["usrPwd"]
 
-        login_result = def_login(usr_id, usr_pwd)
-        if login_result['login'] == '1':
-            session['usr_name'] = 'usr_name'
-            session['usr_id'] = usr_id
+            login_result = def_login(usr_id, usr_pwd)
+            if login_result['login'] == '1':
+                session['usr_name'] = 'usr_name'
+                session['usr_id'] = usr_id
 
-    except Exception as e:
-        print(e)
-        login_result = fail_message_json(login_result)
+        except Exception as e:
+            print(e)
+            login_result = fail_message_json(login_result)
 
 
-    finally:
-        pass
+        finally:
+            pass
 
-    return login_result
-
+        return login_result
+    else:
+        return render_template('login/login.html')
 @app.route('/register')
 def register():
     """
@@ -63,7 +68,9 @@ def register():
 @app.route('/findId')
 def findId():
     """
-       아이디찾기
+        아이디찾기
+        json_result['find_id'] = len(result) / 존재 1 없음 0
+        json_result['id_info'] = result 존재 할때 회원 정보 저장
     """
     try:
         usr_name = request.form.get('usrName')
@@ -130,19 +137,20 @@ def resetPwd():
 
     return json_result
 
-
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------메인 페이지-----------------------------------------------
 # 1. 데이터 관리 탭
 @app.route('/dataManagement')
 def dataManagement():
-    return render_template("main/dataManagement.html")
     """
-
+    데이터 목록
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
     """
     try:
-        page_num = request.form.get('pageNum') #todo page num이 없다면?
+
+        tbl_type = 'tb_prj_datasets'
+
+        page_num = request.form.get('pageNum')
         if page_num is None: page_num = 1
 
         search_type = request.form.get('searchType')
@@ -154,13 +162,17 @@ def dataManagement():
         show_data_mount = request.form.get('showDataMount')
         if show_data_mount is None: show_data_mount = 10
 
-        board_list = mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'])
-        board_cnt = count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],'tb_prj_datasets')
+        result_json = make_response_json([])
 
+        board_list = get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+        board_cnt = count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+        if board_cnt['status'] =='200'  and board_list['status'] =='200':
+            result_json = success_message_json(result_json)
     except Exception as e:
         print(e)
+        result_json = fail_message_json(result_json)
 
-    return render_template("main/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
+    return render_template("main/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 # 2. 모델 관리 탭
 @app.route('/modelManagement')
@@ -170,7 +182,34 @@ def modelManagement():
     모델 목록
     :return:
     """
-    return render_template("modelManagement.html")
+    try:
+        tbl_type = 'tb_prj_models'
+
+        page_num = request.form.get('pageNum')
+        if page_num is None: page_num = 1
+
+        search_type = request.form.get('searchType')
+        if search_type is None: search_type = None
+
+        search_key_word = request.form.get('keyWord')
+        if search_key_word is None: search_key_word = None
+
+        show_data_mount = request.form.get('showDataMount')
+        if show_data_mount is None: show_data_mount = 10
+
+        result_json = make_response_json([])
+
+        board_list = get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                    session['usr_id'], tbl_type)
+        board_cnt = count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                     session['usr_id'], tbl_type)
+        if board_cnt['status'] == '200' and board_list['status'] == '200':
+            result_json = success_message_json(result_json)
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return render_template("main/modelManagement.html.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 # 3. 사용자 관리 탭
 @app.route('/userManagement_systemManager')

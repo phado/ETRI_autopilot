@@ -5,8 +5,10 @@ from common_management import *
 def def_login(mariadb_pool, usr_id,usr_pwd):
     """
     회원 아이디와 회원 비밀번호를 받아서 로그인 조회
-    0 = 로그인 실패
-    1 = 로그인 성공
+
+    로그인
+    login_result['login'] = 실패 0 성공 1
+    login_result['login_info'] 성공시 회원 tu.usr_idx ,tu.usr_nick ,tu.grp_idx 정보
 
     :param mariadb_pool:
     :param usr_id:
