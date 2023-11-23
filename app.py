@@ -55,7 +55,7 @@ def logout():
 @app.route('/register', methods=['POST'])
 def register():
     """
-        회원가입
+        회원가입 로직
     """
 
     if request.method == 'POST':
