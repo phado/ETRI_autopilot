@@ -13,6 +13,7 @@ mariadb_pool = get_pool_conn()
 
 @app.route('/login')
 def login():
+    return render_template('login/login.html')
     """
     로그인
     """
@@ -22,7 +23,7 @@ def login():
 
         login_result = def_login(usr_id, usr_pwd)
         if login_result['login'] == '1':
-            session['usr_name'] = "usr_name" #todo
+            session['usr_name'] = 'usr_name'
             session['usr_id'] = usr_id
 
     except Exception as e:
@@ -59,7 +60,7 @@ def register():
     return json_result
 
 @app.route('/findId')
-def find_id():
+def findId():
     """
        아이디찾기
     """
@@ -75,7 +76,7 @@ def find_id():
     return json_result
 
 @app.route('/countId')
-def count_id():
+def countId():
     """
        아이디 존재 확인, 아이디 카운트
     """
@@ -92,7 +93,7 @@ def count_id():
 
 
 @app.route('/findPwd')
-def find_pwd():
+def findPwd():
     """
        비밀번호 찾기
     """
@@ -112,7 +113,7 @@ def find_pwd():
 
 
 @app.route('/resetPwd')
-def reset_pwd():
+def resetPwd():
     """
        비밀번호 수정
     """
@@ -131,7 +132,8 @@ def reset_pwd():
 
 
 @app.route('/dataManagement')
-def data_management():
+def dataManagement():
+    return render_template("dataManagement/dataManagement.html")
     """
 
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
@@ -155,10 +157,11 @@ def data_management():
     except Exception as e:
         print(e)
 
-    return render_template("dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
+    return render_template("dataManagement/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
 
 @app.route('/modelManagement')
-def model_management():
+def modelManagement():
+    return render_template("modelManagement/modelManagement.html")
     """
     모델 목록
     :return:
@@ -166,7 +169,7 @@ def model_management():
     return render_template("modelManagement.html")
 
 @app.route('/userManagement')
-def user_management():
+def userManagement():
     """
     회원관리
     :return:
@@ -174,7 +177,7 @@ def user_management():
     return render_template("userManagement.html")
 
 @app.route('/systemManagement')
-def system_management():
+def systemManagement():
     """
     시스템 관리
     :return:
@@ -183,17 +186,17 @@ def system_management():
 
 
 @app.route('/userManagement/systemManager')
-def user_management_system_manager():
+def userManagementSystemManager():
     """
-    회원관리 / 시스템 관리자
+    사용자관리 / 시스템 관리자
     :return:
     """
     return render_template("/userManagement/systemManager.html")
 
 @app.route('/userManagement/dataManager')
-def user_management_data_manager():
+def userManagementDataManager():
     """
-    회원관리 / 데이터 관리자
+    사용자관리 / 데이터 관리자
     :return:
     """
     return render_template("/userManagement/dataManager.html")
@@ -201,16 +204,16 @@ def user_management_data_manager():
 
 
 @app.route('/userManagement/modelManager')
-def user_management_model_manager():
+def userManagementModelManager():
     """
-    회원관리 / 모델 관리자
+    사용자관리 / 모델 관리자
     :return:
     """
     return render_template("/userManagement/modelManager.html")
-
-
+#
+#
 @app.route('/systemManagement/agencyManager')
-def system_management_agency_manager():
+def systemManagementAgencyManager():
     """
     시스템 관리 / 기관 관리
     :return:
@@ -218,7 +221,7 @@ def system_management_agency_manager():
     return render_template("/systemManagement/agencyManager.html")
 
 @app.route('/systemManagement/dataManager')
-def system_management_data_manager():
+def systemManagementDataManager():
     """
     스시템 관리 / 데이터 관리
     :return:

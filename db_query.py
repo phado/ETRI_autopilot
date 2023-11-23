@@ -241,5 +241,38 @@ def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_
 
         return json_result
 
+
+
+def db_get_usr_info(mariadb_pool,usr_id):
+    """
+    로그인된 회원의 정보를 조회 하는 쿼리
+    @param mariadb_pool:
+    @param usr_id:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = "한 회원 목록을 전부 조회하는 쿼리"
+
+        cursor.execute(query, (usr_id))
+        usr_info = cursor.fetchall()
+
+        json_result['usr_info'] = usr_info
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
 if __name__ == "__main__":
     pass
