@@ -65,12 +65,14 @@ def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"select grp_idx from tb_groups where grp_nm_en = '{usr_agency}';"
-        cursor.execute(query)
-        usr_agency_num = str(cursor.fetchone()[0])
+        # query = f"select grp_idx from tb_groups where grp_nm_en = '{usr_agency}';"
+        # cursor.execute(query)
+        # usr_agency_num = str(cursor.fetchone()[0])
 
+        # query = f"INSERT INTO tb_users (usr_id, usr_pw, usr_nick, usr_nm, usr_tel, usr_mail, grp_idx, is_valid) " \
+        #         f"VALUES('{usr_id}', '{usr_pwd}', '{usr_nick_name}', '{usr_name}', '{usr_phone}', '{usr_email}', '{usr_agency_num}','1');"
         query = f"INSERT INTO tb_users (usr_id, usr_pw, usr_nick, usr_nm, usr_tel, usr_mail, grp_idx, is_valid) " \
-                f"VALUES('{usr_id}', '{usr_pwd}', '{usr_nick_name}', '{usr_name}', '{usr_phone}', '{usr_email}', '{usr_agency_num}','1');"
+        f"VALUES('{usr_id}', '{usr_pwd}', '{usr_nick_name}', '{usr_name}', '{usr_phone}', '{usr_email}', '1','1');"
         cursor.execute(query)
 
         connection.commit()

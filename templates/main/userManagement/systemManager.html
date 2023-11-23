@@ -113,16 +113,10 @@
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
-              <th class="data-cell">
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -30px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />데이터셋명
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
+              <th class="data-cell">데이터셋명</th>
               <th class="data-cell">사용자ID</th>
               <th class="data-cell">닉네임</th>
               <th class="data-cell">기관명</th>
@@ -132,7 +126,12 @@
               <th class="data-cell">시스템 관리자</th>
               <th class="data-cell">데이터 관리자</th>
               <th class="data-cell">모델 관리자</th>
-              <th class="data-cell">마지막 접속일</th>
+              <th class="data-cell" style="width: 200px">마지막 접속일</th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/delete.svg')}}"
@@ -141,41 +140,42 @@
             </tr>
           </thead>
           <tbody>
-            {% for _ in range(10) %}
+            {% for _ in board_list %}
             <tr>
-              <td
-                class="data-cell"
-                style="text-align: left; padding-left: 60px"
-              >
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -30px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />
-                admin
-              </td>
-              <td class="data-cell">etri</td>
-              <td class="data-cell">관리자</td>
-              <td class="data-cell">ETRI</td>
-              <td class="data-cell">홍길동</td>
-              <td class="data-cell">010-1234-5678</td>
-              <td class="data-cell">admin@naver.com</td>
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
+              </th>
+              <td class="data-cell"></td>
+              <td class="data-cell">{{_[1]}}</td>
+              <td class="data-cell">{{_[2]}}</td>
+              <td class="data-cell">{{_[3]}}</td>
+              <td class="data-cell"></td>
+              <td class="data-cell">{{_[4]}}</td>
+              <td class="data-cell">{{_[5]}}</td>
               <td class="data-cell">
+                {% if _[6] == '시스템 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
+                {% endif %}
               </td>
               <td class="data-cell">
+                {% if _[6] == '데이터 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
+                {% endif %}
               </td>
               <td class="data-cell">
+                {% if _[6] == '모델 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
+                {% endif %}
               </td>
-              <td class="data-cell">2023-11-31 15:00:00</td>
+              <td class="data-cell" style="width: 200px">{{_[8]}}</td>
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
                 />
               </th>
             </tr>

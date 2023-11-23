@@ -9,11 +9,19 @@
     />
     <script
       type="text/javascript"
+      src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
       src="{{ url_for('static', filename='js/login/signup.js') }}"
     ></script>
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/login/login.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/login/findInfo.js') }}"
     ></script>
   </head>
 
@@ -65,11 +73,17 @@
                     <div class="findid-text">
                       회원정보에 등록된 아이디와 휴대폰 번호를 입력해주세요.
                     </div>
-                    <div class="input-title">아이디</div>
-                    <input type="text" class="input-findid" />
+                    <div class="input-title">이름</div>
+                    <input
+                      type="text"
+                      class="input-findid"
+                      id="findidUsername"
+                    />
                     <div class="input-title">휴대폰 번호</div>
-                    <input type="text" class="input-findid" />
-                    <button class="findidBtn" id="findidBtn">Check</button>
+                    <input type="text" class="input-findid" id="findidPhone" />
+                    <button class="findidBtn" id="findidBtn" onclick="idFind()">
+                      Check
+                    </button>
                   </div>
                 </div>
               </div>
@@ -88,7 +102,7 @@
                     <div class="input-title">아이디</div>
                     <input type="text" class="input-replaceid" />
                     <div class="input-title">가입일</div>
-                    <input type="text" class="input-replaceid" />
+                    <input type="text" class="input-replacecreate" />
                     <button class="replaceidBtn" id="replaceidBtn">
                       Check
                     </button>
@@ -107,6 +121,7 @@
                   findidmodal.style.display = "block";
                 });
                 closefindidModalBtn.addEventListener("click", function () {
+                  resetIdFindModal();
                   findidmodal.style.display = "none";
                 });
 
@@ -117,11 +132,11 @@
                 var findidBtn = document.getElementById("findidBtn");
 
                 findidBtn.addEventListener("click", function () {
-                  findidmodal.style.display = "none";
-                  replaceidModal.style.display = "block";
+                  idFind();
                 });
 
                 closereplaceidModalBtn.addEventListener("click", function () {
+                  resetIdFindModal();
                   replaceidModal.style.display = "none";
                 });
               </script>
@@ -216,48 +231,50 @@
             New User?
             <a href="#" class="signup-link" id="signup-user">Signup</a>
             <!-- 회원가입 모달 -->
-            <div id="signupModal" class="signmodal">
-              <div class="signmodal-content">
-                <span class="close" id="closeModalBtn">&times;</span>
-                <div class="modal-title-name">회원가입</div>
-                <div class="signmodal-input">
-                  <div class="input-area">
-                    <div class="input-title">아이디</div>
-                    <input type="text" class="input-sign" id="signuserID" />
-                    <div class="input-title">닉네임</div>
-                    <input type="text" class="input-sign" id="signnickname" />
-                    <div class="input-title">비밀번호</div>
-                    <input
-                      type="password"
-                      class="input-sign"
-                      id="signpassword"
-                    />
-                    <div class="input-title">비밀번호 확인</div>
-                    <input
-                      type="password"
-                      class="input-sign"
-                      id="confirmPassword"
-                    />
-                    <div id="passwordMismatch" class="error-message"></div>
-                    <div class="input-title">이름</div>
-                    <input type="text" class="input-sign" id="signname" />
-                    <div class="input-title">휴대폰 번호</div>
-                    <input type="text" class="input-sign" id="signphone" />
-                    <div class="input-title">E-mail</div>
-                    <input type="text" class="input-sign" id="signemail" />
-                    <div class="input-title">기관명</div>
-                    <input
-                      type="text"
-                      class="input-sign"
-                      id="signorganization"
-                    />
-                    <button class="signupBtn" onclick="validatePassword()">
-                      Signup
-                    </button>
+            <form action="/register" method="post" id="signupForm">
+              <div id="signupModal" class="signmodal">
+                <div class="signmodal-content">
+                  <span class="close" id="closeModalBtn">&times;</span>
+                  <div class="modal-title-name">회원가입</div>
+                  <div class="signmodal-input">
+                    <div class="input-area">
+                      <div class="input-title">아이디</div>
+                      <input type="text" class="input-sign" id="signuserID" />
+                      <div class="input-title">닉네임</div>
+                      <input type="text" class="input-sign" id="signnickname" />
+                      <div class="input-title">비밀번호</div>
+                      <input
+                        type="password"
+                        class="input-sign"
+                        id="signpassword"
+                      />
+                      <div class="input-title">비밀번호 확인</div>
+                      <input
+                        type="password"
+                        class="input-sign"
+                        id="confirmPassword"
+                      />
+                      <div id="passwordMismatch" class="error-message"></div>
+                      <div class="input-title">이름</div>
+                      <input type="text" class="input-sign" id="signname" />
+                      <div class="input-title">휴대폰 번호</div>
+                      <input type="text" class="input-sign" id="signphone" />
+                      <div class="input-title">E-mail</div>
+                      <input type="text" class="input-sign" id="signemail" />
+                      <div class="input-title">기관명</div>
+                      <input
+                        type="text"
+                        class="input-sign"
+                        id="signorganization"
+                      />
+                      <button class="signupBtn" onclick="validatePassword()">
+                        Signup
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
             <!-- 회원가입 모달 -->
           </div>
         </div>
@@ -454,7 +471,7 @@
         >
         <div class="confirmcancelPopup-container">
           <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
-            ㄴ 확인 취소 모달
+            확인 취소 모달
           </div>
           <div
             class="confirmcancelPopup-message"

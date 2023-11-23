@@ -492,3 +492,17 @@ html {
   border-radius: 5px;
   border: 1px solid #afafaf;
 }
+.input-replacephone {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}
+.input-replacecreate {
+  margin-top: 8px;
+  width: 387px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #afafaf;
+}

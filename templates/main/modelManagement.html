@@ -144,20 +144,10 @@
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
-              <th
-                class="data-cell"
-                style="width: 640px; text-align: left; padding-left: 60px"
-              >
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -30px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />
-                모델명
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
+              <th class="data-cell">모델명</th>
               <th class="data-cell">기관명</th>
               <th class="data-cell">최초 등록일</th>
               <th class="data-cell">마지막 수정일</th>
@@ -170,25 +160,15 @@
             </tr>
           </thead>
           <tbody>
-            {% for _ in range(10) %}
+            {% for _ in board_list %}
             <tr>
-              <td
-                class="data-cell"
-                style="text-align: left; padding-left: 60px"
-              >
-                <img
-                  style="
-                    position: absolute;
-                    margin-left: -30px;
-                    margin-top: -3px;
-                  "
-                  src="{{url_for('static', filename='/image/box.svg')}}"
-                />
-                model name
-              </td>
-              <td class="data-cell">etri</td>
-              <td class="data-cell">2023.11.20</td>
-              <td class="data-cell">2023.11.31</td>
+              <th class="data-cell" style="width: 64px">
+                <img src="{{url_for('static', filename='/image/box.svg')}}" />
+              </th>
+              <td class="data-cell">{{_[1]}}</td>
+              <td class="data-cell">{{_[2]}}</td>
+              <td class="data-cell">{{_[6]}}</td>
+              <td class="data-cell">{{_[7]}}</td>
               <td class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"

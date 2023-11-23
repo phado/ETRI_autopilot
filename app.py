@@ -49,8 +49,7 @@ def logout():
     session.pop('user_id', None)
     return 'Logged out successfully'
 
-
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def register():
     """
         회원가입
@@ -58,13 +57,15 @@ def register():
 
     if request.method == 'POST':
         try:
-            usr_id = request.form.get('userId')
-            usr_nick_name = request.form.get('usrNickName')
-            usr_pwd = request.form.get('usrPwd')
-            usr_name = request.form.get('usrName')
-            usr_phone = request.form.get('usrPhone')
-            usr_email = request.form.get('usrEmail')
-            usr_agency = request.form.get('usrAgency')
+            data = request.get_json()
+
+            usr_id = data['userId']
+            usr_nick_name = data['usrNickName']
+            usr_pwd = data['usrPwd']
+            usr_name = data['usrName']
+            usr_phone = data['usrPhone']
+            usr_email = data['usrEmail']
+            usr_agency = data['usrAgency']
 
             json_result = db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr_email,usr_agency)
         except Exception as e:
@@ -73,7 +74,8 @@ def register():
 
     return json_result
 
-@app.route('/findId')
+
+@app.route('/findId', methods=['POST'])
 def findId():
     """
         아이디찾기
@@ -81,8 +83,10 @@ def findId():
         json_result['id_info'] = result 존재 할때 회원 정보 저장
     """
     try:
-        usr_name = request.form.get('usrName')
-        usr_phone = request.form.get('usrPhone')
+        data = request.get_json()
+     
+        usr_name = data['usrName']
+        usr_phone = data['usrPhone']
 
         json_result = def_find_id(mariadb_pool, usr_name, usr_phone)
     except Exception as e:
@@ -90,6 +94,8 @@ def findId():
         json_result = fail_message_json(json_result)
 
     return json_result
+
+
 
 @app.route('/countId')
 def countId():
