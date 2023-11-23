@@ -9,6 +9,10 @@
     />
     <script
       type="text/javascript"
+      src="{{ url_for('static', filename='js/login/signup.js') }}"
+    ></script>
+    <script
+      type="text/javascript"
       src="{{ url_for('static', filename='js/login/login.js') }}"
     ></script>
   </head>
@@ -205,7 +209,6 @@
             });
           </script>
           <!-- 비밀번호 재설정 스크립트 -->
-
           <a href="#" onclick="redirectToDataManagement()">
             <button type="button" class="login-button">Login</button>
           </a>
@@ -217,48 +220,261 @@
               <div class="signmodal-content">
                 <span class="close" id="closeModalBtn">&times;</span>
                 <div class="modal-title-name">회원가입</div>
-
                 <div class="signmodal-input">
                   <div class="input-area">
                     <div class="input-title">아이디</div>
-                    <input type="text" class="input-sign" />
+                    <input type="text" class="input-sign" id="signuserID" />
                     <div class="input-title">닉네임</div>
-                    <input type="text" class="input-sign" />
+                    <input type="text" class="input-sign" id="signnickname" />
                     <div class="input-title">비밀번호</div>
-                    <input type="password" class="input-sign" />
+                    <input
+                      type="password"
+                      class="input-sign"
+                      id="signpassword"
+                    />
                     <div class="input-title">비밀번호 확인</div>
-                    <input type="password" class="input-sign" />
+                    <input
+                      type="password"
+                      class="input-sign"
+                      id="confirmPassword"
+                    />
+                    <div id="passwordMismatch" class="error-message"></div>
                     <div class="input-title">이름</div>
-                    <input type="text" class="input-sign" />
+                    <input type="text" class="input-sign" id="signname" />
                     <div class="input-title">휴대폰 번호</div>
-                    <input type="text" class="input-sign" />
+                    <input type="text" class="input-sign" id="signphone" />
                     <div class="input-title">E-mail</div>
-                    <input type="text" class="input-sign" />
+                    <input type="text" class="input-sign" id="signemail" />
                     <div class="input-title">기관명</div>
-                    <input type="text" class="input-sign" />
-                    <button class="signupBtn">Signup</button>
+                    <input
+                      type="text"
+                      class="input-sign"
+                      id="signorganization"
+                    />
+                    <button class="signupBtn" onclick="validatePassword()">
+                      Signup
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <script>
-              var signupmodal = document.getElementById("signupModal");
-              var opensignupModalBtn = document.getElementById("signup-user");
-              var closesignupModalBtn =
-                document.getElementById("closeModalBtn");
-
-              opensignupModalBtn.addEventListener("click", function () {
-                signupmodal.style.display = "block";
-              });
-
-              closesignupModalBtn.addEventListener("click", function () {
-                signupmodal.style.display = "none";
-              });
-            </script>
             <!-- 회원가입 모달 -->
           </div>
         </div>
       </form>
     </div>
+    <!-- 확인 모달 -->
+    <style>
+      .confirmPopup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .confirmPopup-content {
+        background-color: #fefefe;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid #888;
+        width: 600px;
+        height: 150px;
+        max-width: 600px;
+      }
+
+      .confirmPopup-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 16px;
+        margin-top: 9px;
+      }
+      .confirmPopup-container {
+        margin-left: 37px;
+      }
+      .confirmPopup-title {
+        color: black;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-top: 49px;
+      }
+
+      .confirmPopup-message {
+        margin-top: 16px;
+        color: black;
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+
+      .confirmBtn {
+        display: inline-flex;
+        padding: 3px 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+
+        border-radius: 5px;
+        background: #ba1c1c;
+        color: white;
+        border: none;
+        cursor: pointer;
+        float: right;
+        margin-top: 16px;
+        margin-right: 16px;
+      }
+    </style>
+    <div id="confirmPopup" class="confirmPopup">
+      <div class="confirmPopup-content">
+        <span class="confirmPopup-close" onclick="closeconfirmPopup()"
+          >&times;</span
+        >
+        <div class="confirmPopup-container">
+          <div class="confirmPopup-title" id="confirmpopupTitle">확인 모달</div>
+          <div class="confirmPopup-message" id="confirmpopupMessage">
+            확인 모달입니다.
+          </div>
+        </div>
+        <button class="confirmBtn" onclick="confirmpopupOk()">확인</button>
+      </div>
+    </div>
+    <!-- 확인 모달 -->
+    <!-- 확인 취소모달 -->
+    <style>
+      .confirmcancelPopup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .confirmcancelPopup-content {
+        background-color: #fefefe;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid #888;
+        width: 600px;
+        height: 150px;
+        max-width: 600px;
+      }
+
+      .confirmcancelPopup-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 16px;
+        margin-top: 9px;
+      }
+      .confirmcancelPopup-container {
+        margin-left: 37px;
+      }
+      .confirmcancelPopup-title {
+        color: black;
+        font-family: Roboto;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        margin-top: 49px;
+      }
+
+      .confirmcancelPopup-message {
+        margin-top: 16px;
+        color: black;
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+
+      .confirmBtn {
+        display: inline-flex;
+        padding: 3px 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+
+        border-radius: 5px;
+        background: #3d5eec;
+        color: white;
+        border: none;
+        cursor: pointer;
+        float: right;
+        margin-top: 16px;
+        margin-right: 16px;
+      }
+
+      .confirmcancelBtn {
+        display: inline-flex;
+        padding: 3px 10px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+
+        border-radius: 5px;
+        background: #9a9a9a;
+        color: white;
+        border: none;
+        cursor: pointer;
+        float: right;
+        margin-top: 16px;
+        margin-right: 8px;
+      }
+    </style>
+    <div id="confirmcancelPopup" class="confirmcancelPopup">
+      <div class="confirmcancelPopup-content">
+        <span
+          class="confirmcancelPopup-close"
+          onclick="closeconfirmcancelPopup()"
+          >&times;</span
+        >
+        <div class="confirmcancelPopup-container">
+          <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
+            확인 취소 모달
+          </div>
+          <div
+            class="confirmcancelPopup-message"
+            id="confirmcancelpopupMessage"
+          >
+            확인 취소 모달입니다.
+          </div>
+        </div>
+        <button class="confirmBtn" onclick="confirmcancelpopupOk()">
+          확인
+        </button>
+        <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel()">
+          취소
+        </button>
+      </div>
+    </div>
+    <!-- 확인 취소 모달 -->
   </body>
+  <script>
+    //회원가입 모달 함수 호출
+    initSignupModal();
+  </script>
 </html>
