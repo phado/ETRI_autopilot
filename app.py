@@ -354,7 +354,7 @@ def dataSetDetail():
 
         result_json = make_response_json([])
         dataset_idx = request.form.get('datasetIdx')
-        dataset_idx = '43'
+        # dataset_idx = '43'
         detail_list = db_data_set_detail(mariadb_pool, dataset_idx)
 
         result_json = success_message_json(result_json)
