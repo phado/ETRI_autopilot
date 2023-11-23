@@ -28,6 +28,8 @@ def login():
 
             login_result = def_login(usr_id, usr_pwd)
             if login_result['login'] == '1':
+                session['usr_idx'] = login_result['login_info'][1]
+                session['usr_nick_name'] = login_result['login_info'][1]
                 session['usr_name'] = login_result['login_info'][1]
                 session['usr_id'] = usr_id
 
@@ -49,7 +51,8 @@ def logout():
     session.pop('user_id', None)
     return 'Logged out successfully'
 
-@app.route('/register', methods=['POST'])
+
+@app.route('/register')
 def register():
     """
         회원가입
@@ -57,15 +60,13 @@ def register():
 
     if request.method == 'POST':
         try:
-            data = request.get_json()
-
-            usr_id = data['userId']
-            usr_nick_name = data['usrNickName']
-            usr_pwd = data['usrPwd']
-            usr_name = data['usrName']
-            usr_phone = data['usrPhone']
-            usr_email = data['usrEmail']
-            usr_agency = data['usrAgency']
+            usr_id = request.form.get('userId')
+            usr_nick_name = request.form.get('usrNickName')
+            usr_pwd = request.form.get('usrPwd')
+            usr_name = request.form.get('usrName')
+            usr_phone = request.form.get('usrPhone')
+            usr_email = request.form.get('usrEmail')
+            usr_agency = request.form.get('usrAgency')
 
             json_result = db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr_email,usr_agency)
         except Exception as e:
@@ -74,8 +75,7 @@ def register():
 
     return json_result
 
-
-@app.route('/findId', methods=['POST'])
+@app.route('/findId')
 def findId():
     """
         아이디찾기
@@ -83,10 +83,8 @@ def findId():
         json_result['id_info'] = result 존재 할때 회원 정보 저장
     """
     try:
-        data = request.get_json()
-     
-        usr_name = data['usrName']
-        usr_phone = data['usrPhone']
+        usr_name = request.form.get('usrName')
+        usr_phone = request.form.get('usrPhone')
 
         json_result = def_find_id(mariadb_pool, usr_name, usr_phone)
     except Exception as e:
@@ -94,8 +92,6 @@ def findId():
         json_result = fail_message_json(json_result)
 
     return json_result
-
-
 
 @app.route('/countId')
 def countId():
@@ -371,6 +367,26 @@ def dataSetDetail():
         result_json = fail_message_json(result_json)
 
     return render_template("main/dataManagement.html", data_set_info=detail_list['data_set_info'], data_set_labeler_info=detail_list['data_set_labeler_info'], result_json = result_json)
+
+@app.route('/dataManagement/dataSetDetail/getLabeler')
+def getLabeler():
+    """
+    그룹 아이디로 라벨러 조회
+
+    figma : 데이터셋 추가_라벨러 추가_팝업에서 라벨러 조회
+
+    """
+    try:
+
+        result_json = make_response_json([])
+
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
 
 @app.route('/modelManagement/ModelDetail')
 def ModelDetail():
