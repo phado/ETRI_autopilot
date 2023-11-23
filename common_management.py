@@ -82,6 +82,13 @@ def fail_message_json(dic):
 #
 #     return json_result
 
+def protected(session):
+    """
+    추후 로그인 되었는지 확인 하는 로직
+    @return:
+    """
+    if 'user_id' not in session:
+        return 'login/login.html'
 
 
 def session_clear(session):

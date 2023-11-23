@@ -41,6 +41,14 @@ def login():
         return login_result
     else:
         return render_template('login/login.html')
+
+@app.route('/logout')
+def logout():
+    # 세션에서 사용자 정보 삭제
+    session.pop('user_id', None)
+    return 'Logged out successfully'
+
+
 @app.route('/register')
 def register():
     """
