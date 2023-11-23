@@ -1,4 +1,4 @@
-from db_query import *
+from db_query import db_login, db_register, db_find_id, db_reset_pwd
 from common_management import *
 
 

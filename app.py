@@ -1,15 +1,14 @@
 from flask import Flask, request, render_template,session
 from db_conn import get_pool_conn
-from user_management import *
-from common_management import *
-from menu_data_management import *
-from menu_user_management import *
-from menu_model_management import *
-from menu_system_management import *
+from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list
+from user_management import def_login, def_find_id, def_find_pwd
+from common_management import fail_message_json, make_response_json, success_message_json
+
 import os
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
 mariadb_pool = get_pool_conn()
 # ------------------------------------------------------------------------------------------------------
 # -----------------------------------------로그인 관련 페이지-----------------------------------------------
@@ -28,7 +27,7 @@ def login():
 
             login_result = def_login(usr_id, usr_pwd)
             if login_result['login'] == '1':
-                session['usr_name'] = 'usr_name'
+                session['usr_name'] = login_result['login_info'][1]
                 session['usr_id'] = usr_id
 
         except Exception as e:
@@ -147,6 +146,7 @@ def dataManagement():
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
     """
     try:
+        session['usr_id'] = 'test'
 
         tbl_type = 'tb_prj_datasets'
 
@@ -164,24 +164,27 @@ def dataManagement():
 
         result_json = make_response_json([])
 
-        board_list = get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
-        board_cnt = count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+
+        board_list = db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+        board_cnt = db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
         if board_cnt['status'] =='200'  and board_list['status'] =='200':
             result_json = success_message_json(result_json)
+        else:
+            result_json = fail_message_json(result_json)
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/dataManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 # 2. 모델 관리 탭
 @app.route('/modelManagement')
 def modelManagement():
-    return render_template("main/modelManagement.html")
     """
     모델 목록
     :return:
     """
+    session['usr_id'] = 'test'
     try:
         tbl_type = 'tb_prj_models'
 
@@ -199,9 +202,9 @@ def modelManagement():
 
         result_json = make_response_json([])
 
-        board_list = get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
                                     session['usr_id'], tbl_type)
-        board_cnt = count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
                                      session['usr_id'], tbl_type)
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
@@ -209,7 +212,7 @@ def modelManagement():
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/modelManagement.html.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/modelManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 # 3. 사용자 관리 탭
 @app.route('/userManagement_systemManager')
@@ -250,3 +253,5 @@ def systemManagementAgencyManager():
 # ------------------------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(debug=True)
+
+

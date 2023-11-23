@@ -3,9 +3,10 @@ DB 쿼리 관련 함수 집합
 """
 import logging
 import traceback
-from common_management import *
+from common_management import make_response_json, success_message_json, fail_message_json
 
 logging.basicConfig(filename='./DB_Query.log', level=logging.ERROR)
+
 
 
 def db_login(mariadb_pool,usr_id,usr_pwd):
@@ -23,12 +24,14 @@ def db_login(mariadb_pool,usr_id,usr_pwd):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = "아이디 조회 쿼리"
+        query = f"SELECT tu.usr_idx ,tu.usr_nick ,tu.grp_idx FROM tb_users tu WHERE tu.usr_id ='{usr_id}' and tu.usr_pw ='{usr_pwd}';"
 
-        cursor.execute(query, (usr_id,usr_pwd))
-        result = cursor.fetchone()
+        cursor.execute(query)
+        result = cursor.fetchall()
 
-        login_json_result['login'] = result[0]
+        login_json_result['login'] = len(result)
+        if len(result) == 1:
+            login_json_result['login_info'] = result[0]
 
         login_json_result = success_message_json(login_json_result)
 
@@ -58,15 +61,16 @@ def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr
     :return: json
     """
     reg_json_result = make_response_json([])
-    try:
-        connection = mariadb_pool.get_connection()
-        cursor = connection.cursor()
-
-        cursor.execute(
-            "회원가입 쿼리",
-            (usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr_email,usr_agency)
-        )
-        connection.commit()
+    try: # todo 가입 해야함
+        # connection = mariadb_pool.get_connection()
+        # cursor = connection.cursor()
+        #
+        # query = f"INSERT INTO tb_users (usr_id, usr_pw, usr_nick, usr_nm, usr_tel, usr_mail, grp_idx, is_valid) " \
+        #         f"VALUES('{usr_id}', '{usr_pwd}', '{usr_nick_name}', '{usr_name}', '{usr_phone}', '{usr_email}', '{usr_agency}');"
+        #
+        # cursor.execute(query)
+        #
+        # connection.commit()
         reg_json_result = success_message_json(reg_json_result)
 
     except Exception as e:
@@ -83,6 +87,8 @@ def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr
 def db_find_id(mariadb_pool, usr_name, usr_phone):
     """
     아이디 찾기
+        json_result['find_id'] = len(result) / 존재 1 없음 0
+        json_result['id_info'] = result 존재 할때 회원 정보 저장
     :param mariadb_pool:
     :param usr_name:
     :param usr_phone:
@@ -93,15 +99,17 @@ def db_find_id(mariadb_pool, usr_name, usr_phone):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        cursor.execute("아이디 카운트 쿼리", (usr_name, usr_phone))
-        count = cursor.fetchone()[0]
-        if count == 1:
-            cursor.execute("아이디 찾는 쿼리", (usr_name, usr_phone))
-            json_result['usr_id'] = cursor.fetchall()[0]
-            json_result['reg_date'] = cursor.fetchall()[1]
+        query = f"select usr_idx ,usr_id ,usr_cr_date from tb_users tu where tu.usr_nm='{usr_name}' and tu.usr_tel='{usr_phone}';"
+        cursor.execute(query)
+        result = cursor.fetchall()
 
+        if len(result) == 1:
+            json_result['find_id'] = len(result)
+            json_result['id_info'] = result
         else:
-            json_result['usr_id'] = ''
+            json_result['find_id'] = len(result)
+            json_result['id_info'] = ''
+
         json_result = success_message_json(json_result)
 
     except Exception as e:
@@ -125,10 +133,18 @@ def db_count_id(mariadb_pool, usr_id):
     try:
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
+        query = f" select usr_idx ,usr_id ,usr_cr_date from tb_users tu where tu.usr_id='{usr_id}';"
+        cursor.execute(query)
 
-        cursor.execute("아이디 카운트 쿼리", usr_id)
+        result = cursor.fetchall()
 
-        json_result['count'] = cursor.fetchone()[0]
+        if len(result) == 1:
+            json_result['find_id'] = len(result)
+
+        else:
+            json_result['find_id'] = len(result)
+
+
         json_result = success_message_json(json_result)
 
     except Exception as e:
@@ -155,7 +171,8 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
         connection = mariadb_pool.get_connection()
 
         cursor = connection.cursor()
-        cursor.execute('비밀 번호 수정 ', (new_pwd,usr_id))
+        query = f"update tb_users tu set tu.usr_pw='{new_pwd}' where tu.usr_idx ='{usr_id}';"
+        cursor.execute(query)
         connection.commit()
 
         json_result = success_message_json(json_result)
@@ -171,9 +188,10 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
 
     return json_result
 
-def db_mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id):
+def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type):
     """
     데이터 관리 게시판 목록
+    @param tabel_type: 조회할 테이블의 이름!!
     @param mariadb_pool:
     @param page_num:
     @param search_type:
@@ -189,12 +207,28 @@ def db_mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,sho
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = "데이터관리 목록 조회 쿼리"
+        query = ''
+        if tabel_type == 'tb_prj_datasets': # 데이터터 관리 목록 조회
+            query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
 
-        cursor.execute(query, (page_num,search_type,search_key_word,show_data_mount,usr_id))
+        elif tabel_type == 'tb_prj_models': # '모델 관리 목록 조회'
+            query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
+
+        elif tabel_type == '': # 사용자 관리 / 시스템 관리자 목록
+            query = ""
+
+        elif tabel_type == '':  # 사용자 관리 / 데이터 관리자 목록
+            query = ""
+
+        elif tabel_type == '':  # 사용자 관리 / 모델 관리
+            query = ""
+
+        cursor.execute(query)
         board_result = cursor.fetchall()
 
+
         json_result['board_result'] = board_result
+        json_result['response'] = success_message_json(json_result)
 
     except Exception as e:
         print(e)
@@ -224,9 +258,23 @@ def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = "데이터 목록 숫자 카운트 쿼리"
+        query = ''
+        if tabel_type == 'tb_prj_datasets':  # 데이터터 관리 목록 조회
+            query = ""
 
-        cursor.execute(query, (page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type))
+        elif tabel_type == 'tb_prj_models':  # '모델 관리 목록 조회'
+            query = ""
+
+        elif tabel_type == '':  # 사용자 관리 / 시스템 관리자 목록
+            query = ""
+
+        elif tabel_type == '':  # 사용자 관리 / 데이터 관리자 목록
+            query = ""
+
+        elif tabel_type == '':  # 사용자 관리 / 모델 관리
+            query = ""
+
+        cursor.execute(query)
         board_cnt = cursor.fetchone()
 
         json_result['board_cnt'] = board_cnt[0]
@@ -258,7 +306,7 @@ def db_get_usr_info(mariadb_pool,usr_id):
 
         query = "한 회원 목록을 전부 조회하는 쿼리"
 
-        cursor.execute(query, (usr_id))
+        cursor.execute(query)
         usr_info = cursor.fetchall()
 
         json_result['usr_info'] = usr_info
@@ -274,5 +322,3 @@ def db_get_usr_info(mariadb_pool,usr_id):
         return json_result
 
 
-if __name__ == "__main__":
-    pass
