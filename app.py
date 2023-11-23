@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template,session
 from db_conn import get_pool_conn
-from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail
+from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
+    db_model_detail
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
@@ -364,6 +365,31 @@ def dataSetDetail():
         result_json = fail_message_json(result_json)
 
     return render_template("main/dataManagement.html", data_set_info=detail_list['data_set_info'], data_set_labeler_info=detail_list['data_set_labeler_info'], result_json = result_json)
+
+@app.route('/modelManagement/ModelDetail')
+def ModelDetail():
+    """
+    모델 관리_모델 상세 페이지
+
+    figma : 데이터관리_모델 목록_상세정보
+
+    """
+    try:
+        session['usr_id'] = 'test'
+
+        result_json = make_response_json([])
+        model_idx = request.form.get('datasetIdx')
+        model_idx = '1'
+        detail_list = db_model_detail(mariadb_pool, model_idx)
+
+        result_json = success_message_json(result_json)
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return render_template("main/dataManagement.html", data_set_info=detail_list['model_detail_info'], result_json = result_json)
+
 
 
 if __name__ == '__main__':

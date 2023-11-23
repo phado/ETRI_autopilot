@@ -353,8 +353,60 @@ def db_data_set_detail(mariadb_pool,dataset_idx):
         return json_result
 
 
+def db_data_set_detail(mariadb_pool,dataset_idx):
+
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+        cursor.execute(query)
+        json_result['data_set_info'] = cursor.fetchall()
+
+        query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
+        cursor.execute(query)
+        json_result['data_set_labeler_info'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+def db_model_detail(mariadb_pool, model_idx):
+
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
+        cursor.execute(query)
+
+        json_result['model_detail_info'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
 if __name__ == "__main__":
     import db_conn
 
     mariadb_pool = db_conn.get_pool_conn()
-
