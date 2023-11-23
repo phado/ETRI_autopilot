@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template,session
 from db_conn import get_pool_conn
-from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list
+from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
@@ -229,7 +229,34 @@ def userManagementSystemManager():
     사용자관리 / 시스템 관리자
     :return:
     """
-    return render_template("main/userManagement/systemManager.html")
+    session['usr_id'] = 'test'
+    try:
+        tbl_type = 'tb_users_1'
+
+        page_num = request.form.get('pageNum')
+        if page_num is None: page_num = 1
+
+        search_type = request.form.get('searchType')
+        if search_type is None: search_type = None
+
+        search_key_word = request.form.get('keyWord')
+        if search_key_word is None: search_key_word = None
+
+        show_data_mount = request.form.get('showDataMount')
+        if show_data_mount is None: show_data_mount = 10
+
+        result_json = make_response_json([])
+
+        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                    session['usr_id'], tbl_type)
+        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                     session['usr_id'], tbl_type)
+        if board_cnt['status'] == '200' and board_list['status'] == '200':
+            result_json = success_message_json(result_json)
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+    return render_template("main/userManagement/systemManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 @app.route('/userManagement_dataManager')
 def userManagementDataManager():
@@ -237,7 +264,34 @@ def userManagementDataManager():
     사용자관리 / 데이터 관리자
     :return:
     """
-    return render_template("main/userManagement/dataManager.html")
+    session['usr_id'] = 'test'
+    try:
+        tbl_type = 'tb_users_2'
+
+        page_num = request.form.get('pageNum')
+        if page_num is None: page_num = 1
+
+        search_type = request.form.get('searchType')
+        if search_type is None: search_type = None
+
+        search_key_word = request.form.get('keyWord')
+        if search_key_word is None: search_key_word = None
+
+        show_data_mount = request.form.get('showDataMount')
+        if show_data_mount is None: show_data_mount = 10
+
+        result_json = make_response_json([])
+
+        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                       session['usr_id'], tbl_type)
+        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                        session['usr_id'], tbl_type)
+        if board_cnt['status'] == '200' and board_list['status'] == '200':
+            result_json = success_message_json(result_json)
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+    return render_template("main/userManagement/dataManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 
 
@@ -247,7 +301,34 @@ def userManagementModelManager():
     사용자관리 / 모델 관리자
     :return:
     """
-    return render_template("main/userManagement/modelManager.html")
+    session['usr_id'] = 'test'
+    try:
+        tbl_type = 'tb_users_3'
+
+        page_num = request.form.get('pageNum')
+        if page_num is None: page_num = 1
+
+        search_type = request.form.get('searchType')
+        if search_type is None: search_type = None
+
+        search_key_word = request.form.get('keyWord')
+        if search_key_word is None: search_key_word = None
+
+        show_data_mount = request.form.get('showDataMount')
+        if show_data_mount is None: show_data_mount = 10
+
+        result_json = make_response_json([])
+
+        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                       session['usr_id'], tbl_type)
+        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
+                                        session['usr_id'], tbl_type)
+        if board_cnt['status'] == '200' and board_list['status'] == '200':
+            result_json = success_message_json(result_json)
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+    return render_template("main/userManagement/modelManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
 
 # 4. 시스템 관리 탭
 @app.route('/systemManagement_agencyManagement')
@@ -259,6 +340,32 @@ def systemManagementAgencyManager():
     return render_template("main/systemManagement/agencyManagement.html")
 
 # ------------------------------------------------------------------------------------------------
+# -----------------------------------------세부 페이지 데이터셋 추가-----------------------------------
+@app.route('/dataManagement/dataSetDetail')
+def dataSetDetail():
+    """
+    데이터셋 관리 - 데이터셋 상세 정보
+
+    figma : 데이터 관리_데이터 목록_상세정보
+
+    """
+    try:
+        session['usr_id'] = 'test'
+
+        result_json = make_response_json([])
+        dataset_idx = request.form.get('datasetIdx')
+        dataset_idx = '43'
+        detail_list = db_data_set_detail(mariadb_pool, dataset_idx)
+
+        result_json = success_message_json(result_json)
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return render_template("main/dataManagement.html", data_set_info=detail_list['data_set_info'], data_set_labeler_info=detail_list['data_set_labeler_info'], result_json = result_json)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 

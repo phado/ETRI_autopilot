@@ -217,14 +217,14 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
         elif tabel_type == 'tb_prj_models': # '모델 관리 목록 조회'
             query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
 
-        elif tabel_type == '': # 사용자 관리 / 시스템 관리자 목록
-            query = ""
+        elif tabel_type == 'tb_users_1': # 사용자 관리 / 시스템 관리자 목록( tup.pms_cd = 1)
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid = 1 and tup.pms_cd = 1 group by tu.usr_idx;"
 
-        elif tabel_type == '':  # 사용자 관리 / 데이터 관리자 목록
-            query = ""
+        elif tabel_type == 'tb_users_2':  # 사용자 관리 / 데이터 관리자 목록( tup.pms_cd = 2)
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 2 group by tu.usr_idx;"
 
-        elif tabel_type == '':  # 사용자 관리 / 모델 관리
-            query = ""
+        elif tabel_type == 'tb_users_3':  # 사용자 관리 / 모델 관리( tup.pms_cd = 3)
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 3 group by tu.usr_idx;"
 
         cursor.execute(query)
         board_result = cursor.fetchall()
@@ -325,7 +325,36 @@ def db_get_usr_info(mariadb_pool,usr_id):
         return json_result
 
 
+def db_data_set_detail(mariadb_pool,dataset_idx):
+
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+        cursor.execute(query)
+        json_result['data_set_info'] = cursor.fetchall()
+
+        query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
+        cursor.execute(query)
+        json_result['data_set_labeler_info'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
 if __name__ == "__main__":
     import db_conn
 
     mariadb_pool = db_conn.get_pool_conn()
+
