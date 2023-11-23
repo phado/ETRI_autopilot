@@ -61,7 +61,7 @@ def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr
     :return: json
     """
     reg_json_result = make_response_json([])
-    try: # todo 가입 해야함
+    try:
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
