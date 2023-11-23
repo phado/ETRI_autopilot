@@ -1,105 +1,108 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   var toggleLiElements = document.querySelectorAll(".toggle-li");
+function detailOpenModal(datasetIdx, datasetname) {
+  var titleElement = document.querySelector(".detailmodal-title-name");
+  titleElement.textContent = "[" + datasetIdx + "]" + "  " + datasetname;
 
-//   toggleLiElements.forEach(function (toggleLiElement) {
-//     toggleLiElement.addEventListener("click", function () {
-//       var nestedUl = toggleLiElement.querySelector(".nested-ul");
-//       nestedUl.classList.toggle("show");
-//     });
-//   });
+  var detailModal = document.getElementById("detailModal");
+  detailModal.style.display = "block";
+  var tbody = document.getElementById("detailDatamanagement");
 
-//   var dataManagementtablejson =
-//     '[{"datasetName":"Dataset 1","organization":"Organization A","workflowStatus":"In progress","reviewStatus":"Pending","firstRegisteredDate":"2023-01-01","lastModifiedDate":"2023-01-15"},{"datasetName":"Dataset 2","organization":"Organization B","workflowStatus":"Completed","reviewStatus":"Approved","firstRegisteredDate":"2023-02-10","lastModifiedDate":"2023-03-05"},{"datasetName":"Dataset 3","organization":"Organization C","workflowStatus":"In progress","reviewStatus":"Pending","firstRegisteredDate":"2023-03-20","lastModifiedDate":"2023-04-02"}]';
+  // 기존 행 제거
+  while (tbody.rows.length > 0) {
+    tbody.deleteRow(0);
+  }
 
-//   // JSON 문자열을 JavaScript 객체(배열)로 파싱
-//   var parsedData = JSON.parse(dataManagementtablejson);
+  // AJAX를 통해 서버에서 데이터 받아오기
+  fetch("/dataManagement/dataSetDetail", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ datasetIdx: datasetIdx }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      for (var i = 0; i < data.data_set_labeler_info.length; i++) {
+        // root와 checker는 고정값으로 설정
+        var root = data.data_set_info[0][0]; // 고정값 설정
+        var checker = data.data_set_info[0][1]; // 고정값 설정
 
-//   var tableBody = document.getElementById("tableBody");
+        // labeler, allframe, progress, complete, detail을 for문을 통해 추가
+        var labeler = data.data_set_labeler_info[i][0];
+        var allframe = data.data_set_labeler_info[i][3];
+        var progress =
+          Math.round(
+            (data.data_set_labeler_info[i][3] /
+              data.data_set_labeler_info[i][2]) *
+              10
+          ) + "%";
 
-//   if (!tableBody) {
-//     tableBody = document.createElement("tbody");
-//     tableBody.id = "tableBody";
-//     document.querySelector(".data-table").appendChild(tableBody);
-//   }
+        var complete = data.data_set_labeler_info[i][4];
+        var detail = data.data_set_labeler_info[i][8];
 
-//   parsedData.forEach(function (dataset, index) {
-//     var newRow = tableBody.insertRow(index);
+        // 새로운 행을 생성하고 각 셀에 데이터 추가
+        var row = tbody.insertRow(-1);
 
-//     var cells = [
-//       "datasetName",
-//       "organization",
-//       "workflowStatus",
-//       "reviewStatus",
-//       "firstRegisteredDate",
-//       "lastModifiedDate",
-//     ];
+        var cell1 = row.insertCell(0);
+        cell1.className = "detaildata-cell";
+        cell1.innerHTML = labeler;
 
-//     cells.forEach(function (property) {
-//       var cell = newRow.insertCell();
-//       cell.textContent = dataset[property];
-//       // if (property === "datasetName") {
-//       //   var container = document.createElement("div");
+        var cell2 = row.insertCell(1);
+        cell2.className = "detaildata-cell";
+        cell2.innerHTML = checker;
 
-//       //   var image = document.createElement("img");
-//       //   image.src = "/static/image/box.svg"; // Update the path accordingly
-//       //   image.style.position = "absolute";
-//       //   image.style.marginLeft = "-39px";
-//       //   image.style.marginTop = "-3px";
+        var cell3 = row.insertCell(2);
+        cell3.className = "detaildata-cell";
+        cell3.innerHTML = root;
 
-//       //   var textNode = document.createTextNode(dataset[property]);
+        var cell4 = row.insertCell(3);
+        cell4.className = "detaildata-cell";
+        cell4.innerHTML = progress;
 
-//       //   container.appendChild(image);
-//       //   container.appendChild(textNode);
+        var cell5 = row.insertCell(4);
+        cell5.className = "detaildata-cell";
+        cell5.innerHTML = allframe;
 
-//       //   cell.appendChild(container);
-//       // }
+        var cell6 = row.insertCell(5);
+        cell6.className = "detaildata-cell";
+        cell6.innerHTML = "진행완료"; // 예시로 고정값 설정
 
-//       // // For other cells, set the text content or dataset property
-//       // else {
-//       //   cell.textContent = dataset[property];
-//       // }
-//       cell.id = property;
-//     });
+        var cell7 = row.insertCell(6);
+        cell7.className = "detaildata-cell";
+        cell7.innerHTML = "검수완료";
 
-//     var detailCell = newRow.insertCell();
-//     var detailImage = document.createElement("img");
-//     detailImage.src = "/static/image/detail.svg";
-//     detailImage.id = "openDetailModalBtn";
-//     detailCell.appendChild(detailImage);
+        var cell8 = row.insertCell(7);
+        cell8.className = "detaildata-cell";
+        cell8.innerHTML = detail;
+      }
 
-//     detailImage.addEventListener("click", function () {
-//       openDetailModal(dataset.datasetName);
-//     });
+      //   // 받아온 데이터를 이용하여 동적으로 테이블 생성
+      //   for (var i = 0; i < data.length; i++) {
+      //     var row = table.insertRow(-1); // 맨 끝에 행을 추가
 
-//     var deleteCell = newRow.insertCell();
-//     var deleteImage = document.createElement("img");
-//     deleteImage.src = "/static/image/modify.svg";
-//     deleteCell.appendChild(deleteImage);
-//   });
-// });
+      //     for (var j = 0; j < 8; j++) {
+      //       var cell = row.insertCell(j);
+      //       cell.className = "detaildata-cell";
 
-// //상세정보 모달 띄우는 함수
-// function openDetailModal(datasetName) {
-//   console.log("Open detail modal for datasetName:", datasetName);
-//   var detailModal = document.getElementById("detailModal");
-//   var openDetailModalBtn = document.getElementById("openDetailModalBtn");
-//   var closeDetailModalBtn = document.getElementById("closeDetailModalBtn");
+      //       // 데이터를 설정
+      //       switch (j) {
+      //         case 0:
+      //           cell.innerHTML = data[i].column1_key;
+      //           break;
+      //         case 1:
+      //           cell.innerHTML = data[i].column2_key;
+      //           break;
+      //         // 나머지 열도 추가
+      //         // ...
 
-//   openDetailModalBtn.addEventListener("click", function () {
-//     detailModal.style.display = "block";
-//   });
+      //         default:
+      //           break;
+      //       }
+      //     }
+      //   }
+    })
+    .catch((error) => console.error("에러 발생:", error));
+}
 
-//   closeDetailModalBtn.addEventListener("click", function () {
-//     detailModal.style.display = "none";
-//   });
-
-//   window.addEventListener("click", function (event) {
-//     if (event.target == detailModal) {
-//       detailModal.style.display = "none";
-//     }
-//   });
-
-//   //데이터셋명을 가지고 와서 title에 넣어줌
-//   var detailModalTitle = document.querySelector(".detailmodal-title-name");
-//   detailModalTitle.textContent = "[" + datasetName + "] 상세정보";
-// }
+function closeDetailModal() {
+  detailModal.style.display = "none";
+}

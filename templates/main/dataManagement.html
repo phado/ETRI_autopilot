@@ -57,6 +57,11 @@
               <th class="data-cell">상세정보</th>
               <th class="data-cell">
                 <img
+                  src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+              <th class="data-cell">
+                <img
                   src="{{url_for('static', filename='/image/delete.svg')}}"
                 />
               </th>
@@ -81,11 +86,17 @@
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"
                   id="openDetailModalBtn"
+                  onclick="detailOpenModal('{{_[0]}}', '{{_[1]}}')"
                 />
               </td>
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/modify.svg')}}"
+                />
+              </th>
+              <th class="data-cell">
+                <img
+                  src="{{url_for('static', filename='/image/delete.svg')}}"
                 />
               </th>
             </tr>
@@ -176,8 +187,11 @@
         <div id="detailModal" class="detailModal">
           <div class="detailmodal-content">
             <div class="detailmodal-title">
-              <div class="detailmodal-title-name">[Project 01] 상세정보</div>
-              <span class="detailmodal-close" id="closeDetailModalBtn"
+              <div class="detailmodal-title-name"></div>
+              <span
+                class="detailmodal-close"
+                id="closeDetailModalBtn"
+                onclick="closeDetailModal()"
                 >&times;</span
               >
             </div>
@@ -195,26 +209,15 @@
                     <th class="detaildata-cell">이슈사항</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {% for _ in range(5) %}
-                  <tr>
-                    <td class="detaildata-cell">고길동</td>
-                    <td class="detaildata-cell">홍길동</td>
-                    <td class="detaildata-cell">접속경로</td>
-                    <td class="detaildata-cell">100%</td>
-                    <td class="detaildata-cell">총프레임</td>
-                    <td class="detaildata-cell">진행완료</td>
-                    <td class="detaildata-cell">검수완료</td>
-                    <th class="detaildata-cell" style="width: 253px">
-                      이슈사항
-                    </th>
-                  </tr>
-                  {% endfor %}
-                </tbody>
+                <tbody id="detailDatamanagement"></tbody>
               </table>
               <div class="detialmodal-buttons">
-                <button class="cancel-button">취소</button>
-                <button class="confirm-button">확인</button>
+                <!-- <button class="cancel-button" onclick="closeDetailModal()">
+                  취소
+                </button> -->
+                <button class="confirm-button" onclick="closeDetailModal()">
+                  확인
+                </button>
               </div>
             </div>
           </div>
@@ -225,17 +228,6 @@
         //상세정보 모달 js
         var detailModal = document.getElementById("detailModal");
         var openDetailModalBtn = document.getElementById("openDetailModalBtn");
-        var closeDetailModalBtn = document.getElementById(
-          "closeDetailModalBtn"
-        );
-
-        openDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "block";
-        });
-
-        closeDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "none";
-        });
 
         window.addEventListener("click", function (event) {
           if (event.target == detailModal) {

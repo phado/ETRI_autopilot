@@ -348,7 +348,7 @@ def systemManagementAgencyManager():
 
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------세부 페이지 데이터셋 추가-----------------------------------
-@app.route('/dataManagement/dataSetDetail')
+@app.route('/dataManagement/dataSetDetail', methods=['POST'])
 def dataSetDetail():
     """
     데이터셋 관리 - 데이터셋 상세 정보
@@ -360,17 +360,25 @@ def dataSetDetail():
         session['usr_id'] = 'test'
 
         result_json = make_response_json([])
-        dataset_idx = request.form.get('datasetIdx')
+
+        data = request.get_json()
+     
+        dataset_idx = data['datasetIdx']
+
         # dataset_idx = '43'
         detail_list = db_data_set_detail(mariadb_pool, dataset_idx)
 
         result_json = success_message_json(result_json)
 
+        result_json['data_set_info'] = detail_list['data_set_info']
+        result_json['data_set_labeler_info'] = detail_list['data_set_labeler_info']
+
+
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/dataManagement.html", data_set_info=detail_list['data_set_info'], data_set_labeler_info=detail_list['data_set_labeler_info'], result_json = result_json)
+    return result_json
 
 @app.route('/modelManagement/ModelDetail')
 def ModelDetail():
