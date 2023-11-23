@@ -28,6 +28,8 @@ def login():
 
             login_result = def_login(usr_id, usr_pwd)
             if login_result['login'] == '1':
+                session['usr_idx'] = login_result['login_info'][1]
+                session['usr_nick_name'] = login_result['login_info'][1]
                 session['usr_name'] = login_result['login_info'][1]
                 session['usr_id'] = usr_id
 
@@ -49,10 +51,11 @@ def logout():
     session.pop('user_id', None)
     return 'Logged out successfully'
 
+
 @app.route('/register', methods=['POST'])
 def register():
     """
-        회원가입
+        회원가입 로직
     """
 
     if request.method == 'POST':
@@ -74,7 +77,6 @@ def register():
 
     return json_result
 
-
 @app.route('/findId', methods=['POST'])
 def findId():
     """
@@ -84,7 +86,7 @@ def findId():
     """
     try:
         data = request.get_json()
-     
+
         usr_name = data['usrName']
         usr_phone = data['usrPhone']
 
@@ -94,8 +96,6 @@ def findId():
         json_result = fail_message_json(json_result)
 
     return json_result
-
-
 
 @app.route('/countId')
 def countId():
@@ -379,6 +379,26 @@ def dataSetDetail():
         result_json = fail_message_json(result_json)
 
     return result_json
+
+@app.route('/dataManagement/dataSetDetail/getLabeler')
+def getLabeler():
+    """
+    그룹 아이디로 라벨러 조회
+
+    figma : 데이터셋 추가_라벨러 추가_팝업에서 라벨러 조회
+
+    """
+    try:
+
+        result_json = make_response_json([])
+
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
 
 @app.route('/modelManagement/ModelDetail')
 def ModelDetail():
