@@ -171,3 +171,75 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
 
     return json_result
 
+def db_mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id):
+    """
+    데이터 관리 게시판 목록
+    @param mariadb_pool:
+    @param page_num:
+    @param search_type:
+    @param search_key_word:
+    @param show_data_mount:
+    @param usr_id:
+    @return: 데이터 목록 리스트를 담은 딕션어리
+    """
+    try:
+
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = "데이터관리 목록 조회 쿼리"
+
+        cursor.execute(query, (page_num,search_type,search_key_word,show_data_mount,usr_id))
+        board_result = cursor.fetchall()
+
+        json_result['board_result'] = board_result
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+    
+    
+    return json_result
+
+def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type):
+    """
+    데이터 목록 관리 게시판의 목록의 숫자를 카운트한다.
+    @param tabel_type: 테이블 명으로 조회할 테이블을 명
+    @param mariadb_pool:
+    @param page_num:
+    @param search_type:
+    @param search_key_word:
+    @param show_data_mount:
+    @param usr_id:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = "데이터 목록 숫자 카운트 쿼리"
+
+        cursor.execute(query, (page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type))
+        board_cnt = cursor.fetchone()
+
+        json_result['board_cnt'] = board_cnt[0]
+        json_result = success_message_json(json_result)
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+if __name__ == "__main__":
+    pass

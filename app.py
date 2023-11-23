@@ -22,7 +22,7 @@ def login():
 
         login_result = def_login(usr_id, usr_pwd)
         if login_result['login'] == '1':
-            session['usr_name'] = usr_name
+            session['usr_name'] = "usr_name" #todo
             session['usr_id'] = usr_id
 
     except Exception as e:
@@ -149,13 +149,13 @@ def data_management():
         show_data_mount = request.form.get('showDataMount')
         if show_data_mount is None: show_data_mount = 10
 
-        board_list = mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount)
-        page_cnt = mdm_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount)
+        board_list = mdm_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'])
+        board_cnt = count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],'tb_prj_datasets')
 
     except Exception as e:
         print(e)
 
-    return render_template("dataManagement.html", board_list=board_list, page_cnt=page_cnt,page_num=page_num)
+    return render_template("dataManagement.html", board_list=board_list, page_cnt=board_cnt ,page_num=page_num)
 
 @app.route('/modelManagement')
 def model_management():
