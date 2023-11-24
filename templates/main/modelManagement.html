@@ -8,6 +8,15 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/modelManagement.css')}}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
+    ></script>
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/main/modelManagement.js') }}"
@@ -185,8 +194,9 @@
               </th>
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[3]}}</td>
-              <td class="data-cell">{{_[4]}}</td>
               <td class="data-cell">{{_[5]}}</td>
+              <td class="data-cell">{{_[6]}}</td>
+
               <td class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"
@@ -243,12 +253,61 @@
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/delete.svg')}}"
+                  onclick="deleteModelsetSend('{{grp_nm_en}}','{{_[1]}}','{{_[4]}}')"
                 />
               </th>
             </tr>
             {% endfor %}
           </tbody>
         </table>
+        <!-- 확인 모달 -->
+        <div id="confirmPopup" class="confirmPopup">
+          <div class="confirmPopup-content">
+            <span class="confirmPopup-close" onclick="closeconfirmPopup()"
+              >&times;</span
+            >
+            <div class="confirmPopup-container">
+              <div class="confirmPopup-title" id="confirmpopupTitle"></div>
+              <div class="confirmPopup-message" id="confirmpopupMessage"></div>
+            </div>
+            <button class="confirmBtn" onclick="confirmpopupOk()">확인</button>
+          </div>
+        </div>
+        <!-- 확인 모달 -->
+        <!-- 확인 취소모달 -->
+        <div id="confirmcancelPopup" class="confirmcancelPopup">
+          <div class="confirmcancelPopup-content">
+            <span
+              class="confirmcancelPopup-close"
+              onclick="closeconfirmcancelPopup()"
+              >&times;</span
+            >
+            <div class="confirmcancelPopup-container">
+              <div
+                class="confirmcancelPopup-title"
+                id="confirmcancelpopupTitle"
+              >
+                확인 취소 모달
+              </div>
+              <div
+                class="confirmcancelPopup-message"
+                id="confirmcancelpopupMessage"
+              >
+                확인 취소 모달입니다.
+              </div>
+            </div>
+            <button class="confirmBtn" onclick="confirmcancelpopupOk()">
+              확인
+            </button>
+            <button
+              class="confirmcancelBtn"
+              onclick="confirmcancelpopupCancel()"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+        <!-- 확인 취소 모달 -->
       </div>
       <script>
         window.addEventListener("click", function (event) {

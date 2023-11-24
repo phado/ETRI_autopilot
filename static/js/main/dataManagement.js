@@ -27,18 +27,38 @@ function detailOpenModal(datasetIdx, datasetname) {
         var root = data.data_set_info[0][0]; // 고정값 설정
         var checker = data.data_set_info[0][1]; // 고정값 설정
 
-        // labeler, allframe, progress, complete, detail을 for문을 통해 추가
         var labeler = data.data_set_labeler_info[i][0];
+        var progress = data.data_set_labeler_info[i][2];
         var allframe = data.data_set_labeler_info[i][3];
-        var progress =
-          Math.round(
-            (data.data_set_labeler_info[i][3] /
-              data.data_set_labeler_info[i][2]) *
-              10
-          ) + "%";
 
         var complete = data.data_set_labeler_info[i][4];
-        var detail = data.data_set_labeler_info[i][8];
+        var completestatus;
+        if (complete == 1) {
+          completestatus = "완료";
+        } else if (inspect == 0) {
+          completestatus = "진행중";
+        } else {
+          completestatus = "기타 상태";
+        }
+        var inspect = data.data_set_labeler_info[i][5];
+        var status;
+
+        if (inspect == -1) {
+          status = "상태없음";
+        } else if (inspect == 1) {
+          status = "라벨링 완료";
+        } else if (inspect == 3) {
+          status = "검수 진행";
+        } else if (inspect == 4) {
+          status = "검수 이슈";
+        } else if (inspect == 0) {
+          // status = "라벨링 진행";
+          status = "상태없음";
+        } else {
+          status = "기타 상태";
+        }
+        var statecode = data.data_set_labeler_info[i][6];
+        var statecodename = data.data_set_labeler_info[i][8];
 
         // 새로운 행을 생성하고 각 셀에 데이터 추가
         var row = tbody.insertRow(-1);
@@ -61,7 +81,12 @@ function detailOpenModal(datasetIdx, datasetname) {
         var cell4 = row.insertCell(3);
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
-        cell4.innerHTML = root;
+
+        var link = document.createElement("a");
+        link.href = root;
+        link.textContent = root;
+
+        cell4.appendChild(link);
 
         var cell5 = row.insertCell(4);
         cell5.className = "detaildata-cell";
@@ -82,17 +107,21 @@ function detailOpenModal(datasetIdx, datasetname) {
         var cell8 = row.insertCell(7);
         cell8.className = "detaildata-cell";
         cell8.id = "cell-sub";
-        cell8.innerHTML = "검수완료";
+        cell8.innerHTML = status;
 
         var cell9 = row.insertCell(8);
         cell9.className = "detaildata-cell";
         cell9.id = "cell-sub";
-        cell9.innerHTML = detail;
       }
     })
     .catch((error) => console.error("에러 발생:", error));
 }
 
+function closeDetailModal() {
+  detailModal.style.display = "none";
+}
+
+//삭제 아이콘 클릭 시 데이터셋 삭제 함수
 function deleteDatasetSend(company_name, project_name) {
   confirm_temp = [company_name, project_name];
 
@@ -101,17 +130,13 @@ function deleteDatasetSend(company_name, project_name) {
   openconfirmcancelPopup(modalTitle, modalMessage);
 }
 
-function closeDetailModal() {
-  detailModal.style.display = "none";
-}
-
 //삭제 시 나오는 모달 관련 함수
 function confirmcancelpopupOk() {
   // 삭제 api 호출
   company_name = confirm_temp[0];
   project_name = confirm_temp[1];
 
-  var apiUrl = "http://192.168.0.187:7080/api/delete_labelling_tool";
+  var apiUrl = "http://112.167.170.54:7080/api/delete_labelling_tool";
   fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -188,7 +213,6 @@ function datasetCreateSend(company_name) {
       closeconfirmPopup();
 
       if (data.state_code == "90") {
-        location.reload();
         closeCreateModal();
         var modalTitle = "데이터셋 추가 완료";
         var modalMessage = "데이터셋 추가가 성공적으로 완료되었습니다.";

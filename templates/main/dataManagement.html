@@ -91,9 +91,38 @@
               </th>
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[2]}}</td>
-              <td class="data-cell">  {% if _[4] == 1 %} 확인 {% else %} 미확인 {% endif %}</td>
               <td class="data-cell">
-                {% if _[5] == 1 %} 확인 {% else %} 미확인 {% endif %}
+                {% if _[4] == 0 %}
+                  상태없음
+                {% elif _[4] == 1 %}
+                  라벨링 완료
+                {% elif _[4] == 2 %}
+                  검수 진행
+                {% elif _[4] == 3 %}
+                  검수 완료
+                {% elif _[4] == 4 %}
+                  검수 이슈
+                {% elif _[4] == 5 %}
+                  라벨링 진행
+                {% else %}
+                  기타 상태
+                {% endif %}</td>
+              <td class="data-cell">
+                {% if _[5] == 0 %}
+                상태없음
+              {% elif _[5] == 1 %}
+                라벨링 완료
+              {% elif _[5] == 2 %}
+                검수 진행
+              {% elif _[5] == 3 %}
+                검수 완료
+              {% elif _[5] == 4 %}
+                검수 이슈
+              {% elif _[5] == 5 %}
+                라벨링 진행
+              {% else %}
+                기타 상태
+              {% endif %}
               </td>
               <td class="data-cell">{{_[6]}}</td>
               <td class="data-cell">{{_[7]}}</td>

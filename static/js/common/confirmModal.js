@@ -37,6 +37,7 @@ function closeconfirmPopup() {
 }
 
 function confirmpopupOk() {
+  location.reload();
   closeconfirmPopup();
 }
 
