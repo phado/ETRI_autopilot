@@ -8,10 +8,19 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/dataManagement.css')}}"
     />
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
+  />
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/main/dataManagement.js') }}"
     ></script>
+    <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
+  ></script>
     <title>DataManagement</title>
   </head>
   <body>
@@ -41,7 +50,13 @@
       </div>
       <div class="data-list-container">
         <div class="data-list-title">데이터 목록</div>
-        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <button
+          class="data-list-create"
+          id="openModalBtn"
+          onclick="openCreateModal('{{grp_nm_en}}')"
+        >
+          + Create
+        </button>
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
@@ -76,7 +91,7 @@
               </th>
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[2]}}</td>
-              <td class="data-cell">{{_[3]}}</td>
+              <td class="data-cell">  {% if _[4] == 1 %} 확인 {% else %} 미확인 {% endif %}</td>
               <td class="data-cell">
                 {% if _[5] == 1 %} 확인 {% else %} 미확인 {% endif %}
               </td>
@@ -96,7 +111,7 @@
               </th>
               <th class="data-cell">
                 <img
-                  src="{{url_for('static', filename='/image/delete.svg')}}"
+                  src="{{url_for('static', filename='/image/delete.svg')}}" onclick="deleteDatasetSend('{{_[0]}}','{{_[1]}}')"
                 />
               </th>
             </tr>
@@ -108,13 +123,19 @@
           <div class="modal-content">
             <div class="modal-title">
               <div class="modal-title-name">데이터셋 생성</div>
-              <span class="close" id="closeModalBtn">&times;</span>
+              <span
+                class="close"
+                id="closeModalBtn"
+                onclick="closeCreateModal()"
+                >&times;</span
+              >
             </div>
             <div class="modal-input">
               <div class="modal-input1">
                 <div>데이터셋명</div>
                 <input
                   type="text"
+                  id="datasetNameInput"
                   placeholder="5~30글자/영문,한글,숫자,특수문자"
                   style="margin-top: 8px"
                   class="dataset-name-input"
@@ -132,15 +153,17 @@
                   <div style="flex-grow: 1">라벨러 설정</div>
                   <button class="labeler-add-button">추가</button>
                 </div>
-                <input
+                <textarea
                   type="text"
-                  style="margin-top: 8px"
+                  id="labelerInput"
+                  style="margin-top: 8px;resize: none;"
                   class="labeler-option-input"
-                />
+                ></textarea>
+
                 <div style="margin-top: 24px; margin-bottom: 8px">
                   검수자 설정
                 </div>
-                <button class="checker-option-button">Nickname</button>
+                <input class="checker-option-button" id="checkerInput"></input>
                 <button class="checker-search-button">search</button>
               </div>
               <div class="modal-input2">
@@ -163,26 +186,17 @@
                   </div>
                 </div>
                 <button class="labeler-cancel-button">취소</button>
-                <button class="labeler-confirm-button">확인</button>
+                <button
+                  class="labeler-confirm-button"
+                  onclick="datasetCreateSend('{{grp_nm_en}}')"
+                >
+                  확인
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <script>
-          // create 모달 js
-          var modal = document.getElementById("myModal");
-          var openModalBtn = document.getElementById("openModalBtn");
-          var closeModalBtn = document.getElementById("closeModalBtn");
-
-          openModalBtn.addEventListener("click", function () {
-            modal.style.display = "block";
-          });
-
-          closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-          });
-        </script>
-
+        <!-- 데이터셋 추가 모달 -->
         <!-- detail 모달 -->
         <div id="detailModal" class="detailModal">
           <div class="detailmodal-content">
@@ -199,14 +213,15 @@
               <table class="detaildata-table">
                 <thead>
                   <tr class="detaildata-table-title">
-                    <th class="detaildata-cell">라벨러</th>
-                    <th class="detaildata-cell">검수자</th>
-                    <th class="detaildata-cell">접속경로</th>
-                    <th class="detaildata-cell">진행도</th>
-                    <th class="detaildata-cell">총프레임</th>
-                    <th class="detaildata-cell">진행완료</th>
-                    <th class="detaildata-cell">검수완료</th>
-                    <th class="detaildata-cell">이슈사항</th>
+                    <th class="detaildata-cell" id="cell-sub"></th>
+                    <th class="detaildata-cell" id="cell-sub">라벨러</th>
+                    <th class="detaildata-cell" id="cell-sub">검수자</th>
+                    <th class="detaildata-cell" id="cell-sub">접속경로</th>
+                    <th class="detaildata-cell" id="cell-sub">진행도</th>
+                    <th class="detaildata-cell" id="cell-sub">총프레임</th>
+                    <th class="detaildata-cell" id="cell-sub">진행완료</th>
+                    <th class="detaildata-cell" id="cell-sub">검수완료</th>
+                    <th class="detaildata-cell" id="cell-sub">이슈사항</th>
                   </tr>
                 </thead>
                 <tbody id="detailDatamanagement"></tbody>
@@ -223,6 +238,49 @@
           </div>
         </div>
         <!-- detail 모달 -->
+
+        <!-- 확인 모달 -->
+        <div id="confirmPopup" class="confirmPopup">
+          <div class="confirmPopup-content">
+            <span class="confirmPopup-close" onclick="closeconfirmPopup()"
+              >&times;</span
+            >
+            <div class="confirmPopup-container">
+              <div class="confirmPopup-title" id="confirmpopupTitle"></div>
+              <div class="confirmPopup-message" id="confirmpopupMessage"></div>
+            </div>
+            <button class="confirmBtn" onclick="confirmpopupOk()">확인</button>
+          </div>
+        </div>
+        <!-- 확인 모달 -->
+        <!-- 확인 취소모달 -->
+        <div id="confirmcancelPopup" class="confirmcancelPopup">
+          <div class="confirmcancelPopup-content">
+            <span
+              class="confirmcancelPopup-close"
+              onclick="closeconfirmcancelPopup()"
+              >&times;</span
+            >
+            <div class="confirmcancelPopup-container">
+              <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
+                확인 취소 모달
+              </div>
+              <div
+                class="confirmcancelPopup-message"
+                id="confirmcancelpopupMessage"
+              >
+                확인 취소 모달입니다.
+              </div>
+            </div>
+            <button class="confirmBtn" onclick="confirmcancelpopupOk()">
+              확인
+            </button>
+            <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel()">
+              취소
+            </button>
+          </div>
+        </div>
+        <!-- 확인 취소 모달 -->
       </div>
       <script>
         //상세정보 모달 js

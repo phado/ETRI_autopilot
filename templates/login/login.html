@@ -7,6 +7,11 @@
       type="text/css"
       href="{{ url_for('static', filename='css/login/login.css')}}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
+    />
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
@@ -272,81 +277,8 @@
         </div>
       </form>
     </div>
+
     <!-- 확인 모달 -->
-    <style>
-      .confirmPopup {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
-
-      .confirmPopup-content {
-        background-color: #fefefe;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 1px solid #888;
-        width: 600px;
-        height: 150px;
-        max-width: 600px;
-      }
-
-      .confirmPopup-close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-right: 16px;
-        margin-top: 9px;
-      }
-      .confirmPopup-container {
-        margin-left: 37px;
-      }
-      .confirmPopup-title {
-        color: black;
-        font-family: Roboto;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        margin-top: 49px;
-      }
-
-      .confirmPopup-message {
-        margin-top: 16px;
-        color: black;
-        font-family: Roboto;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-      }
-
-      .confirmBtn {
-        display: inline-flex;
-        padding: 3px 10px;
-        justify-content: center;
-        align-items: center;
-        gap: 4px;
-
-        border-radius: 5px;
-        background: #ba1c1c;
-        color: white;
-        border: none;
-        cursor: pointer;
-        float: right;
-        margin-top: 16px;
-        margin-right: 16px;
-      }
-    </style>
     <div id="confirmPopup" class="confirmPopup">
       <div class="confirmPopup-content">
         <span class="confirmPopup-close" onclick="closeconfirmPopup()"
@@ -361,97 +293,6 @@
     </div>
     <!-- 확인 모달 -->
     <!-- 확인 취소모달 -->
-    <style>
-      .confirmcancelPopup {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-      }
-
-      .confirmcancelPopup-content {
-        background-color: #fefefe;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border: 1px solid #888;
-        width: 600px;
-        height: 150px;
-        max-width: 600px;
-      }
-
-      .confirmcancelPopup-close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-right: 16px;
-        margin-top: 9px;
-      }
-      .confirmcancelPopup-container {
-        margin-left: 37px;
-      }
-      .confirmcancelPopup-title {
-        color: black;
-        font-family: Roboto;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 600;
-        line-height: normal;
-        margin-top: 49px;
-      }
-
-      .confirmcancelPopup-message {
-        margin-top: 16px;
-        color: black;
-        font-family: Roboto;
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-      }
-
-      .confirmBtn {
-        display: inline-flex;
-        padding: 3px 10px;
-        justify-content: center;
-        align-items: center;
-        gap: 4px;
-
-        border-radius: 5px;
-        background: #3d5eec;
-        color: white;
-        border: none;
-        cursor: pointer;
-        float: right;
-        margin-top: 16px;
-        margin-right: 16px;
-      }
-
-      .confirmcancelBtn {
-        display: inline-flex;
-        padding: 3px 10px;
-        justify-content: center;
-        align-items: center;
-        gap: 4px;
-
-        border-radius: 5px;
-        background: #9a9a9a;
-        color: white;
-        border: none;
-        cursor: pointer;
-        float: right;
-        margin-top: 16px;
-        margin-right: 8px;
-      }
-    </style>
     <div id="confirmcancelPopup" class="confirmcancelPopup">
       <div class="confirmcancelPopup-content">
         <span

@@ -211,11 +211,11 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
         cursor = connection.cursor()
 
         query = ''
-        if tabel_type == 'tb_prj_datasets': # 데이터터 관리 목록 조회
+        if tabel_type == 'tb_prj_datasets': # 데이터 관리 목록 조회
             query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
 
         elif tabel_type == 'tb_prj_models': # '모델 관리 목록 조회'
-            query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
+            query = "SELECT tpm.prj_idx , tpm.prj_name , tg.grp_nm_en ,tg.grp_nm_kr,tpm.prj_create_date ,tpm.prj_modify_date from tb_prj_models tpm left join tb_prj_datasets tpd on tpd.ds_idx =tpm.ds_idx left join tb_groups tg on tpd.grp_idx = tg.grp_idx where tpm.is_valid =1;"
 
         elif tabel_type == 'tb_users_1': # 사용자 관리 / 시스템 관리자 목록( tup.pms_cd = 1)
             query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid = 1 and tup.pms_cd = 1 group by tu.usr_idx;"
@@ -403,8 +403,10 @@ def db_model_detail(mariadb_pool, model_idx):
 
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
+        # todo
+        # query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
+        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 ;"
 
-        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
         cursor.execute(query)
 
         json_result['model_detail_info'] = cursor.fetchall()

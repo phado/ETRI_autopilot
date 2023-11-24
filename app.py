@@ -188,6 +188,15 @@ def dataManagement():
 
         board_list = db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
         board_cnt = db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+
+
         if board_cnt['status'] =='200'  and board_list['status'] =='200':
             result_json = success_message_json(result_json)
         else:
@@ -196,7 +205,7 @@ def dataManagement():
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/dataManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/dataManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json , usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
 # 2. 모델 관리 탭
 @app.route('/modelManagement')
@@ -227,13 +236,23 @@ def modelManagement():
                                     session['usr_id'], tbl_type)
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
                                      session['usr_id'], tbl_type)
+        
+
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+
+
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/modelManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/modelManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json, usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
 # 3. 사용자 관리 탭
 @app.route('/userManagement_systemManager')
@@ -456,7 +475,8 @@ def getDataSet():
         result_json = fail_message_json(result_json)
 
     return result_json
-@app.route('/modelManagement/ModelDetail')
+
+@app.route('/modelManagement/ModelDetail', methods=['POST'])
 def ModelDetail():
     """
     모델 관리_모델 상세 페이지
@@ -467,19 +487,21 @@ def ModelDetail():
     try:
         session['usr_id'] = 'test'
 
+
         result_json = make_response_json([])
-        model_idx = request.form.get('datasetIdx')
-        model_idx = '1'
+
+        data = request.get_json()
+        model_idx = data['modelIdx']
         detail_list = db_model_detail(mariadb_pool, model_idx)
 
         result_json = success_message_json(result_json)
+        result_json['model_detail_info'] = detail_list['model_detail_info']
 
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
 
-    return render_template("main/dataManagement.html", data_set_info=detail_list['model_detail_info'], result_json = result_json)
-
+    return result_json
 
 
 if __name__ == '__main__':

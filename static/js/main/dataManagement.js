@@ -4,6 +4,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
   var detailModal = document.getElementById("detailModal");
   detailModal.style.display = "block";
+
   var tbody = document.getElementById("detailDatamanagement");
 
   // 기존 행 제거
@@ -44,40 +45,107 @@ function detailOpenModal(datasetIdx, datasetname) {
 
         var cell1 = row.insertCell(0);
         cell1.className = "detaildata-cell";
-        cell1.innerHTML = labeler;
+        cell1.id = "cell-sub";
+        cell1.innerHTML = i + 1;
 
         var cell2 = row.insertCell(1);
         cell2.className = "detaildata-cell";
-        cell2.innerHTML = checker;
+        cell2.id = "cell-sub";
+        cell2.innerHTML = labeler;
 
         var cell3 = row.insertCell(2);
         cell3.className = "detaildata-cell";
-        cell3.innerHTML = root;
+        cell3.id = "cell-sub";
+        cell3.innerHTML = checker;
 
         var cell4 = row.insertCell(3);
         cell4.className = "detaildata-cell";
-        cell4.innerHTML = progress;
+        cell4.id = "cell-sub";
+        cell4.innerHTML = root;
 
         var cell5 = row.insertCell(4);
         cell5.className = "detaildata-cell";
-        cell5.innerHTML = allframe;
+        cell5.id = "cell-sub";
+        cell5.innerHTML = progress;
 
+        // todo
         var cell6 = row.insertCell(5);
         cell6.className = "detaildata-cell";
-        cell6.innerHTML = "진행완료"; // 예시로 고정값 설정
+        cell6.id = "cell-sub";
+        cell6.innerHTML = allframe;
 
         var cell7 = row.insertCell(6);
         cell7.className = "detaildata-cell";
-        cell7.innerHTML = "검수완료";
+        cell7.id = "cell-sub";
+        cell7.innerHTML = "진행완료";
 
         var cell8 = row.insertCell(7);
         cell8.className = "detaildata-cell";
-        cell8.innerHTML = detail;
+        cell8.innerHTML = "검수완료";
+
+        var cell9 = row.insertCell(8);
+        cell9.className = "detaildata-cell";
+        cell9.id = "cell-sub";
+        cell9.innerHTML = detail;
       }
     })
     .catch((error) => console.error("에러 발생:", error));
 }
 
-function closeDetailModal() {
+function deleteDatasetSend(datasetIdx, datasetName) {
+  openconfirmcancelPopup();
+}
+
+function closeDetailModal(datasetIdx, datasetname) {
   detailModal.style.display = "none";
+}
+
+// ------------------------------------------------------------------------
+// 데이터셋 생성
+function openCreateModal() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "block";
+}
+
+function closeCreateModal() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
+
+function datasetCreateSend(company_name) {
+  var project_name = document.getElementById("datasetNameInput").value;
+
+  // todo
+  var labelerInput = document.getElementById("labelerInput").value;
+  var labeler_nick = labelerInput.split("\n").map(function (item) {
+    return item.trim();
+  });
+
+  var inp_nick = document.getElementById("checkerInput").value;
+
+  var jsonData = {
+    company_name: company_name,
+    project_name: project_name,
+    labeler_nick: labeler_nick,
+    inp_nick: inp_nick,
+  };
+
+  var apiUrl = "http://192.168.0.187:7080/api/create_labelling_tool";
+
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jsonData),
+  })
+    .then((response) => response.json()) // 응답을 JSON으로 변환
+    .then((data) => {
+      // 서버 응답 처리
+      console.log("서버 응답:", data);
+    })
+    .catch((error) => {
+      // 오류 처리
+      console.error("오류 발생:", error);
+    });
 }

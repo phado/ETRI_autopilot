@@ -39,19 +39,31 @@
       </div>
       <div class="data-list-container">
         <div class="data-list-title">모델 목록</div>
-        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <button
+          class="data-list-create"
+          id="openModalBtn"
+          onclick="openCreateModal()"
+        >
+          + Create
+        </button>
         <!-- 데이터셋 생성 모달 -->
         <div id="myModal" class="modal">
           <div class="modal-content">
             <div class="modal-title">
               <div class="modal-title-name">모델 생성</div>
-              <span class="close" id="closeModalBtn">&times;</span>
+              <span
+                class="close"
+                id="closeModalBtn"
+                onclick="closeCreateModal()"
+                >&times;</span
+              >
             </div>
             <div class="modal-input">
               <div class="modal-input1">
                 <div>모델명</div>
                 <input
                   type="text"
+                  id="modelsetNameInput"
                   placeholder="5~30글자/영문,한글,숫자,특수문자"
                   style="margin-top: 8px"
                   class="model-name-input"
@@ -71,6 +83,7 @@
                 </div>
                 <input
                   type="text"
+                  id="dataset-name"
                   placeholder="5~30글자/영문,한글,숫자,특수문자"
                   style="margin-top: 8px"
                   class="dataset-name-input"
@@ -86,11 +99,14 @@
                   <div style="flex-grow: 1">개발자 설정</div>
                   <button class="developer-search-button">추가</button>
                 </div>
-                <input
+                <textarea
                   type="text"
-                  style="margin-top: 5px"
+                  id="developer"
+                  style="margin-top: 5px; resize: none; text-align: left"
                   class="labeler-option-input"
-                />
+                >
+                </textarea>
+
                 <div
                   style="margin-top: 8px; display: flex; align-items: center"
                 >
@@ -125,26 +141,19 @@
                   </div>
                 </div>
                 <button class="dataset-cancel-button">취소</button>
-                <button class="dataset-confirm-button">확인</button>
+                <button
+                  class="dataset-confirm-button"
+                  onclick="modelsetCreateSend('{{grp_nm_en}}')"
+                >
+                  확인
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <script>
-          // create 모달 js
-          var modal = document.getElementById("myModal");
-          var openModalBtn = document.getElementById("openModalBtn");
-          var closeModalBtn = document.getElementById("closeModalBtn");
+        <!-- 데이터셋 생성 모달 -->
 
-          openModalBtn.addEventListener("click", function () {
-            modal.style.display = "block";
-          });
-
-          closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-          });
-        </script>
-
+        <!-- 상세정보 모달 -->
         <table class="data-table">
           <thead>
             <tr class="data-table-title">
@@ -170,22 +179,24 @@
                 <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
               <td class="data-cell">{{_[1]}}</td>
-              <td class="data-cell">{{_[2]}}</td>
-              <td class="data-cell">{{_[6]}}</td>
-              <td class="data-cell">{{_[7]}}</td>
+              <td class="data-cell">{{_[3]}}</td>
+              <td class="data-cell">{{_[4]}}</td>
+              <td class="data-cell">{{_[5]}}</td>
               <td class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"
                   id="openDetailModalBtn"
+                  onclick="detailOpenModal('{{_[0]}}', '{{_[1]}}')"
                 />
                 <!-- detail 모달 -->
                 <div id="detailModal" class="detailModal">
                   <div class="detailmodal-content">
                     <div class="detailmodal-title">
-                      <div class="detailmodal-title-name">
-                        [Project 01] 상세정보
-                      </div>
-                      <span class="detailmodal-close" id="closeDetailModalBtn"
+                      <div class="detailmodal-title-name"></div>
+                      <span
+                        class="detailmodal-close"
+                        id="closeDetailModalBtn"
+                        onclick="closeDetailModal()"
                         >&times;</span
                       >
                     </div>
@@ -193,40 +204,26 @@
                       <table class="detaildata-table">
                         <thead>
                           <tr class="detaildata-table-title">
-                            <th
-                              class="detaildata-cell"
-                              style="
-                                width: 20px;
-                                border-right: 1px solid #c5c5c5;
-                              "
-                            ></th>
-                            <th class="detaildata-cell">라벨러</th>
-                            <th class="detaildata-cell">검수자</th>
+                            <th class="detaildata-cell" id="cell-sub"></th>
+                            <th class="detaildata-cell" id="cell-sub">
+                              라벨러
+                            </th>
+                            <th class="detaildata-cell" id="cell-sub">
+                              검수자
+                            </th>
                             <th class="detaildata-cell">접속경로</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {% for i in range(5) %}
-                          <tr>
-                            <td
-                              class="detaildata-cell"
-                              style="
-                                width: 20px;
-                                border-right: 1px solid #c5c5c5;
-                              "
-                            >
-                              {{i+1}}
-                            </td>
-                            <td class="detaildata-cell">고길동</td>
-                            <td class="detaildata-cell">홍길동</td>
-                            <td class="detaildata-cell">접속경로</td>
-                          </tr>
-                          {% endfor %}
-                        </tbody>
+                        <tbody id="detailModelManagement"></tbody>
                       </table>
                       <div class="detialmodal-buttons">
-                        <button class="cancel-button">취소</button>
-                        <button class="confirm-button">확인</button>
+                        <!-- <button class="cancel-button" onclick="closeDetailModal()">취소</button> -->
+                        <button
+                          class="confirm-button"
+                          onclick="closeDetailModal() "
+                        >
+                          확인
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -244,21 +241,6 @@
         </table>
       </div>
       <script>
-        //상세정보 모달 js
-        var detailModal = document.getElementById("detailModal");
-        // var openDetailModalBtn = document.getElementById("openDetailModalBtn");
-        var closeDetailModalBtn = document.getElementById(
-          "closeDetailModalBtn"
-        );
-
-        // openDetailModalBtn.addEventListener("click", function () {
-        //   detailModal.style.display = "block";
-        // });
-
-        closeDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "none";
-        });
-
         window.addEventListener("click", function (event) {
           if (event.target == detailModal) {
             detailModal.style.display = "none";
