@@ -264,6 +264,11 @@
   width: 270px;
   height: 260px;
   border: none;
+  margin-left: 16px;
+  margin-top: 16px;
+}
+.labeler-add-textarea:focus {
+  border: none;
 }
 .modal-input2-button {
   border-top: 1px solid #ccc;
@@ -284,6 +289,14 @@
 }
 .labeler-confirm-button {
   background: #3d5eec;
+}
+.labeler-btn {
+  width: 84px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #b4c0ff;
+  background-color: white;
+  color: #b4c0ff;
 }
 /* -------------------------------------------------------------------------------------------------- */
 /* 데이터셋 상세 모달 css */

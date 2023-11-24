@@ -81,6 +81,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
         var cell8 = row.insertCell(7);
         cell8.className = "detaildata-cell";
+        cell8.id = "cell-sub";
         cell8.innerHTML = "검수완료";
 
         var cell9 = row.insertCell(8);
@@ -92,15 +93,53 @@ function detailOpenModal(datasetIdx, datasetname) {
     .catch((error) => console.error("에러 발생:", error));
 }
 
-function deleteDatasetSend(datasetIdx, datasetName) {
-  openconfirmcancelPopup();
+function deleteDatasetSend(company_name, project_name) {
+  confirm_temp = [company_name, project_name];
+
+  var modalTitle = "삭제 확인";
+  var modalMessage = project_name + "의 모든 데이터를 삭제하시겠습니까?";
+  openconfirmcancelPopup(modalTitle, modalMessage);
 }
 
-function closeDetailModal(datasetIdx, datasetname) {
+function closeDetailModal() {
   detailModal.style.display = "none";
 }
 
-// ------------------------------------------------------------------------
+//삭제 시 나오는 모달 관련 함수
+function confirmcancelpopupOk() {
+  // 삭제 api 호출
+  company_name = confirm_temp[0];
+  project_name = confirm_temp[1];
+
+  var apiUrl = "http://192.168.0.187:7080/api/delete_labelling_tool";
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      company_name: company_name,
+      project_name: project_name,
+    }),
+  })
+    .then((response) => response.json()) // 응답을 JSON으로 변환
+    .then((data) => {
+      console.log("서버 응답:", data);
+      location.reload();
+    })
+    .catch((error) => {
+      // 오류 처리
+      console.error("오류 발생:", error);
+    });
+
+  confirm_temp = "";
+  closeconfirmcancelPopup();
+  var modalTitle = "삭제 확인";
+  var modalMessage = "삭제가 완료되었습니다.";
+  openconfirmPopup(modalTitle, modalMessage);
+}
+
+// ------------------------------------------------------------------------------------------------
 // 데이터셋 생성
 function openCreateModal() {
   var modal = document.getElementById("myModal");
@@ -132,6 +171,7 @@ function datasetCreateSend(company_name) {
 
   var apiUrl = "http://192.168.0.187:7080/api/create_labelling_tool";
 
+  showLoading();
   fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -139,13 +179,70 @@ function datasetCreateSend(company_name) {
     },
     body: JSON.stringify(jsonData),
   })
-    .then((response) => response.json()) // 응답을 JSON으로 변환
+    .then((response) => response.json())
     .then((data) => {
       // 서버 응답 처리
       console.log("서버 응답:", data);
+
+      // 로딩 숨김
+      closeconfirmPopup();
+
+      if (data.state_code == "90") {
+        location.reload();
+        closeCreateModal();
+        var modalTitle = "데이터셋 추가 완료";
+        var modalMessage = "데이터셋 추가가 성공적으로 완료되었습니다.";
+        openconfirmPopup(modalTitle, modalMessage);
+      }
     })
     .catch((error) => {
       // 오류 처리
+      // 로딩 숨김
+      closeconfirmPopup();
+
       console.error("오류 발생:", error);
+    });
+}
+function showLoading() {
+  var modalTitle = "데이터셋 저장";
+  var modalMessage = "데이터셋 저장이 진행중입니다.";
+  openconfirmPopup(modalTitle, modalMessage);
+}
+
+// ------------------------------------------------------------------------------------------------
+// 데이터셋 생성 모달
+function onLabelerAddButtonClick(grp_idx) {
+  // 라벨러 추가 텍스트를 변경
+  var labelerAddText = "라벨러 추가";
+  document.getElementById("findPersonTitle").textContent = labelerAddText;
+
+  fetch("/dataManagement/getLabeler", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ grp_idx }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      var labelerList = data.labeler_list;
+      var labelerDiv = document.getElementById("labelerAll");
+
+      // 각 labeler에 대한 버튼을 생성하여 div에 추가
+      labelerList.forEach(function (labeler) {
+        var button = document.createElement("button");
+        button.className = "labeler-btn";
+        button.textContent = labeler;
+        button.addEventListener("click", function () {
+          // 버튼이 클릭되면 해당 labeler를 div에 추가
+          labelerDiv.textContent += labeler + " ";
+        });
+
+        // 버튼을 모달 창의 div 안에 추가
+        labelerDiv.appendChild(button);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
 }

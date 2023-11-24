@@ -29,6 +29,7 @@ function detailOpenModal(modelIdx, modelname) {
         var cell1 = row.insertCell(0);
         cell1.innerHTML = i + 1;
         cell1.style.width = "20px";
+        cell1.id = "cell-sub";
         cell1.style.borderRight = "1px solid #c5c5c5";
         var cell2 = row.insertCell(1);
         cell2.className = "detaildata-cell";

@@ -405,7 +405,7 @@ def dataSetDetail():
 
     return result_json
 
-@app.route('/dataManagement/getLabeler')
+@app.route('/dataManagement/getLabeler', methods=['POST'])
 def getLabeler():
     """
     그룹 아이디로 라벨러 조회
@@ -416,12 +416,18 @@ def getLabeler():
     try:
 
         result_json = make_response_json([])
-        grp_idx = '1'
+
+        data = request.get_json()
+     
+        grp_idx = data['grp_idx']
+        # grp_idx = '1'
         # grp_idx = session['grp_idx']
 
         labeler_list = db_get_labeler(mariadb_pool,grp_idx)
 
-        result_json['labeler_list'] = labeler_list
+        # result_json['labeler_list'] = labeler_list
+        result_json['labeler_list'] =  [('날나리'),('개나리'),('날리'),('너도'),('할수없다'),('퇴근함'),('퇴근함니다'),('퇴근하고'),('싶은데'),('퇴사')]
+
 
     except Exception as e:
         print(e)
