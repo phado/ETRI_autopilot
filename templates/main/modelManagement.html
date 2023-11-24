@@ -8,6 +8,10 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/modelManagement.css')}}"
     />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/main/modelManagement.js') }}"
+    ></script>
     <title>modelManagement</title>
   </head>
   <body>
@@ -242,14 +246,14 @@
       <script>
         //상세정보 모달 js
         var detailModal = document.getElementById("detailModal");
-        var openDetailModalBtn = document.getElementById("openDetailModalBtn");
+        // var openDetailModalBtn = document.getElementById("openDetailModalBtn");
         var closeDetailModalBtn = document.getElementById(
           "closeDetailModalBtn"
         );
 
-        openDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "block";
-        });
+        // openDetailModalBtn.addEventListener("click", function () {
+        //   detailModal.style.display = "block";
+        // });
 
         closeDetailModalBtn.addEventListener("click", function () {
           detailModal.style.display = "none";

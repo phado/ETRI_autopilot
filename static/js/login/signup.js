@@ -101,7 +101,7 @@ async function validatePassword() {
       if (data.message == "success") {
         //confirm 모달을 띄우면서 회원가입 모달 없앰
         var modalTitle = "회원가입 완료 ";
-        var modalMessage = "회원가입이 성공적으로 완료되었습니다.";
+        var modalMessage = name + "님의 회원가입이 성공적으로 완료되었습니다.";
         openconfirmPopup(modalTitle, modalMessage);
         closeSignupModal();
       }

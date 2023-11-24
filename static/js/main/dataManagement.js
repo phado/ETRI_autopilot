@@ -74,31 +74,6 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell8.className = "detaildata-cell";
         cell8.innerHTML = detail;
       }
-
-      //   // 받아온 데이터를 이용하여 동적으로 테이블 생성
-      //   for (var i = 0; i < data.length; i++) {
-      //     var row = table.insertRow(-1); // 맨 끝에 행을 추가
-
-      //     for (var j = 0; j < 8; j++) {
-      //       var cell = row.insertCell(j);
-      //       cell.className = "detaildata-cell";
-
-      //       // 데이터를 설정
-      //       switch (j) {
-      //         case 0:
-      //           cell.innerHTML = data[i].column1_key;
-      //           break;
-      //         case 1:
-      //           cell.innerHTML = data[i].column2_key;
-      //           break;
-      //         // 나머지 열도 추가
-      //         // ...
-
-      //         default:
-      //           break;
-      //       }
-      //     }
-      //   }
     })
     .catch((error) => console.error("에러 발생:", error));
 }

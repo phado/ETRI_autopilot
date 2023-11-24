@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template,session
+from flask import Flask, request, render_template,session, redirect, url_for
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
     db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset
@@ -13,7 +13,7 @@ app.secret_key = os.urandom(24)
 mariadb_pool = get_pool_conn()
 # ------------------------------------------------------------------------------------------------------
 # -----------------------------------------로그인 관련 페이지-----------------------------------------------
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
 
     """
@@ -23,11 +23,11 @@ def login():
         """
     if request.method == 'POST':
         try:
-            usr_id = request.form["usrId"]
-            usr_pwd = request.form["usrPwd"]
+            usr_id = request.form["username"]
+            usr_pwd = request.form["password"]
 
-            login_result = def_login(usr_id, usr_pwd)
-            if login_result['login'] == '1':
+            login_result = def_login(mariadb_pool,usr_id, usr_pwd)
+            if login_result['login'] == 1:
                 session['usr_idx'] = login_result['login_info'][0]
                 session['usr_id'] = usr_id
                 session['usr_nick'] = login_result['login_info'][2]
@@ -35,6 +35,10 @@ def login():
                 session['grp_nm_en'] = login_result['login_info'][4]
                 session['usr_nm'] = login_result['login_info'][5]
 
+                return redirect(url_for('dataManagement'))
+
+            else:
+                return render_template('login/login.html',login_msg='로그인 실패. 일치하는 회원이 없습니다.' )
         except Exception as e:
             print(e)
             login_result = fail_message_json(login_result)

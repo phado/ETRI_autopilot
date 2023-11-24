@@ -34,7 +34,7 @@
         Welcome!<br />
         Sign in to your Account
       </div>
-      <form method="POST" action="/">
+      <form method="POST" action="/login">
         <div class="form-group">
           <input
             type="text"
@@ -42,7 +42,6 @@
             id="username"
             name="username"
             placeholder="User ID"
-            required
           />
         </div>
         <div class="form-group">
@@ -52,7 +51,6 @@
             id="password"
             name="password"
             placeholder="Password"
-            required
           />
           <small id="passwordError" class="text-danger"></small>
         </div>
@@ -61,93 +59,89 @@
             <div class="forget-link-area">
               <a class="forget-id" id="fotget-id">Forget ID?</a>
 
-              <!-- 아이디 찾기 모달 -->
-              <div id="findidModal" class="findidmodal">
-                <div class="findidmodal-content">
-                  <span class="findidmodal-close" id="closefindidModalBtn"
-                    >&times;</span
-                  >
-                  <div class="findidmodal-title-name">아이디 찾기</div>
-
-                  <div class="input-area">
-                    <div class="findid-text">
-                      회원정보에 등록된 아이디와 휴대폰 번호를 입력해주세요.
-                    </div>
-                    <div class="input-title">이름</div>
-                    <input
-                      type="text"
-                      class="input-findid"
-                      id="findidUsername"
-                    />
-                    <div class="input-title">휴대폰 번호</div>
-                    <input type="text" class="input-findid" id="findidPhone" />
-                    <button class="findidBtn" id="findidBtn" onclick="idFind()">
-                      Check
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <!-- 아이디 찾기 모달 -->
-              <!-- 아이디 찾기 완료 모달 -->
-              <div id="replaceidModal" class="replaceidmodal">
-                <div class="replaceidmodal-content">
-                  <span class="replaceidmodal-close" id="closereplaceidModalBtn"
-                    >&times;</span
-                  >
-                  <div class="replaceidmodal-title-name">아이디 재설정</div>
-                  <div class="input-area">
-                    <div class="replaceid-text">
-                      회원정보와 일치하는 아이디입니다.
-                    </div>
-                    <div class="input-title">아이디</div>
-                    <input type="text" class="input-replaceid" />
-                    <div class="input-title">가입일</div>
-                    <input type="text" class="input-replacecreate" />
-                    <button class="replaceidBtn" id="replaceidBtn">
-                      Check
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <!-- 아이디 찾기 완료 모달 -->
-              <!-- 아이디 찾기 모달 스크립트 -->
-              <script>
-                var findidmodal = document.getElementById("findidModal");
-                var openfindidModalBtn = document.getElementById("fotget-id");
-                var closefindidModalBtn = document.getElementById(
-                  "closefindidModalBtn"
-                );
-                openfindidModalBtn.addEventListener("click", function () {
-                  findidmodal.style.display = "block";
-                });
-                closefindidModalBtn.addEventListener("click", function () {
-                  resetIdFindModal();
-                  findidmodal.style.display = "none";
-                });
-
-                var replaceidModal = document.getElementById("replaceidModal");
-                var closereplaceidModalBtn = document.getElementById(
-                  "closereplaceidModalBtn"
-                );
-                var findidBtn = document.getElementById("findidBtn");
-
-                findidBtn.addEventListener("click", function () {
-                  idFind();
-                });
-
-                closereplaceidModalBtn.addEventListener("click", function () {
-                  resetIdFindModal();
-                  replaceidModal.style.display = "none";
-                });
-              </script>
-              <!-- 아이디 찾기 모달 스크립트 -->
-
               <a class="forget-pwd" id="fotget-pwd">Forget Password?</a>
             </div>
             <div class="remember-id">
               <img src="{{url_for('static', filename='/image/box.svg')}}" />
               <div class="keep-text">Keep me signed in</div>
             </div>
+            <!-- <a href="#" onclick="redirectToDataManagement()"> -->
+              <button type="submit" class="login-button">Login</button>
+            </a>
+            <!-- 아이디 찾기 모달 -->
+            <div id="findidModal" class="findidmodal">
+              <div class="findidmodal-content">
+                <span class="findidmodal-close" id="closefindidModalBtn"
+                  >&times;</span
+                >
+                <div class="findidmodal-title-name">아이디 찾기</div>
+
+                <div class="input-area">
+                  <div class="findid-text">
+                    회원정보에 등록된 아이디와 휴대폰 번호를 입력해주세요.
+                  </div>
+                  <div class="input-title">이름</div>
+                  <input type="text" class="input-findid" id="findidUsername" />
+                  <div class="input-title">휴대폰 번호</div>
+                  <input type="text" class="input-findid" id="findidPhone" />
+                  <button class="findidBtn" id="findidBtn" onclick="idFind()">
+                    Check
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- 아이디 찾기 모달 -->
+            <!-- 아이디 찾기 완료 모달 -->
+            <div id="replaceidModal" class="replaceidmodal">
+              <div class="replaceidmodal-content">
+                <span class="replaceidmodal-close" id="closereplaceidModalBtn"
+                  >&times;</span
+                >
+                <div class="replaceidmodal-title-name">아이디 확인</div>
+                <div class="input-area">
+                  <div class="replaceid-text">
+                    회원정보와 일치하는 아이디입니다.
+                  </div>
+                  <div class="input-title">아이디</div>
+                  <input type="text" class="input-replaceid" />
+                  <div class="input-title">가입일</div>
+                  <input type="text" class="input-replacecreate" />
+                  <button class="replaceidBtn" id="replaceidBtn">Check</button>
+                </div>
+              </div>
+            </div>
+            <!-- 아이디 찾기 완료 모달 -->
+            <!-- 아이디 찾기 모달 스크립트 -->
+            <script>
+              var findidmodal = document.getElementById("findidModal");
+              var openfindidModalBtn = document.getElementById("fotget-id");
+              var closefindidModalBtn = document.getElementById(
+                "closefindidModalBtn"
+              );
+              openfindidModalBtn.addEventListener("click", function () {
+                findidmodal.style.display = "block";
+              });
+              closefindidModalBtn.addEventListener("click", function () {
+                resetIdFindModal();
+                findidmodal.style.display = "none";
+              });
+
+              var replaceidModal = document.getElementById("replaceidModal");
+              var closereplaceidModalBtn = document.getElementById(
+                "closereplaceidModalBtn"
+              );
+              var findidBtn = document.getElementById("findidBtn");
+
+              findidBtn.addEventListener("click", function () {
+                idFind();
+              });
+
+              closereplaceidModalBtn.addEventListener("click", function () {
+                resetIdFindModal();
+                replaceidModal.style.display = "none";
+              });
+            </script>
+            <!-- 아이디 찾기 모달 스크립트 -->
             <!-- 비밀번호 찾기 모달 -->
             <div id="findpwModal" class="findpwmodal">
               <div class="findpwmodal-content">
@@ -224,9 +218,7 @@
             });
           </script>
           <!-- 비밀번호 재설정 스크립트 -->
-          <a href="#" onclick="redirectToDataManagement()">
-            <button type="button" class="login-button">Login</button>
-          </a>
+
           <div class="signup">
             New User?
             <a href="#" class="signup-link" id="signup-user">Signup</a>
@@ -487,6 +479,11 @@
       </div>
     </div>
     <!-- 확인 취소 모달 -->
+    {% if login_msg %}
+    <script>
+        openconfirmPopup("로그인 실패", "{{ login_msg }}");
+    </script>
+    {% endif %}
   </body>
   <script>
     //회원가입 모달 함수 호출
