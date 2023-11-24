@@ -32,8 +32,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         var allframe = data.data_set_labeler_info[i][3];
         var complete = data.data_set_labeler_info[i][4];
         var inspect = data.data_set_labeler_info[i][5];
-        var statecode = data.data_set_labeler_info[i][6];
-        var statecodename = data.data_set_labeler_info[i][8];
+        var issue = data.data_set_labeler_info[i][6];
 
         // 새로운 행을 생성하고 각 셀에 데이터 추가
         var row = tbody.insertRow(-1);
@@ -85,9 +84,9 @@ function detailOpenModal(datasetIdx, datasetname) {
         //진행 완료 컬럼
         var completestatus;
         if (complete == 1) {
-          completestatus = "완료";
-        } else if (inspect == 0) {
-          completestatus = "진행중";
+          completestatus = "라벨링 완료";
+        } else if (complete == 5) {
+          completestatus = "라벨링 진행중";
         } else {
           completestatus = "기타 상태";
         }
@@ -108,21 +107,22 @@ function detailOpenModal(datasetIdx, datasetname) {
         //검수 완료 컬럼
         var status;
 
-        if (inspect == -1) {
+        if (inspect == 0) {
           status = "상태없음";
         } else if (inspect == 1) {
           status = "라벨링 완료";
-        } else if (inspect == 3) {
+        } else if (inspect == 2) {
           status = "검수 진행";
+        } else if (inspect == 3) {
+          status = "검수 완료";
         } else if (inspect == 4) {
           status = "검수 이슈";
-        } else if (inspect == 0) {
-          // status = "라벨링 진행";
-          status = "상태없음";
+        } else if (inspect == 5) {
+          status = "라벨링 진행";
         } else {
           status = "기타 상태";
         }
-        var cell8 = row.insertCell(6);
+        var cell8 = row.insertCell(7);
         cell8.className = "detaildata-cell";
         cell8.id = "cell-sub";
 
@@ -130,8 +130,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         button.textContent = status;
         button.id = "dateset-inspect-detail-button";
 
-        if (inspect == 1) {
-          // complete가 1일 때 버튼 배경색 변경
+        if (inspect == 3) {
           button.style.backgroundColor = "#526EFF";
         }
         cell8.appendChild(button);
@@ -140,6 +139,20 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell9.className = "detaildata-cell";
         cell9.id = "cell-sub";
       }
+
+      // 클릭 이벤트 리스너 추가
+      button.addEventListener(
+        "click",
+        (function (datasetIdx, datasetname, labeler) {
+          return function () {
+            // 이벤트 핸들러에서 할 일 작성
+            alert(datasetIdx + datasetname + labeler);
+            // 예시: 클릭 시 다른 동작을 하도록 할 경우
+            // 다른 함수 호출이나 원하는 작업을 여기에 추가
+            // 예: handleInspectButtonClick();
+          };
+        })(datasetIdx, datasetname, labeler)
+      );
     })
     .catch((error) => console.error("에러 발생:", error));
 }
