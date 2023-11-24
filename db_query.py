@@ -29,9 +29,12 @@ def db_login(mariadb_pool,usr_id,usr_pwd):
         cursor.execute(query)
         result = cursor.fetchall()
 
-        login_json_result['login'] = len(result)
-        if len(result) == 1:
+
+        if result[0][0] is not None:
             login_json_result['login_info'] = result[0]
+            login_json_result['login'] = len(result)
+        else:
+            login_json_result['login'] = 0
 
         login_json_result = success_message_json(login_json_result)
 
