@@ -24,7 +24,7 @@ def db_login(mariadb_pool,usr_id,usr_pwd):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"SELECT tu.usr_idx ,tu.usr_nick ,tu.grp_idx,tu.usr_nm FROM tb_users tu WHERE tu.usr_id ='{usr_id}' and tu.usr_pw ='{usr_pwd}';"
+        query = f"SELECT tu.usr_idx, tu.usr_id, tu.usr_nick,tg.grp_idx , tg.grp_nm_en,tu.usr_nm , tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd WHERE tu.usr_id ='{usr_id}' and tu.usr_pw ='{usr_pwd}' and tu.is_valid =1;"
 
         cursor.execute(query)
         result = cursor.fetchall()
@@ -326,7 +326,12 @@ def db_get_usr_info(mariadb_pool,usr_id):
 
 
 def db_data_set_detail(mariadb_pool,dataset_idx):
-
+    """
+    데이터셋 상세 정보 조회
+    @param mariadb_pool:
+    @param dataset_idx:
+    @return:
+    """
     try:
         json_result = make_response_json([])
 
@@ -353,34 +358,45 @@ def db_data_set_detail(mariadb_pool,dataset_idx):
         return json_result
 
 
-def db_data_set_detail(mariadb_pool,dataset_idx):
-
-    try:
-        json_result = make_response_json([])
-
-        connection = mariadb_pool.get_connection()
-        cursor = connection.cursor()
-
-        query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
-        cursor.execute(query)
-        json_result['data_set_info'] = cursor.fetchall()
-
-        query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
-        cursor.execute(query)
-        json_result['data_set_labeler_info'] = cursor.fetchall()
-
-        json_result = success_message_json(json_result)
-    except Exception as e:
-        print(e)
-        json_result = fail_message_json(json_result)
-
-    finally:
-        if cursor: cursor.close()
-        if connection: connection.close()
-
-        return json_result
+# def db_data_set_detail(mariadb_pool,dataset_idx):
+#     """
+#     데이터셋 상세 정보 조회
+#     @param mariadb_pool:
+#     @param dataset_idx:
+#     @return:
+#     """
+#     try:
+#         json_result = make_response_json([])
+#
+#         connection = mariadb_pool.get_connection()
+#         cursor = connection.cursor()
+#
+#         query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+#         cursor.execute(query)
+#         json_result['data_set_info'] = cursor.fetchall()
+#
+#         query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
+#         cursor.execute(query)
+#         json_result['data_set_labeler_info'] = cursor.fetchall()
+#
+#         json_result = success_message_json(json_result)
+#     except Exception as e:
+#         print(e)
+#         json_result = fail_message_json(json_result)
+#
+#     finally:
+#         if cursor: cursor.close()
+#         if connection: connection.close()
+#
+#         return json_result
 
 def db_model_detail(mariadb_pool, model_idx):
+    """
+    모델 상세 페이지 내용 조회
+    @param mariadb_pool:
+    @param model_idx:
+    @return:
+    """
 
     try:
         json_result = make_response_json([])
@@ -395,6 +411,100 @@ def db_model_detail(mariadb_pool, model_idx):
 
         json_result = success_message_json(json_result)
 
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
+def db_get_labeler(mariadb_pool,grp_idx):
+    """
+    그룹 아이디로 라벨러 조회
+    데이터셋 추가 - 그룹(기관)별 라벨러 조회
+    figma : 데이터셋 추가_라벨러 추가_팝업에서 라벨러 조회
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tu.usr_nick from tb_users tu left join tb_usr_permission tup on tu.usr_idx = tup.usr_idx left join tb_groups tg on tu.grp_idx = tg.grp_idx where tup.pms_cd = 4 and tg.grp_idx = {int(grp_idx)};"
+        cursor.execute(query)
+
+        json_result['labeler_list'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
+def db_get_devloper(mariadb_pool,grp_idx):
+    """
+    모델 추가 - 그룹(기관)별 개발자 조회
+    figma : 모델 추가_개발자 조회
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tu.usr_nick from tb_users tu left join tb_usr_permission tup on tu.usr_idx = tup.usr_idx left join tb_groups tg on tu.grp_idx = tg.grp_idx where tup.pms_cd = 6 and tg.grp_idx = {int(grp_idx)};"
+        cursor.execute(query)
+
+        json_result['devloper_list'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+def db_get_dataset(mariadb_pool,grp_idx):
+    """
+    모델 추가 - 그룹에 속한 데이터셋 조회
+    figma : 모델 추가_데이터셋 추가에서 조회
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select DISTINCT tpm.prj_name from tb_users tu join tb_groups tg on tu.grp_idx = tg.grp_idx join tb_dev_prj tdp on tu.usr_idx = tdp.usr_idx join tb_prj_models tpm on tdp.prj_idx = tpm.prj_idx where tg.grp_idx = {int(grp_idx)};"
+
+        cursor.execute(query)
+
+        json_result['dataset_list'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
     except Exception as e:
         print(e)
         json_result = fail_message_json(json_result)

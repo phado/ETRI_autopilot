@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,session
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
-    db_model_detail
+    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
@@ -28,10 +28,12 @@ def login():
 
             login_result = def_login(usr_id, usr_pwd)
             if login_result['login'] == '1':
-                session['usr_idx'] = login_result['login_info'][1]
-                session['usr_nick_name'] = login_result['login_info'][1]
-                session['usr_name'] = login_result['login_info'][1]
+                session['usr_idx'] = login_result['login_info'][0]
                 session['usr_id'] = usr_id
+                session['usr_nick'] = login_result['login_info'][2]
+                session['grp_idx'] = login_result['login_info'][3]
+                session['grp_nm_en'] = login_result['login_info'][4]
+                session['usr_nm'] = login_result['login_info'][5]
 
         except Exception as e:
             print(e)
@@ -380,18 +382,23 @@ def dataSetDetail():
 
     return result_json
 
-@app.route('/dataManagement/dataSetDetail/getLabeler')
+@app.route('/dataManagement/getLabeler')
 def getLabeler():
     """
     그룹 아이디로 라벨러 조회
-
+    데이터셋 추가 - 그룹(기관)별 라벨러 조회
     figma : 데이터셋 추가_라벨러 추가_팝업에서 라벨러 조회
 
     """
     try:
 
         result_json = make_response_json([])
+        grp_idx = '1'
+        # grp_idx = session['grp_idx']
 
+        labeler_list = db_get_labeler(mariadb_pool,grp_idx)
+
+        result_json['labeler_list'] = labeler_list
 
     except Exception as e:
         print(e)
@@ -400,6 +407,51 @@ def getLabeler():
     return result_json
 
 
+@app.route('/modelManagement/getDevloper')
+def getDevloper():
+    """
+    모델 추가 - 그룹(기관)별 개발자 조회
+    figma : 모델 추가_개발자 조회
+
+    """
+    try:
+
+        result_json = make_response_json([])
+        grp_idx = '1'
+        # grp_idx = session['grp_idx']
+
+        labeler_list = db_get_devloper(mariadb_pool,grp_idx)
+
+        result_json['devloper_list'] = labeler_list
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
+@app.route('/modelManagement/getDataSet')
+def getDataSet():
+    """
+    모델 추가  - 모델 추가_데이터셋 팝업
+    figma : 모델 추가_데이터셋 검색
+
+    """
+    try:
+
+        result_json = make_response_json([])
+        grp_idx = '1'
+        # grp_idx = session['grp_idx']
+
+        labeler_list = db_get_dataset(mariadb_pool,grp_idx)
+
+        result_json['dataset_list'] = labeler_list
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
 @app.route('/modelManagement/ModelDetail')
 def ModelDetail():
     """
