@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template,session, redirect, url_for
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
-    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset
+    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
@@ -186,8 +186,8 @@ def dataManagement():
         result_json = make_response_json([])
 
 
-        board_list = db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
-        board_cnt = db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type)
+        board_list = db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type,session['usr_nick'],session['grp_nm_en'])
+        board_cnt = db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,session['usr_id'],tbl_type,session['usr_nick'],session['grp_nm_en'])
 
         usr_idx= session['usr_idx']
         usr_id= session['usr_id']
@@ -233,10 +233,9 @@ def modelManagement():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                    session['usr_id'], tbl_type)
+                                    session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                     session['usr_id'], tbl_type)
-        
+                                     session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
 
         usr_idx= session['usr_idx']
         usr_id= session['usr_id']
@@ -244,7 +243,6 @@ def modelManagement():
         usr_nick= session['usr_nick']
         grp_nm_en= session['grp_nm_en']
         usr_nm= session['usr_nm']
-
 
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
@@ -280,9 +278,9 @@ def userManagementSystemManager():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                    session['usr_id'], tbl_type)
+                                    session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                     session['usr_id'], tbl_type)
+                                     session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
@@ -315,9 +313,9 @@ def userManagementDataManager():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                       session['usr_id'], tbl_type)
+                                       session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                        session['usr_id'], tbl_type)
+                                        session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
@@ -352,9 +350,9 @@ def userManagementModelManager():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                       session['usr_id'], tbl_type)
+                                       session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                        session['usr_id'], tbl_type)
+                                        session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
@@ -430,6 +428,30 @@ def getLabeler():
     return result_json
 
 
+@app.route('/dataManagement/getInspector')
+def getInspector():
+    """
+    그룹 아이디로 검수자 조회
+    데이터셋 추가 - 그룹(기관)별 검수자 조회
+    figma : 데이터셋 추가_라벨러 추가_팝업에서 검수자 조회
+
+    """
+    try:
+
+        result_json = make_response_json([])
+        grp_idx = '0' # todo 하드 코딩
+        # grp_idx = session['grp_idx']
+
+        labeler_list = db_get_inspector(mariadb_pool,grp_idx)
+
+        result_json['inspector_list'] = labeler_list
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
 @app.route('/modelManagement/getDevloper')
 def getDevloper():
     """
@@ -503,6 +525,29 @@ def ModelDetail():
 
     return result_json
 
+
+@app.route('/modelManagement/updateLaberStatus', methods=['POST'])
+def ModelDetail():
+    """
+    데이터 셋에 속한 라벨러의 검수 완료
+
+    figma : 데이터관리_모델 목록_상세정보
+
+    """
+    try:
+        session['usr_id'] = 'test'
+
+
+        result_json = make_response_json([])
+
+
+
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
 
 if __name__ == '__main__':
     app.run(debug=True)
