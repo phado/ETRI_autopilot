@@ -111,7 +111,7 @@
               </th>
               <th class="data-cell">
                 <img
-                  src="{{url_for('static', filename='/image/delete.svg')}}" onclick="deleteDatasetSend('{{_[0]}}','{{_[1]}}')"
+                  src="{{url_for('static', filename='/image/delete.svg')}}" onclick="deleteDatasetSend('{{grp_nm_en}}','{{_[1]}}')"
                 />
               </th>
             </tr>
@@ -147,11 +147,9 @@
                   style="margin-top: 8px"
                   class="dataset-root-input"
                 />
-                <div
-                  style="display: flex; align-items: center; margin-top: 24px"
-                >
-                  <div style="flex-grow: 1">라벨러 설정</div>
-                  <button class="labeler-add-button">추가</button>
+                <div style="display: flex; align-items: center; margin-top: 24px">
+                  <div style="flex-grow: 1" >라벨러 설정</div>
+                  <button class="labeler-add-button" onclick="onLabelerAddButtonClick('{{grp_idx}}')">추가</button>
                 </div>
                 <textarea
                   type="text"
@@ -167,9 +165,8 @@
                 <button class="checker-search-button">search</button>
               </div>
               <div class="modal-input2">
-                <div style="margin-top: 24px; margin-bottom: 8px">
-                  라벨러 추가
-                </div>
+                <div style="margin-top: 24px; margin-bottom: 8px" id="findPersonTitle">&nbsp;</div>
+
                 <div class="modal-input2-box">
                   <div class="modal-input2-search">
                     <input
@@ -179,7 +176,7 @@
                     />
                     <button class="labeler-add-button">검색</button>
                   </div>
-                  <textarea class="labeler-add-textarea"></textarea>
+                  <div class="labeler-add-textarea" id="labelerAll"  style="resize: none;" readonly></div>
                   <div class="modal-input2-button">
                     <button class="labeler-cancel-button">취소</button>
                     <button class="labeler-confirm-button">확인</button>

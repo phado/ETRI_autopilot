@@ -41,10 +41,23 @@ function confirmpopupOk() {
 }
 
 // 확인 취소 팝업 합수 --------------------------------------------------
-function openconfirmcancelPopup() {
+// var modalTitle = " ";
+// var modalMessage = "";
+// openconfirmcancelPopup(modalTitle, modalMessage);
+function openconfirmcancelPopup(modalTitle, modalMessage) {
   var confirmcancelPopup = document.getElementById("confirmcancelPopup");
+  var titleElement = document.getElementById("confirmcancelpopupTitle");
+  var messageElement = document.getElementById("confirmcancelpopupMessage");
+
+  titleElement.textContent = modalTitle;
+  messageElement.textContent = modalMessage;
+
   confirmcancelPopup.style.display = "block";
   centerPopup(confirmcancelPopup);
+}
+
+function confirmcancelpopupCancel() {
+  closeconfirmcancelPopup();
 }
 
 function closeconfirmcancelPopup() {
@@ -52,12 +65,13 @@ function closeconfirmcancelPopup() {
   confirmcancelPopup.style.display = "none";
 }
 
-function confirmcancelpopupCancel() {
-  closeconfirmcancelPopup();
-}
+// 확인 취소 시 사용하는 곳 마다 다른 타이틀,메세지로 띄우기 위한 함수
 
-function confirmcancelpopupOk() {
-  closeconfirmcancelPopup();
-  //회원가입 완료 모달 띄우기
-  openconfirmPopup();
-}
+// function confirmcancelpopupOk() {
+//   closeconfirmcancelPopup();
+//   var modalTitle = "";
+//   var modalMessage = "";
+//   openconfirmPopup(modalTitle, modalMessage);
+// }
+
+// 확인 취소 팝업 합수 --------------------------------------------------

@@ -1,3 +1,6 @@
+// todo
+let confirm_temp = "";
+
 document.addEventListener("DOMContentLoaded", function () {
   const toggles = document.querySelectorAll(".toggle");
 
