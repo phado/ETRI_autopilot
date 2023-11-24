@@ -1,8 +1,7 @@
 from flask import Flask, request, render_template,session, redirect, url_for
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
-    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, db_change_label_done, \
-    db_change_dataset_status
+    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, db_change_label_done
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
