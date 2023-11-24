@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template,session, redirect, url_for
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
-    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, db_change_label_done
+    db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, \
+    db_change_confirm_done
 from user_management import def_login, def_find_id, def_find_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
@@ -532,13 +533,13 @@ def ModelDetail():
     return result_json
 
 
-@app.route('/modelManagement/changeLabelDone', methods=['POST'])
-def changeLabelDone():
+@app.route('/modelManagement/changeConfirmDone', methods=['POST'])
+def changeConfirmDone():
     """
     데이터 셋에 속한 라벨러의 검수 완료
     result_json['labeler']['fixed_labeler'] ->값에 업데이트 된 라벨러 정보 전달
-    result_json['labeler']['dataset_fixed'] = '1' ->모든 라벨러 완료시 데이터셋 프로젝트 진행 상태 완료로 변경
-    result_json['labeler']['dataset_fixed'] = '1' ->일때 게시판 새로 고침필요
+    result_json['labeler']['dataset_confrim_fixed'] = '1' ->모든 라벨러 완료시 데이터셋 프로젝트 진행 상태 완료로 변경
+    result_json['labeler']['dataset_confrim_fixed'] = '1' ->일때 게시판 새로 고침필요
 
     figma : 데이터관리_모델 목록_상세정보
 
@@ -551,7 +552,38 @@ def changeLabelDone():
         ds_name = data['ds_name']
 
         # 라벨러 권한 업데이트
-        result_json['labeler'] = db_change_label_done(mariadb_pool,usr_nick,ds_name)
+        result_json['labeler'] = db_change_confirm_done(mariadb_pool,usr_nick,ds_name)
+
+        result_json = success_message_json(result_json)
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
+
+
+@app.route('/modelManagement/changeLabelingDone', methods=['POST'])
+def changeLabelingDone():
+    """
+    데이터 셋에 속한 라벨러의 검수 완료
+    result_json['labeler']['fixed_labeler'] ->값에 업데이트 된 라벨러 정보 전달
+    result_json['labeler']['dataset_labeled_fixed'] = '1' ->모든 라벨러 완료시 데이터셋 프로젝트 진행 상태 완료로 변경
+    result_json['labeler']['dataset_labeled_fixed'] = '1' ->일때 게시판 새로 고침필요
+
+    figma : 데이터관리_모델 목록_상세정보
+
+    """
+    try:
+        result_json = make_response_json([])
+
+        data = request.get_json()
+        usr_nick = data['usr_nick']
+        ds_name = data['ds_name']
+
+        # 라벨러 권한 업데이트
+        result_json['labeler'] = db_change_confirm_done(mariadb_pool,usr_nick,ds_name)
 
         result_json = success_message_json(result_json)
 

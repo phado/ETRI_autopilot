@@ -557,7 +557,7 @@ def db_get_dataset(mariadb_pool,grp_idx):
         return json_result
 
 
-def db_change_label_done(mariadb_pool,usr_nick,ds_name):
+def db_change_confirm_done(mariadb_pool,usr_nick,ds_name):
     """
     데이터셋 상세 페이지에서 검수가 완료 버튼 클릭 이벤트
     쿼리 1 : 닉네임과 데이터 셋 이름으로 유저 정보와 데이터셋 인덱스 구한다.
@@ -607,11 +607,7 @@ def db_change_label_done(mariadb_pool,usr_nick,ds_name):
         query = f"""select
                         tu.usr_nick,
                         tud.ds_idx ,
-                        tud.usr_ds_cnt_frame,
-                        tud.usr_ds_all_frame ,
-                        tud.usr_ds_complete ,
-                        tsc.stat_nm_kr,
-                        tud.inp_stat_desc
+                        tud.inp_stat_idx
                     from
                         tb_usr_datasets tud
                     left join tb_users tu on
@@ -622,7 +618,7 @@ def db_change_label_done(mariadb_pool,usr_nick,ds_name):
                         tud.inp_stat_idx = tsc.stat_idx
                     WHERE
                         tud.ds_idx = {ds_idx}
-                        and tu.usr_idx = {usr_idx};"""
+                    and tu.usr_idx = {usr_idx};"""
 
         cursor.execute(query)
         fixed_labeler = cursor.fetchall()
@@ -662,15 +658,19 @@ def db_change_label_done(mariadb_pool,usr_nick,ds_name):
                     AND
                         tsc.stat_nm_kr = '검수 완료';"""
         cursor.execute(query)
-        cnt_done_labeler = cursor.fetchall()[0][0]
+        cnt_done_confirm = cursor.fetchall()[0][0]
 
-        if cnt_total_labeler == cnt_done_labeler:
+        if cnt_total_labeler == cnt_done_confirm:
             # 쿼리 6
             query = f"""UPDATE tb_datasets_state 
                         SET inp_stat_idx='3' 
                         WHERE ds_idx= {ds_idx};"""
             cursor.execute(query)
-            json_result['dataset_fixed'] = '1'
+            json_result['dataset_confrim_fixed'] = '1'
+            try:
+                connection.commit()
+            except:
+                if connection: connection.rollback()
 
     except Exception as e:
         print(e)
@@ -682,6 +682,134 @@ def db_change_label_done(mariadb_pool,usr_nick,ds_name):
 
         return json_result
 
+
+def db_change_labeling_done(mariadb_pool,usr_nick,ds_name):
+    """
+    데이터셋 상세 페이지에서 라벨링이 완료 버튼 클릭 이벤트
+    쿼리 1 : 닉네임과 데이터 셋 이름으로 유저 정보와 데이터셋 인덱스 구한다.
+    쿼리 2 : 1 로 구한 데이터셋 인덱스와 유저 인덱스로 진행완료 상태를 라벨링 완료로 변경 한다
+    쿼리 3 : 라벨러 업데이트된 상태 조회해서 담는다.
+    쿼리 4 : 프로젝트에 라벨러들 전부 카운트
+    쿼리 5 : 프로젝트에 라벨러 중에 라벨링 완료 전부 카운트
+    쿼리 6 : 프로젝트가 전부 라벨링 완료 라면 프로젝트 상태에 작업상태를 라벨링완료로 변경
+
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+        # 쿼리1
+        query = f"""SELECT tbd.ds_idx, tbd.usr_idx 
+                    FROM tb_usr_datasets 
+                    AS tbd 
+                    LEFT JOIN tb_prj_datasets 
+                    AS tpd
+                    ON tbd.ds_idx = tpd.ds_idx 
+                    LEFT JOIN tb_users 
+                    AS tu ON tbd.usr_idx = tu.usr_idx 
+                    WHERE tu.usr_nick='{usr_nick}' AND tpd.ds_name='{ds_name}'; """
+        cursor.execute(query)
+        ds_idx, usr_idx = cursor.fetchall()[0]
+
+        # 쿼리2
+        query = f"""UPDATE
+                        tb_usr_datasets
+                    SET
+                        usr_ds_complete = '1'
+                    WHERE
+                        ds_idx = {ds_idx}
+                    AND
+                        usr_idx = {usr_idx};"""
+        cursor.execute(query)
+
+        try:
+            connection.commit()
+        except:
+            if connection: connection.rollback()
+
+        # 쿼리3
+        query = f"""select
+                        tu.usr_nick,
+                        tud.ds_idx ,
+                        tud.usr_ds_complete
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    left join tb_usr_inspection tui on
+                        tud.ds_idx = tui.ds_idx
+                    left join tb_state_code tsc on
+                        tud.inp_stat_idx = tsc.stat_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx}
+                        and tu.usr_idx = {usr_idx};"""
+
+        cursor.execute(query)
+        fixed_labeler = cursor.fetchall()
+
+        json_result['fixed_labeler'] = fixed_labeler
+        json_result = success_message_json(json_result)
+
+        # 쿼리 4
+        query = f"""select
+                        COUNT(*)
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    left join tb_usr_inspection tui on
+                        tud.ds_idx = tui.ds_idx
+                    left join tb_state_code tsc on
+                        tud.inp_stat_idx = tsc.stat_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx};"""
+        cursor.execute(query)
+        cnt_total_labeler = cursor.fetchall()[0][0]
+
+        # 쿼리 5
+        query = f"""select
+                        COUNT(tud.usr_ds_complete)
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx}
+                    and 
+                        tud.usr_ds_complete = 1;"""
+        cursor.execute(query)
+        cnt_done_labeler = cursor.fetchall()[0][0]
+
+        if cnt_total_labeler == cnt_done_labeler:
+            # 쿼리 6
+            query = f"""UPDATE
+                            tb_datasets_state
+                        SET
+                            lb_stat_idx = '1'
+                        WHERE ds_idx= {ds_idx};"""
+            cursor.execute(query)
+
+            try:
+                connection.commit()
+            except:
+                if connection: connection.rollback()
+
+
+            json_result['dataset_labeled_fixed'] = '1'
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
 
 
 
