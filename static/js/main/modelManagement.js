@@ -68,14 +68,6 @@ function confirmcancelpopupOk() {
   project_name = confirm_temp[1];
   data_set = confirm_temp[2];
 
-  // a = JSON.stringify({
-  //   company_name: company_name,
-  //   project_name: project_name,
-  //   data_set: data_set,
-  // });
-  // console.log(a);
-  // console.log(company_name + project_name + dataset_name);
-
   var apiUrl = "http://112.167.170.54:7080/api/delete_dev_model";
   fetch(apiUrl, {
     method: "POST",
@@ -91,18 +83,17 @@ function confirmcancelpopupOk() {
     .then((response) => response.json()) // 응답을 JSON으로 변환
     .then((data) => {
       console.log("서버 응답:", data);
-      location.reload();
     })
     .catch((error) => {
       // 오류 처리
       console.error("오류 발생:", error);
     });
 
-  // confirm_temp = "";
-  // closeconfirmcancelPopup();
-  // var modalTitle = "삭제 확인";
-  // var modalMessage = "삭제가 완료되었습니다.";
-  // openconfirmPopup(modalTitle, modalMessage);
+  confirm_temp = "";
+  closeconfirmcancelPopup();
+  var modalTitle = "삭제 확인";
+  var modalMessage = "삭제가 완료되었습니다.";
+  openconfirmPopup(modalTitle, modalMessage);
 }
 
 // ------------------------------------------------------------------------

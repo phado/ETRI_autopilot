@@ -82,9 +82,17 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
 
+        var root = "112.167.170.54:31769"; // 예시로 주어진 root 값
+        var baseUrl = "http://localhost:5000/"; // 기본 URL 값
+
+        // 만약 root에 baseUrl이 포함되어 있다면 제거
+        if (root.includes(baseUrl)) {
+          root = root.replace(baseUrl, "");
+        }
+
         var link = document.createElement("a");
-        link.href = root;
-        link.textContent = root;
+        link.href = "http://" + root; // http:// 가 없는 경우 추가
+        link.textContent = root; // 링크에 표시될 텍스트
 
         cell4.appendChild(link);
 
@@ -150,7 +158,6 @@ function confirmcancelpopupOk() {
     .then((response) => response.json()) // 응답을 JSON으로 변환
     .then((data) => {
       console.log("서버 응답:", data);
-      location.reload();
     })
     .catch((error) => {
       // 오류 처리
