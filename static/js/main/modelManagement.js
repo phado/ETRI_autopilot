@@ -22,7 +22,7 @@ function detailOpenModal(modelIdx, modelname) {
     .then((data) => {
       for (var i = 0; i < data.model_detail_info.length; i++) {
         var labeler = data.model_detail_info[i][0];
-        var checker = "검수자";
+        var checker = data.model_detail_info[i][1];
         var root = data.model_detail_info[i][2];
 
         var row = tbody.insertRow(-1);
@@ -30,7 +30,6 @@ function detailOpenModal(modelIdx, modelname) {
         cell1.innerHTML = i + 1;
         cell1.style.width = "20px";
         cell1.id = "cell-sub";
-        cell1.style.borderRight = "1px solid #c5c5c5";
         var cell2 = row.insertCell(1);
         cell2.className = "detaildata-cell";
         cell2.id = "cell-sub";
@@ -46,12 +45,64 @@ function detailOpenModal(modelIdx, modelname) {
     })
     .catch((error) => console.error("에러 발생:", error));
 }
+//삭제 아이콘 클릭 시 모델셋 삭제 함수
+function deleteModelsetSend(company_name, project_name, data_set) {
+  confirm_temp = [company_name, project_name, data_set];
+
+  var modalTitle = "삭제 확인";
+  var modalMessage = project_name + "의 모든 데이터를 삭제하시겠습니까?";
+  openconfirmcancelPopup(modalTitle, modalMessage);
+}
 
 function closeDetailModal() {
   var detailModal = document.getElementById("detailModal");
   var closeDetailModalBtn = document.getElementById("closeDetailModalBtn");
 
   detailModal.style.display = "none";
+}
+
+//삭제 시 나오는 모달 관련 함수
+function confirmcancelpopupOk() {
+  // 삭제 api 호출
+  company_name = confirm_temp[0];
+  project_name = confirm_temp[1];
+  data_set = confirm_temp[2];
+
+  // a = JSON.stringify({
+  //   company_name: company_name,
+  //   project_name: project_name,
+  //   data_set: data_set,
+  // });
+  // console.log(a);
+  // console.log(company_name + project_name + dataset_name);
+
+  var apiUrl = "http://112.167.170.54:7080/api/delete_dev_model";
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      company_name: company_name,
+      project_name: project_name,
+      data_set: data_set,
+    }),
+  })
+    .then((response) => response.json()) // 응답을 JSON으로 변환
+    .then((data) => {
+      console.log("서버 응답:", data);
+      location.reload();
+    })
+    .catch((error) => {
+      // 오류 처리
+      console.error("오류 발생:", error);
+    });
+
+  // confirm_temp = "";
+  // closeconfirmcancelPopup();
+  // var modalTitle = "삭제 확인";
+  // var modalMessage = "삭제가 완료되었습니다.";
+  // openconfirmPopup(modalTitle, modalMessage);
 }
 
 // ------------------------------------------------------------------------
@@ -87,6 +138,7 @@ function modelsetCreateSend(company_name) {
 
   var apiUrl = "http://192.168.0.187:7080/api/create_dev_model";
 
+  showLoading();
   fetch(apiUrl, {
     method: "POST",
     headers: {
@@ -98,9 +150,27 @@ function modelsetCreateSend(company_name) {
     .then((data) => {
       // 서버 응답 처리
       console.log("서버 응답:", data);
+
+      // 로딩 숨김
+      closeconfirmPopup();
+
+      if (data.state_code == "90") {
+        closeCreateModal();
+        var modalTitle = "데이터셋 추가 완료";
+        var modalMessage = "데이터셋 추가가 성공적으로 완료되었습니다.";
+        openconfirmPopup(modalTitle, modalMessage);
+      }
     })
     .catch((error) => {
       // 오류 처리
+      closeconfirmPopup();
+
       console.error("오류 발생:", error);
     });
+
+  function showLoading() {
+    var modalTitle = "데이터셋 저장";
+    var modalMessage = "데이터셋 저장이 진행중입니다.";
+    openconfirmPopup(modalTitle, modalMessage);
+  }
 }
