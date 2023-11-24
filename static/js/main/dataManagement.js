@@ -30,33 +30,8 @@ function detailOpenModal(datasetIdx, datasetname) {
         var labeler = data.data_set_labeler_info[i][0];
         var progress = data.data_set_labeler_info[i][2];
         var allframe = data.data_set_labeler_info[i][3];
-
         var complete = data.data_set_labeler_info[i][4];
-        var completestatus;
-        if (complete == 1) {
-          completestatus = "완료";
-        } else if (inspect == 0) {
-          completestatus = "진행중";
-        } else {
-          completestatus = "기타 상태";
-        }
         var inspect = data.data_set_labeler_info[i][5];
-        var status;
-
-        if (inspect == -1) {
-          status = "상태없음";
-        } else if (inspect == 1) {
-          status = "라벨링 완료";
-        } else if (inspect == 3) {
-          status = "검수 진행";
-        } else if (inspect == 4) {
-          status = "검수 이슈";
-        } else if (inspect == 0) {
-          // status = "라벨링 진행";
-          status = "상태없음";
-        } else {
-          status = "기타 상태";
-        }
         var statecode = data.data_set_labeler_info[i][6];
         var statecodename = data.data_set_labeler_info[i][8];
 
@@ -107,15 +82,59 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell6.id = "cell-sub";
         cell6.innerHTML = allframe;
 
+        //진행 완료 컬럼
+        var completestatus;
+        if (complete == 1) {
+          completestatus = "완료";
+        } else if (inspect == 0) {
+          completestatus = "진행중";
+        } else {
+          completestatus = "기타 상태";
+        }
         var cell7 = row.insertCell(6);
         cell7.className = "detaildata-cell";
         cell7.id = "cell-sub";
-        cell7.innerHTML = "진행완료";
 
-        var cell8 = row.insertCell(7);
+        var button = document.createElement("button");
+        button.textContent = completestatus;
+        button.id = "dateset-progress-detail-button";
+
+        if (complete == 1) {
+          // complete가 1일 때 버튼 배경색 변경
+          button.style.backgroundColor = "#526EFF";
+        }
+        cell7.appendChild(button);
+
+        //검수 완료 컬럼
+        var status;
+
+        if (inspect == -1) {
+          status = "상태없음";
+        } else if (inspect == 1) {
+          status = "라벨링 완료";
+        } else if (inspect == 3) {
+          status = "검수 진행";
+        } else if (inspect == 4) {
+          status = "검수 이슈";
+        } else if (inspect == 0) {
+          // status = "라벨링 진행";
+          status = "상태없음";
+        } else {
+          status = "기타 상태";
+        }
+        var cell8 = row.insertCell(6);
         cell8.className = "detaildata-cell";
         cell8.id = "cell-sub";
-        cell8.innerHTML = status;
+
+        var button = document.createElement("button");
+        button.textContent = status;
+        button.id = "dateset-inspect-detail-button";
+
+        if (inspect == 1) {
+          // complete가 1일 때 버튼 배경색 변경
+          button.style.backgroundColor = "#526EFF";
+        }
+        cell8.appendChild(button);
 
         var cell9 = row.insertCell(8);
         cell9.className = "detaildata-cell";

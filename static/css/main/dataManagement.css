@@ -419,4 +419,39 @@
 #cell-sub {
   border-right: 1px solid #f1f1f1;
 }
+
+#dateset-progress-detail-button {
+  width: 60px;
+  height: 22px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  gap: 4px;
+  background: #d9d9d9;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  font-family: Roboto;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: 0em;
+}
+#dateset-inspect-detail-button {
+  width: 60px;
+  height: 22px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  gap: 4px;
+  background: #d9d9d9;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  font-family: Roboto;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: 0em;
+}
 /* -------------------------------------------------------------------------------------------------- */
