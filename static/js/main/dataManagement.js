@@ -94,15 +94,45 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell7.className = "detaildata-cell";
         cell7.id = "cell-sub";
 
-        var button = document.createElement("button");
-        button.textContent = completestatus;
-        button.id = "dateset-progress-detail-button";
+        var button1 = document.createElement("button");
+        button1.textContent = completestatus;
+        button1.id = "dateset-progress-detail-button";
 
         if (complete == 1) {
           // complete가 1일 때 버튼 배경색 변경
-          button.style.backgroundColor = "#526EFF";
+          button1.style.backgroundColor = "#526EFF";
         }
-        cell7.appendChild(button);
+        cell7.appendChild(button1);
+
+        button1.addEventListener(
+          "click",
+          (function (datasetIdx, datasetname, labeler) {
+            return function () {
+              // 이벤트 핸들러에서 할 일 작성
+              alert(datasetIdx + datasetname + labeler);
+
+              fetch("/modelManagement/changeLabelingDone", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  usr_nick: labeler,
+                  ds_name: datasetname,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.labeler.fixed_labeler[0][2] == 3) {
+                    console.log("버튼 색 바꿔");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+            };
+          })(datasetIdx, datasetname, labeler)
+        );
 
         //검수 완료 컬럼
         var status;
@@ -126,33 +156,26 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell8.className = "detaildata-cell";
         cell8.id = "cell-sub";
 
-        var button = document.createElement("button");
-        button.textContent = status;
-        button.id = "dateset-inspect-detail-button";
+        var button2 = document.createElement("button");
+        button2.textContent = status;
+        button2.id = "dateset-inspect-detail-button";
 
         if (inspect == 3) {
-          button.style.backgroundColor = "#526EFF";
+          button2.style.backgroundColor = "#526EFF";
         }
-        cell8.appendChild(button);
+        cell8.appendChild(button2);
 
+        // 클릭 이벤트 리스너 추가
+        button2.addEventListener(
+          "click",
+          (function (datasetIdx, datasetname, labeler) {
+            return function () {};
+          })(datasetIdx, datasetname, labeler)
+        );
         var cell9 = row.insertCell(8);
         cell9.className = "detaildata-cell";
         cell9.id = "cell-sub";
       }
-
-      // 클릭 이벤트 리스너 추가
-      button.addEventListener(
-        "click",
-        (function (datasetIdx, datasetname, labeler) {
-          return function () {
-            // 이벤트 핸들러에서 할 일 작성
-            alert(datasetIdx + datasetname + labeler);
-            // 예시: 클릭 시 다른 동작을 하도록 할 경우
-            // 다른 함수 호출이나 원하는 작업을 여기에 추가
-            // 예: handleInspectButtonClick();
-          };
-        })(datasetIdx, datasetname, labeler)
-      );
     })
     .catch((error) => console.error("에러 발생:", error));
 }
@@ -233,7 +256,7 @@ function datasetCreateSend(company_name) {
     inp_nick: inp_nick,
   };
 
-  var apiUrl = "http://192.168.0.187:7080/api/create_labelling_tool";
+  var apiUrl = "http://112.167.170.54:7080/api/create_labelling_tool";
 
   showLoading();
   fetch(apiUrl, {

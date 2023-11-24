@@ -127,7 +127,7 @@ function modelsetCreateSend(company_name) {
     data_set: data_set,
   };
 
-  var apiUrl = "http://192.168.0.187:7080/api/create_dev_model";
+  var apiUrl = "http://112.167.170.54:7080/api/create_dev_model";
 
   showLoading();
   fetch(apiUrl, {
