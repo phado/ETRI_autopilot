@@ -194,7 +194,7 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
 
     return json_result
 
-def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type):
+def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type,usr_nick, grp_nm_en):
     """
     데이터 관리 게시판 목록
     @param tabel_type: 조회할 테이블의 이름!!
@@ -204,7 +204,10 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
     @param search_key_word:
     @param show_data_mount:
     @param usr_id:
-    @return: 데이터 목록 리스트를 담은 딕션어리
+    @param tabel_type:
+    @param usr_nick:
+    @param grp_nm_en:
+    @return:
     """
     try:
 
@@ -215,8 +218,8 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
 
         query = ''
         if tabel_type == 'tb_prj_datasets': # 데이터 관리 목록 조회
-            query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds on tds.ds_idx =tpd.ds_idx WHERE tpd.is_valid =1;"
-
+            query = f"SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg     ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds     on tds.ds_idx =tpd.ds_idx left join tb_usr_datasets tud     on tud.usr_idx = tpd.ds_idx left join tb_users tu     on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx WHERE tpd.is_valid =1     AND tg.grp_nm_en='{grp_nm_en}'    AND tu.usr_nick='{usr_nick}';"
+            # query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg     ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds     on tds.ds_idx =tpd.ds_idx left join tb_usr_datasets tud     on tud.usr_idx = tpd.ds_idx left join tb_users tu     on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx WHERE tpd.is_valid =1     AND tg.grp_nm_en='etri'    AND tu.usr_nick='jin'    AND tup.pms_cd = 4;" todo 페이지 분리되면 pms_cd를 적용 해서 라벨러,검수자,관리자 구분
         elif tabel_type == 'tb_prj_models': # '모델 관리 목록 조회'
             query = "SELECT tpm.prj_idx , tpm.prj_name , tg.grp_nm_en ,tg.grp_nm_kr,tpm.prj_create_date ,tpm.prj_modify_date from tb_prj_models tpm left join tb_prj_datasets tpd on tpd.ds_idx =tpm.ds_idx left join tb_groups tg on tpd.grp_idx = tg.grp_idx where tpm.is_valid =1;"
 
@@ -246,7 +249,7 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
     
     return json_result
 
-def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type):
+def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type,usr_nick, grp_nm_en):
     """
     데이터 목록 관리 게시판의 목록의 숫자를 카운트한다.
     @param tabel_type: 테이블 명으로 조회할 테이블을 명
@@ -345,7 +348,7 @@ def db_data_set_detail(mariadb_pool,dataset_idx):
         cursor.execute(query)
         json_result['data_set_info'] = cursor.fetchall()
 
-        query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
+        query = f"select tu.usr_nick,tud.ds_idx ,tud.usr_ds_cnt_frame, tud.usr_ds_all_frame ,  tud.usr_ds_complete , tsc.stat_nm_kr,  tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx = tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx WHERE tud.ds_idx = {int(dataset_idx)};"
         cursor.execute(query)
         json_result['data_set_labeler_info'] = cursor.fetchall()
 
@@ -459,6 +462,39 @@ def db_get_labeler(mariadb_pool,grp_idx):
         return json_result
 
 
+def db_get_inspector(mariadb_pool,grp_idx):
+    """
+    그룹 아이디로 검수자 조회
+    데이터셋 추가 - 그룹(기관)별 검수자 조회
+    figma : 데이터셋 추가_라벨러 추가_팝업에서 검수자 조회
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = {int(grp_idx)};" #5 검수 4 라벨   grp_idx그룹 인덱스
+        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = 0;" #5 검수 4 라벨   grp_idx그룹 인덱스 일단 전체 조회 todo 고정 값 변경 해야함
+        cursor.execute(query)
+
+        json_result['inspector_list'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
 def db_get_devloper(mariadb_pool,grp_idx):
     """
     모델 추가 - 그룹(기관)별 개발자 조회
@@ -519,6 +555,134 @@ def db_get_dataset(mariadb_pool,grp_idx):
         if connection: connection.close()
 
         return json_result
+
+
+def db_change_label_done(mariadb_pool,usr_nick,ds_name):
+    """
+    데이터셋 상세 페이지에서 검수가 완료 버튼 클릭 이벤트
+    쿼리 1 : 닉네임과 데이터 셋 이름으로 유저 정보와 데이터셋 인덱스 구한다.
+    쿼리 2 : 1 로 구한 데이터셋 인덱스와 유저 인덱스로 라벨 검수 완려 설정
+    쿼리 3 : 라벨러 업데이트된 상태 조회해서 담는다.
+    쿼리 4 : 프로젝트에 라벨러들 전부 카운트
+    쿼리 5 : 프로젝트에 라벨러 중에 검수 완료 전부 카운트
+    쿼리 6 : 프로젝트가 전부 검수 완료 라면 프로젝트 라벨 완료 상태 변경 아니면 패스
+
+    @param mariadb_pool:
+    @param grp_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+        # 쿼리1
+        query = f"""SELECT tbd.ds_idx, tbd.usr_idx 
+                    FROM tb_usr_datasets AS tbd 
+                    LEFT JOIN tb_prj_datasets AS tpd
+                    ON tbd.ds_idx = tpd.ds_idx 
+                    LEFT JOIN tb_users 
+                    AS tu ON tbd.usr_idx = tu.usr_idx 
+                    WHERE tu.usr_nick='{usr_nick}' AND tpd.ds_name='{ds_name}'; """
+        cursor.execute(query)
+
+        # 쿼리2
+        ds_idx, usr_idx = cursor.fetchall()[0]
+        query = f"""UPDATE
+                        tb_usr_datasets
+                    SET
+                        inp_stat_idx = '3'
+                    WHERE
+                        ds_idx = {ds_idx}
+                    AND
+                        usr_idx = {usr_idx};"""
+        cursor.execute(query)
+
+        try:
+            connection.commit()
+        except:
+            if connection: connection.rollback()
+
+        # 쿼리3
+        query = f"""select
+                        tu.usr_nick,
+                        tud.ds_idx ,
+                        tud.usr_ds_cnt_frame,
+                        tud.usr_ds_all_frame ,
+                        tud.usr_ds_complete ,
+                        tsc.stat_nm_kr,
+                        tud.inp_stat_desc
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    left join tb_usr_inspection tui on
+                        tud.ds_idx = tui.ds_idx
+                    left join tb_state_code tsc on
+                        tud.inp_stat_idx = tsc.stat_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx}
+                        and tu.usr_idx = {usr_idx};"""
+
+        cursor.execute(query)
+        fixed_labeler = cursor.fetchall()
+
+        json_result['fixed_labeler'] = fixed_labeler
+        json_result = success_message_json(json_result)
+
+        # 쿼리 4
+        query = f"""select
+                        COUNT(*)
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    left join tb_usr_inspection tui on
+                        tud.ds_idx = tui.ds_idx
+                    left join tb_state_code tsc on
+                        tud.inp_stat_idx = tsc.stat_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx};"""
+        cursor.execute(query)
+        cnt_total_labeler = cursor.fetchall()[0][0]
+
+        # 쿼리 5
+        query = f"""select
+                        COUNT(*)
+                    from
+                        tb_usr_datasets tud
+                    left join tb_users tu on
+                        tud.usr_idx = tu.usr_idx
+                    left join tb_usr_inspection tui on
+                        tud.ds_idx = tui.ds_idx
+                    left join tb_state_code tsc on
+                        tud.inp_stat_idx = tsc.stat_idx
+                    WHERE
+                        tud.ds_idx = {ds_idx}
+                    AND
+                        tsc.stat_nm_kr = '검수 완료';"""
+        cursor.execute(query)
+        cnt_done_labeler = cursor.fetchall()[0][0]
+
+        if cnt_total_labeler == cnt_done_labeler:
+            # 쿼리 6
+            query = f"""UPDATE tb_datasets_state 
+                        SET inp_stat_idx='3' 
+                        WHERE ds_idx= {ds_idx};"""
+            cursor.execute(query)
+            json_result['dataset_fixed'] = '1'
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+
 
 
 if __name__ == "__main__":
