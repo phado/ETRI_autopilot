@@ -343,7 +343,7 @@ def db_data_set_detail(mariadb_pool, dataset_idx):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+        query = f"select tpd.ds_path, tu.usr_nick, from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
         cursor.execute(query)
         json_result['data_set_info'] = cursor.fetchall()
 

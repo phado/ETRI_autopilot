@@ -56,7 +56,8 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
 
-        var root = "112.167.170.54:31769"; // 예시로 주어진 root 값
+        // var root = "112.167.170.54:31769"; // 예시로 주어진 root 값
+        var root = data.data_set_info[0][0]; // 예시로 주어진 root 값
         var baseUrl = "http://localhost:5000/"; // 기본 URL 값
 
         // 만약 root에 baseUrl이 포함되어 있다면 제거

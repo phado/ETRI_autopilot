@@ -278,10 +278,8 @@ def userManagementSystemManager():
 
         result_json = make_response_json([])
 
-        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                    session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
-        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                     session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
+        board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
+        board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
@@ -314,9 +312,9 @@ def userManagementDataManager():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                       session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
+                                       session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                        session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
+                                        session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
@@ -351,9 +349,9 @@ def userManagementModelManager():
         result_json = make_response_json([])
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                       session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
+                                       session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
-                                        session['usr_id'], tbl_type,tbl_type,session['usr_nick'],session['grp_nm_en'])
+                                        session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
