@@ -83,6 +83,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
         //진행 완료 컬럼
         var completestatus;
+        /*
         if (complete == 1) {
           completestatus = "라벨링 완료";
         } else if (complete == 5) {
@@ -90,11 +91,20 @@ function detailOpenModal(datasetIdx, datasetname) {
         } else {
           completestatus = "기타 상태";
         }
+        * */
+        if (complete == 1) {
+          completestatus = "라벨링 완료";
+        } else if (complete == 5) {
+          completestatus = "라벨링 진행중";
+        } else {
+          completestatus = "라벨링 진행중";
+        }
         var cell7 = row.insertCell(6);
         cell7.className = "detaildata-cell";
         cell7.id = "cell-sub";
 
         var button1 = document.createElement("button");
+        button1.classList.add(labeler , 'labeled',complete);
         button1.textContent = completestatus;
         button1.id = "dateset-progress-detail-button";
 
@@ -109,7 +119,7 @@ function detailOpenModal(datasetIdx, datasetname) {
           (function (datasetIdx, datasetname, labeler) {
             return function () {
               // 이벤트 핸들러에서 할 일 작성
-              alert(datasetIdx + datasetname + labeler);
+              // alert(datasetIdx + datasetname + labeler);
 
               fetch("/modelManagement/changeLabelingDone", {
                 method: "POST",
@@ -123,8 +133,13 @@ function detailOpenModal(datasetIdx, datasetname) {
               })
                 .then((response) => response.json())
                 .then((data) => {
-                  if (data.labeler.fixed_labeler[0][2] == 3) {
-                    console.log("버튼 색 바꿔");
+                  if (data.labeler.fixed_labeler[0][2] == 1) {
+                    var change_bt_sty = document.querySelectorAll('.'+labeler+'.labeled');
+                    change_bt_sty[0].style.backgroundColor = "#526EFF";
+                    change_bt_sty[0].innerText = '라벨링 완료'
+                  }
+                  if (data.labeler.dataset_labeled_fixed == 1){
+                    console.log('프로젝트 전체 라벨링 완료')
                   }
                 })
                 .catch((error) => {
@@ -136,7 +151,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
         //검수 완료 컬럼
         var status;
-
+        /*
         if (inspect == 0) {
           status = "상태없음";
         } else if (inspect == 1) {
@@ -152,11 +167,28 @@ function detailOpenModal(datasetIdx, datasetname) {
         } else {
           status = "기타 상태";
         }
+        * */
+        if (inspect == 0) {
+          status = "검수 진행";
+        } else if (inspect == 1) {
+          status = "검수 진행";
+        } else if (inspect == 2) {
+          status = "검수 진행";
+        } else if (inspect == 3) {
+          status = "검수 완료";
+        } else if (inspect == 4) {
+          status = "검수 진행";
+        } else if (inspect == 5) {
+          status = "검수 진행";
+        } else {
+          status = "검수 진행";
+        }
         var cell8 = row.insertCell(7);
         cell8.className = "detaildata-cell";
         cell8.id = "cell-sub";
 
         var button2 = document.createElement("button");
+        button2.classList.add(labeler,'confrim',inspect)
         button2.textContent = status;
         button2.id = "dateset-inspect-detail-button";
 
@@ -169,7 +201,35 @@ function detailOpenModal(datasetIdx, datasetname) {
         button2.addEventListener(
           "click",
           (function (datasetIdx, datasetname, labeler) {
-            return function () {};
+            return function () {
+              // 이벤트 핸들러에서 할 일 작성
+              // alert(datasetIdx + datasetname + labeler);
+
+              fetch("/modelManagement/changeConfirmDone", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  usr_nick: labeler,
+                  ds_name: datasetname,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.labeler.fixed_labeler[0][2] == 3) {
+                    var change_bt_sty = document.querySelectorAll('.'+labeler+'.confrim');
+                    change_bt_sty[0].style.backgroundColor = "#526EFF";
+                    change_bt_sty[0].innerText = '검수 완료'
+                  }
+                  if (data.labeler.dataset_confrim_fixed == 1){
+                    console.log('프로젝트 전체 검수 완료')
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+            };
           })(datasetIdx, datasetname, labeler)
         );
         var cell9 = row.insertCell(8);
@@ -182,6 +242,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
 function closeDetailModal() {
   detailModal.style.display = "none";
+  location.reload()
 }
 
 //삭제 아이콘 클릭 시 데이터셋 삭제 함수
