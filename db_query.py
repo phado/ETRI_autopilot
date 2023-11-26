@@ -8,8 +8,7 @@ from common_management import make_response_json, success_message_json, fail_mes
 logging.basicConfig(filename='./DB_Query.log', level=logging.ERROR)
 
 
-
-def db_login(mariadb_pool,usr_id,usr_pwd):
+def db_login(mariadb_pool, usr_id, usr_pwd):
     """
     회원 로그인
     :param mariadb_pool:
@@ -28,7 +27,6 @@ def db_login(mariadb_pool,usr_id,usr_pwd):
 
         cursor.execute(query)
         result = cursor.fetchall()
-
 
         if result[0][0] is not None:
             login_json_result['login_info'] = result[0]
@@ -49,7 +47,7 @@ def db_login(mariadb_pool,usr_id,usr_pwd):
     return login_json_result
 
 
-def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr_email,usr_agency):
+def db_register(mariadb_pool, usr_id, usr_nick_name, usr_pwd, usr_name, usr_phone, usr_email, usr_agency):
     """
         회원 가입
 
@@ -90,6 +88,7 @@ def db_register(mariadb_pool,usr_id,usr_nick_name,usr_pwd,usr_name,usr_phone,usr
 
     return reg_json_result
 
+
 def db_find_id(mariadb_pool, usr_name, usr_phone):
     """
     아이디 찾기
@@ -124,9 +123,10 @@ def db_find_id(mariadb_pool, usr_name, usr_phone):
 
     finally:
         if cursor: cursor.close()
-        if connection:connection.close()
+        if connection: connection.close()
 
     return json_result
+
 
 def db_count_id(mariadb_pool, usr_id):
     """
@@ -150,7 +150,6 @@ def db_count_id(mariadb_pool, usr_id):
         else:
             json_result['find_id'] = len(result)
 
-
         json_result = success_message_json(json_result)
 
     except Exception as e:
@@ -162,6 +161,7 @@ def db_count_id(mariadb_pool, usr_id):
         if connection: connection.close()
 
     return json_result
+
 
 def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
     """
@@ -194,7 +194,8 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
 
     return json_result
 
-def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type,usr_nick, grp_nm_en):
+
+def db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, usr_id, tabel_type, usr_nick, grp_nm_en):
     """
     데이터 관리 게시판 목록
     @param tabel_type: 조회할 테이블의 이름!!
@@ -217,13 +218,13 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
         cursor = connection.cursor()
 
         query = ''
-        if tabel_type == 'tb_prj_datasets': # 데이터 관리 목록 조회
+        if tabel_type == 'tb_prj_datasets':  # 데이터 관리 목록 조회
             query = f"SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg     ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds     on tds.ds_idx =tpd.ds_idx left join tb_usr_datasets tud     on tud.usr_idx = tpd.ds_idx left join tb_users tu     on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx WHERE tpd.is_valid =1     AND tg.grp_nm_en='{grp_nm_en}'    AND tu.usr_nick='{usr_nick}';"
             # query = "SELECT tpd.ds_idx ,tpd.ds_name , tg.grp_nm_en ,tg.grp_nm_kr , tds.lb_stat_idx, tds.inp_stat_idx , tpd.ds_create_date ,tpd.ds_modify_date, tpd.ds_cnt_frame ,tpd.ds_all_frame from tb_prj_datasets tpd left join tb_groups tg     ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds     on tds.ds_idx =tpd.ds_idx left join tb_usr_datasets tud     on tud.usr_idx = tpd.ds_idx left join tb_users tu     on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx WHERE tpd.is_valid =1     AND tg.grp_nm_en='etri'    AND tu.usr_nick='jin'    AND tup.pms_cd = 4;" todo 페이지 분리되면 pms_cd를 적용 해서 라벨러,검수자,관리자 구분
-        elif tabel_type == 'tb_prj_models': # '모델 관리 목록 조회'
+        elif tabel_type == 'tb_prj_models':  # '모델 관리 목록 조회'
             query = "SELECT tpm.prj_idx, tpm.prj_name, tg.grp_nm_en, tg.grp_nm_kr, tpd.ds_name,tpm.prj_create_date, tpm.prj_modify_date FROM tb_prj_models tpm LEFT JOIN tb_prj_datasets tpd ON tpd.ds_idx = tpm.ds_idx LEFT JOIN tb_groups tg ON tpd.grp_idx = tg.grp_idx WHERE tpm.is_valid = 1;"
 
-        elif tabel_type == 'tb_users_1': # 사용자 관리 / 시스템 관리자 목록( tup.pms_cd = 1)
+        elif tabel_type == 'tb_users_1':  # 사용자 관리 / 시스템 관리자 목록( tup.pms_cd = 1)
             query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid = 1 and tup.pms_cd = 1 group by tu.usr_idx;"
 
         elif tabel_type == 'tb_users_2':  # 사용자 관리 / 데이터 관리자 목록( tup.pms_cd = 2)
@@ -235,7 +236,6 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
         cursor.execute(query)
         board_result = cursor.fetchall()
 
-
         json_result['board_result'] = board_result
         json_result['response'] = success_message_json(json_result)
 
@@ -245,11 +245,11 @@ def db_get_board_list(mariadb_pool, page_num,search_type,search_key_word,show_da
     finally:
         if cursor: cursor.close()
         if connection: connection.close()
-    
-    
+
     return json_result
 
-def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_data_mount,usr_id,tabel_type,usr_nick, grp_nm_en):
+
+def db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, usr_id, tabel_type, usr_nick, grp_nm_en):
     """
     데이터 목록 관리 게시판의 목록의 숫자를 카운트한다.
     @param tabel_type: 테이블 명으로 조회할 테이블을 명
@@ -299,8 +299,7 @@ def db_count_board_list(mariadb_pool, page_num,search_type,search_key_word,show_
         return json_result
 
 
-
-def db_get_usr_info(mariadb_pool,usr_id):
+def db_get_usr_info(mariadb_pool, usr_id):
     """
     로그인된 회원의 정보를 조회 하는 쿼리
     @param mariadb_pool:
@@ -331,7 +330,7 @@ def db_get_usr_info(mariadb_pool,usr_id):
         return json_result
 
 
-def db_data_set_detail(mariadb_pool,dataset_idx):
+def db_data_set_detail(mariadb_pool, dataset_idx):
     """
     데이터셋 상세 정보 조회
     @param mariadb_pool:
@@ -430,7 +429,7 @@ def db_model_detail(mariadb_pool, model_idx):
         return json_result
 
 
-def db_get_labeler(mariadb_pool,grp_idx):
+def db_get_labeler(mariadb_pool, grp_idx):
     """
     그룹 아이디로 라벨러 조회
     데이터셋 추가 - 그룹(기관)별 라벨러 조회
@@ -462,7 +461,7 @@ def db_get_labeler(mariadb_pool,grp_idx):
         return json_result
 
 
-def db_get_inspector(mariadb_pool,grp_idx):
+def db_get_inspector(mariadb_pool, grp_idx):
     """
     그룹 아이디로 검수자 조회
     데이터셋 추가 - 그룹(기관)별 검수자 조회
@@ -477,8 +476,8 @@ def db_get_inspector(mariadb_pool,grp_idx):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = {int(grp_idx)};" #5 검수 4 라벨   grp_idx그룹 인덱스
-        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = 0;" #5 검수 4 라벨   grp_idx그룹 인덱스 일단 전체 조회 todo 고정 값 변경 해야함
+        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = {int(grp_idx)};"  # 5 검수 4 라벨   grp_idx그룹 인덱스
+        query = f"select tu.usr_nick     from tb_users tu left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx left join tb_groups tg     on tu.grp_idx = tg.grp_idx where tup.pms_cd = 5 and tg.grp_idx = 0;"  # 5 검수 4 라벨   grp_idx그룹 인덱스 일단 전체 조회 todo 고정 값 변경 해야함
         cursor.execute(query)
 
         json_result['inspector_list'] = cursor.fetchall()
@@ -495,7 +494,7 @@ def db_get_inspector(mariadb_pool,grp_idx):
         return json_result
 
 
-def db_get_devloper(mariadb_pool,grp_idx):
+def db_get_devloper(mariadb_pool, grp_idx):
     """
     모델 추가 - 그룹(기관)별 개발자 조회
     figma : 모델 추가_개발자 조회
@@ -525,7 +524,8 @@ def db_get_devloper(mariadb_pool,grp_idx):
 
         return json_result
 
-def db_get_dataset(mariadb_pool,grp_idx):
+
+def db_get_dataset(mariadb_pool, grp_idx):
     """
     모델 추가 - 그룹에 속한 데이터셋 조회
     figma : 모델 추가_데이터셋 추가에서 조회
@@ -557,7 +557,7 @@ def db_get_dataset(mariadb_pool,grp_idx):
         return json_result
 
 
-def db_change_confirm_done(mariadb_pool,usr_nick,ds_name):
+def db_change_confirm_done(mariadb_pool, usr_nick, ds_name):
     """
     데이터셋 상세 페이지에서 검수가 완료 버튼 클릭 이벤트
     쿼리 1 : 닉네임과 데이터 셋 이름으로 유저 정보와 데이터셋 인덱스 구한다.
@@ -671,7 +671,7 @@ def db_change_confirm_done(mariadb_pool,usr_nick,ds_name):
                 connection.commit()
             except:
                 if connection: connection.rollback()
-
+        json_result['dataset_confrim_fixed'] = '0'
     except Exception as e:
         print(e)
         json_result = fail_message_json(json_result)
@@ -683,7 +683,7 @@ def db_change_confirm_done(mariadb_pool,usr_nick,ds_name):
         return json_result
 
 
-def db_change_labeling_done(mariadb_pool,usr_nick,ds_name):
+def db_change_labeling_done(mariadb_pool, usr_nick, ds_name):
     """
     데이터셋 상세 페이지에서 라벨링이 완료 버튼 클릭 이벤트
     쿼리 1 : 닉네임과 데이터 셋 이름으로 유저 정보와 데이터셋 인덱스 구한다.
@@ -795,11 +795,11 @@ def db_change_labeling_done(mariadb_pool,usr_nick,ds_name):
 
             try:
                 connection.commit()
+                json_result['dataset_labeled_fixed'] = '1'
             except:
                 if connection: connection.rollback()
 
-
-            json_result['dataset_labeled_fixed'] = '1'
+        json_result['dataset_labeled_fixed'] = '0'
 
     except Exception as e:
         print(e)
@@ -810,7 +810,6 @@ def db_change_labeling_done(mariadb_pool,usr_nick,ds_name):
         if connection: connection.close()
 
         return json_result
-
 
 
 if __name__ == "__main__":

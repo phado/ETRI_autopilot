@@ -292,6 +292,11 @@ function confirmcancelpopupOk() {
 function openCreateModal() {
   var modal = document.getElementById("myModal");
   modal.style.display = "block";
+  var parentElement = document.querySelector('.labeler-add-textarea');
+  var buttons = parentElement.querySelectorAll('button');
+  buttons.forEach(function(button) {
+      button.remove();
+  });
 }
 
 function closeCreateModal() {
@@ -380,10 +385,10 @@ function onLabelerAddButtonClick(grp_idx) {
         var button = document.createElement("button");
         button.className = "labeler-btn";
         button.textContent = labeler;
-        button.addEventListener("click", function () {
-          // 버튼이 클릭되면 해당 labeler를 div에 추가
-          labelerDiv.textContent += labeler + " ";
-        });
+        // button.addEventListener("click", function () {
+        //   // 버튼이 클릭되면 해당 labeler를 div에 추가
+        //   labelerDiv.textContent += labeler + " ";
+        // });
 
         // 버튼을 모달 창의 div 안에 추가
         labelerDiv.appendChild(button);

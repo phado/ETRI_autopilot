@@ -386,7 +386,7 @@ def dataSetDetail():
         result_json = make_response_json([])
 
         data = request.get_json()
-     
+
         dataset_idx = data['datasetIdx']
 
         # dataset_idx = '43'
@@ -417,7 +417,7 @@ def getLabeler():
         result_json = make_response_json([])
 
         data = request.get_json()
-     
+
         grp_idx = data['grp_idx']
         # grp_idx = '1'
         # grp_idx = session['grp_idx']
@@ -425,7 +425,7 @@ def getLabeler():
         labeler_list = db_get_labeler(mariadb_pool,grp_idx)
 
         # result_json['labeler_list'] = labeler_list
-        result_json['labeler_list'] =  [('날나리'),('개나리'),('날리'),('너도'),('할수없다'),('퇴근함'),('퇴근함니다'),('퇴근하고'),('싶은데'),('퇴사')]
+        result_json['labeler_list'] =  [('하루미'),('라벨러'),('라벨링'),('하루다'),('KPST_1'),('user_3'),('음성라벨러'),('이미라벨'),('라벨러3'),('라벨링')]
 
 
     except Exception as e:
@@ -459,7 +459,7 @@ def getInspector():
 
     return result_json
 
-@app.route('/modelManagement/getDevloper')
+@app.route('/modelManagement/getDevloper', methods=['POST'])
 def getDevloper():
     """
     모델 추가 - 그룹(기관)별 개발자 조회
@@ -475,6 +475,7 @@ def getDevloper():
         labeler_list = db_get_devloper(mariadb_pool,grp_idx)
 
         result_json['devloper_list'] = labeler_list
+        result_json['devloper_list'] = [('개발1'),('개발자_2'),('개발자_3'),('개발자_4')]
 
     except Exception as e:
         print(e)

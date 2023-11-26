@@ -287,7 +287,14 @@
   text-align: left;
   color: #6d6d6d;
 }
-
+.devloper-btn {
+  width: 84px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #b4c0ff;
+  background-color: white;
+  color: #b4c0ff;
+}
 /* ----------------------------------------------------------------------------------------- */
 /* 데이터셋 상세 모달 css */
 .detailModal {

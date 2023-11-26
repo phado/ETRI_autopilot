@@ -106,7 +106,7 @@
                   "
                 >
                   <div style="flex-grow: 1">개발자 설정</div>
-                  <button class="developer-search-button">추가</button>
+                  <button class="developer-search-button" onclick="onDevloperAddButtonClick('{{grp_idx}}')">추가</button>
                 </div>
                 <textarea
                   type="text"
@@ -143,7 +143,7 @@
                     />
                     <button class="dataset-add-button">검색</button>
                   </div>
-                  <textarea class="dataset-add-textarea"></textarea>
+                  <div class="dataset-add-textarea" id = "devloperAll"   style="resize: none;" readonly></div>
                   <div class="modal-input2-button">
                     <button class="dataset-cancel-button">취소</button>
                     <button class="dataset-confirm-button">확인</button>

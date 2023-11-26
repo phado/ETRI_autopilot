@@ -165,3 +165,42 @@ function modelsetCreateSend(company_name) {
     openconfirmPopup(modalTitle, modalMessage);
   }
 }
+
+
+
+// 모델 생성 모달
+function onDevloperAddButtonClick(grp_idx) {
+  // 개발자 추가 텍스트를 변경
+  // var labelerAddText = "개발자 추가";
+  // document.getElementById("findPersonTitle").textContent = labelerAddText;
+
+  fetch("/modelManagement/getDevloper", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ grp_idx }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      var devloperList = data.devloper_list;
+      var devloperDiv = document.getElementById("devloperAll");
+
+      // 각 labeler에 대한 버튼을 생성하여 div에 추가
+      devloperList.forEach(function (devloper) {
+        var button = document.createElement("button");
+        button.className = "devloper-btn";
+        button.textContent = devloper;
+        // button.addEventListener("click", function () {
+        //   // 버튼이 클릭되면 해당 labeler를 div에 추가
+        //   labelerDiv.textContent += labeler + " ";
+        // });
+
+        // 버튼을 모달 창의 div 안에 추가
+        devloperDiv.appendChild(button);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
