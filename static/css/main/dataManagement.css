@@ -204,16 +204,13 @@
   width: 100%;
   height: 80px;
 }
-.labeler-add-button {
-  width: 61px;
-  height: 20px;
-  background: #3d5eec;
-  color: white;
-
-  padding: 3px, 10px, 3px, 10px;
+.search-person-button {
+  width: 43px;
+  height: 19px;
   border-radius: 5px;
-  gap: 4px;
-  border: none;
+  gap: 10px;
+  background: #565656;
+  color: white;
 }
 .checker-option-button {
   width: 140px;
@@ -235,8 +232,11 @@
   gap: 4px;
   border: none;
 }
-
+.hidden {
+  display: none;
+}
 .modal-input2-box {
+  flex-direction: column;
   width: 274px;
   height: 342px;
   border-radius: 5px;
@@ -253,12 +253,34 @@
   border: none;
 }
 .labeler-add-button {
-  width: 43px;
-  height: 19px;
-  border-radius: 5px;
-  gap: 10px;
-  background: #565656;
+  width: 61px;
+  height: 20px;
+  background: #3d5eec;
   color: white;
+
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  border: none;
+}
+.checker-cancel-button {
+  width: 61px;
+  height: 20px;
+  background: #9b9b9b;
+  color: white;
+
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  border: none;
+}
+.labeler-set-textarea {
+  margin-top: 5px;
+  width: 99%;
+  height: 100px;
+  border: 1px solid #9b9b9b;
+  padding-top: 7px;
+  padding-left: 11px;
 }
 .labeler-add-textarea {
   width: 270px;
@@ -290,7 +312,71 @@
 .labeler-confirm-button {
   background: #3d5eec;
 }
+
+.labeler-add-textarea2 {
+  width: 270px;
+  height: 260px;
+  border: none;
+  margin-left: 16px;
+  margin-top: 16px;
+}
+.labeler-add-textarea2:focus {
+  border: none;
+}
+.modal-input2-button2 {
+  border-top: 1px solid #ccc;
+}
+.labeler-cancel-button2,
+.labeler-confirm-button2 {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.labeler-cancel-button2 {
+  margin-left: 170px;
+  margin-top: 7px;
+  background: #9a9a9a;
+}
+.labeler-confirm-button2 {
+  background: #3d5eec;
+}
+.labeler-add-textarea3 {
+  width: 270px;
+  height: 260px;
+  border: none;
+  margin-left: 16px;
+  margin-top: 16px;
+}
+.labeler-add-textarea3:focus {
+  border: none;
+}
+.modal-input2-button3 {
+  border-top: 1px solid #ccc;
+}
+.labeler-cancel-button3,
+.labeler-confirm-button3 {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.labeler-cancel-button3 {
+  margin-left: 170px;
+  margin-top: 7px;
+  background: #9a9a9a;
+}
+.labeler-confirm-button3 {
+  background: #3d5eec;
+}
 .labeler-btn {
+  margin-bottom: 7px;
+  margin-right: 14px;
+
   width: 84px;
   height: 26px;
   border-radius: 999px;
@@ -298,6 +384,18 @@
   background-color: white;
   color: #b4c0ff;
 }
+.checker-btn {
+  margin-bottom: 7px;
+  margin-right: 14px;
+
+  width: 84px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #b4c0ff;
+  background-color: white;
+  color: #b4c0ff;
+}
+
 /* -------------------------------------------------------------------------------------------------- */
 /* 데이터셋 상세 모달 css */
 .detailModal {

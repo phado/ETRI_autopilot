@@ -254,6 +254,8 @@
   color: white;
 }
 .dataset-add-textarea {
+  margin-top: 16px;
+  margin-left: 16px;
   width: 270px;
   height: 260px;
   border: none;
@@ -294,6 +296,38 @@
   border: 1px solid #b4c0ff;
   background-color: white;
   color: #b4c0ff;
+}
+#datasetAll {
+  margin-top: 16px;
+  margin-left: 16px;
+}
+.dataset-btn {
+  margin-bottom: 8px;
+  width: 242px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #b4c0ff;
+  border: 1px solid #b4c0ff;
+  background-color: white;
+}
+.hidden {
+  display: none;
+}
+.developer-btn {
+  margin-bottom: 7px;
+  margin-right: 14px;
+
+  width: 84px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #b4c0ff;
+  background-color: white;
+  color: #b4c0ff;
+}
+
+#developer {
+  padding-top: 11px;
+  padding-left: 12px;
 }
 /* ----------------------------------------------------------------------------------------- */
 /* 데이터셋 상세 모달 css */

@@ -40,7 +40,15 @@ function detailOpenModal(modelIdx, modelname) {
         cell3.innerHTML = checker;
         var cell4 = row.insertCell(3);
         cell4.className = "detaildata-cell";
-        cell4.innerHTML = root;
+        var baseUrl = "http://localhost:5000/";
+        if (root.includes(baseUrl)) {
+          root = root.replace(baseUrl, "");
+        }
+        var link = document.createElement("a");
+        link.href = "http://" + root; // http:// 가 없는 경우 추가
+        link.textContent = root; // 링크에 표시될 텍스트
+
+        cell4.appendChild(link);
       }
     })
     .catch((error) => console.error("에러 발생:", error));
@@ -98,6 +106,93 @@ function confirmcancelpopupOk() {
 
 // ------------------------------------------------------------------------
 // 모델셋 생성
+
+function toggleSearch(searchType) {
+  var basicAll = document.getElementById("basicAll");
+  var basicButton = document.getElementById("basicButton");
+
+  var developerAll = document.getElementById("developerAll");
+  var developerButton = document.getElementById("developerButton");
+
+  var datasetAll = document.getElementById("datasetAll");
+  var datasetButton = document.getElementById("datasetButton");
+
+  // 모든 요소에 hidden 클래스 추가
+  [
+    basicAll,
+    basicButton,
+    developerAll,
+    developerButton,
+    datasetAll,
+    datasetButton,
+  ].forEach(function (element) {
+    element.classList.add("hidden");
+  });
+
+  // 선택된 요소에 hidden 클래스 제거
+  if (searchType === "developer") {
+    developerAll.classList.remove("hidden");
+    developerButton.classList.remove("hidden");
+  } else if (searchType === "dataset") {
+    datasetAll.classList.remove("hidden");
+    datasetButton.classList.remove("hidden");
+  } else {
+    basicAll.classList.remove("hidden");
+    basicButton.classList.remove("hidden");
+  }
+}
+
+var datasetList = null;
+function getDataSet(grp_idx) {
+  var labelerAddText = "데이터셋 추가";
+  document.getElementById("findTitle").textContent = labelerAddText;
+  toggleSearch("dataset");
+  if (!datasetList) {
+    fetch("/modelManagement/getDataSet", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ grp_idx }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // datasetList  = data.dataset_list.dataset_list
+        datasetList = ["데이터셋1", "데이터셋2", "데이터셋3", "데이터셋4"];
+        var datasetAllElement = document.getElementById("datasetAll");
+        var datasetNameElement = document.getElementById("dataset-name");
+        var selectedButton = null; // 이전에 선택한 버튼을 저장할 변수
+
+        datasetList.forEach(function (dataset) {
+          var button = document.createElement("button");
+          button.className = "dataset-btn";
+          button.textContent = dataset;
+          button.addEventListener("click", function () {
+            datasetNameElement.value = dataset;
+
+            if (selectedButton) {
+              datasetAllElement.appendChild(selectedButton);
+            }
+
+            this.remove();
+
+            selectedButton = this;
+          });
+
+          datasetAllElement.appendChild(button);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+}
+function resetElements() {
+  var labelerAddText = "설정";
+  document.getElementById("findTitle").textContent = labelerAddText;
+  toggleSearch("");
+}
 function openCreateModal() {
   var modal = document.getElementById("myModal");
   modal.style.display = "block";
@@ -166,14 +261,12 @@ function modelsetCreateSend(company_name) {
   }
 }
 
-
-
 // 모델 생성 모달
 function onDevloperAddButtonClick(grp_idx) {
   // 개발자 추가 텍스트를 변경
-  // var labelerAddText = "개발자 추가";
-  // document.getElementById("findPersonTitle").textContent = labelerAddText;
-
+  var labelerAddText = "개발자 추가";
+  document.getElementById("findTitle").textContent = labelerAddText;
+  toggleSearch("developer");
   fetch("/modelManagement/getDevloper", {
     method: "POST",
     headers: {
@@ -183,21 +276,27 @@ function onDevloperAddButtonClick(grp_idx) {
   })
     .then((response) => response.json())
     .then((data) => {
-      var devloperList = data.devloper_list;
-      var devloperDiv = document.getElementById("devloperAll");
+      var developerList = data.devloper_list;
 
-      // 각 labeler에 대한 버튼을 생성하여 div에 추가
-      devloperList.forEach(function (devloper) {
+      var developerAllElement = document.getElementById("developerAll");
+      var developerElement = document.getElementById("developer");
+
+      developerAllElement.innerHTML = "";
+      developerList.forEach(function (developer) {
         var button = document.createElement("button");
-        button.className = "devloper-btn";
-        button.textContent = devloper;
-        // button.addEventListener("click", function () {
-        //   // 버튼이 클릭되면 해당 labeler를 div에 추가
-        //   labelerDiv.textContent += labeler + " ";
-        // });
+        button.className = "developer-btn";
+        button.textContent = developer;
+        button.id = "developer-button-" + developer.replace(/\s+/g, "_"); // Generate unique id
 
-        // 버튼을 모달 창의 div 안에 추가
-        devloperDiv.appendChild(button);
+        button.addEventListener("click", function () {
+          if (this.parentElement === developerAllElement) {
+            developerElement.appendChild(this);
+          } else {
+            developerAllElement.appendChild(this);
+          }
+        });
+
+        developerAllElement.appendChild(button);
       });
     })
     .catch((error) => {

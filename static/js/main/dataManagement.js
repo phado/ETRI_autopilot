@@ -56,7 +56,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
 
-        // var root = "112.167.170.54:31769"; // 예시로 주어진 root 값
+        // var root = "1;12.167.170.54:31769" // 예시로 주어진 root 값
         var root = data.data_set_info[0][0]; // 예시로 주어진 root 값
         var baseUrl = "http://localhost:5000/"; // 기본 URL 값
 
@@ -105,7 +105,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell7.id = "cell-sub";
 
         var button1 = document.createElement("button");
-        button1.classList.add(labeler , 'labeled',complete);
+        button1.classList.add(labeler, "labeled", complete);
         button1.textContent = completestatus;
         button1.id = "dateset-progress-detail-button";
 
@@ -135,12 +135,14 @@ function detailOpenModal(datasetIdx, datasetname) {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data.labeler.fixed_labeler[0][2] == 1) {
-                    var change_bt_sty = document.querySelectorAll('.'+labeler+'.labeled');
+                    var change_bt_sty = document.querySelectorAll(
+                      "." + labeler + ".labeled"
+                    );
                     change_bt_sty[0].style.backgroundColor = "#526EFF";
-                    change_bt_sty[0].innerText = '라벨링 완료'
+                    change_bt_sty[0].innerText = "라벨링 완료";
                   }
-                  if (data.labeler.dataset_labeled_fixed == 1){
-                    console.log('프로젝트 전체 라벨링 완료')
+                  if (data.labeler.dataset_labeled_fixed == 1) {
+                    console.log("프로젝트 전체 라벨링 완료");
                   }
                 })
                 .catch((error) => {
@@ -189,7 +191,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell8.id = "cell-sub";
 
         var button2 = document.createElement("button");
-        button2.classList.add(labeler,'confrim',inspect)
+        button2.classList.add(labeler, "confrim", inspect);
         button2.textContent = status;
         button2.id = "dateset-inspect-detail-button";
 
@@ -219,12 +221,14 @@ function detailOpenModal(datasetIdx, datasetname) {
                 .then((response) => response.json())
                 .then((data) => {
                   if (data.labeler.fixed_labeler[0][2] == 3) {
-                    var change_bt_sty = document.querySelectorAll('.'+labeler+'.confrim');
+                    var change_bt_sty = document.querySelectorAll(
+                      "." + labeler + ".confrim"
+                    );
                     change_bt_sty[0].style.backgroundColor = "#526EFF";
-                    change_bt_sty[0].innerText = '검수 완료'
+                    change_bt_sty[0].innerText = "검수 완료";
                   }
-                  if (data.labeler.dataset_confrim_fixed == 1){
-                    console.log('프로젝트 전체 검수 완료')
+                  if (data.labeler.dataset_confrim_fixed == 1) {
+                    console.log("프로젝트 전체 검수 완료");
                   }
                 })
                 .catch((error) => {
@@ -243,7 +247,7 @@ function detailOpenModal(datasetIdx, datasetname) {
 
 function closeDetailModal() {
   detailModal.style.display = "none";
-  location.reload()
+  location.reload();
 }
 
 //삭제 아이콘 클릭 시 데이터셋 삭제 함수
@@ -293,10 +297,10 @@ function confirmcancelpopupOk() {
 function openCreateModal() {
   var modal = document.getElementById("myModal");
   modal.style.display = "block";
-  var parentElement = document.querySelector('.labeler-add-textarea');
-  var buttons = parentElement.querySelectorAll('button');
-  buttons.forEach(function(button) {
-      button.remove();
+  var parentElement = document.querySelector(".labeler-add-textarea");
+  var buttons = parentElement.querySelectorAll("button");
+  buttons.forEach(function (button) {
+    button.remove();
   });
 }
 
@@ -364,12 +368,127 @@ function showLoading() {
 
 // ------------------------------------------------------------------------------------------------
 // 데이터셋 생성 모달
+// 데이터셋 생성 모달
+let labelerAddButtonState = false;
+let labelerListInInput = []; // 추가된 labeler 리스트
+function toggleSearch(searchType) {
+  var basicTextarea = document.getElementById("basicAll");
+  var basicButton = document.getElementById("basicButton");
+
+  var labelerTextarea = document.getElementById("labelerAll");
+  var labelerButton = document.getElementById("labelerButton");
+
+  var checkerTextarea = document.getElementById("checkerAll");
+  var checkerButton = document.getElementById("checkerButton");
+
+  // 모든 요소에 hidden 클래스 추가
+  [
+    basicTextarea,
+    basicButton,
+    labelerTextarea,
+    labelerButton,
+    checkerTextarea,
+    checkerButton,
+  ].forEach(function (element) {
+    element.classList.add("hidden");
+  });
+
+  // 선택된 요소에 hidden 클래스 제거
+  if (searchType === "labeler") {
+    labelerTextarea.classList.remove("hidden");
+    labelerButton.classList.remove("hidden");
+  } else if (searchType === "checker") {
+    checkerTextarea.classList.remove("hidden");
+    checkerButton.classList.remove("hidden");
+  } else {
+    basicTextarea.classList.remove("hidden");
+    basicButton.classList.remove("hidden");
+  }
+}
 function onLabelerAddButtonClick(grp_idx) {
-  // 라벨러 추가 텍스트를 변경
+  toggleSearch("labeler");
   var labelerAddText = "라벨러 추가";
   document.getElementById("findPersonTitle").textContent = labelerAddText;
+  if (!labelerAddButtonState) {
+    // 라벨러 추가 텍스트를 변경
+    fetch("/dataManagement/getLabeler", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ grp_idx }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        var labelerList = data.labeler_list;
+        var labelerDiv = document.getElementById("labelerAll");
+        var labelerInput = document.getElementById("labelerInput");
 
-  fetch("/dataManagement/getLabeler", {
+        // 클릭된 버튼의 내용을 labelerInput에 추가하는 함수
+        function addButtonToLabelerInput(button) {
+          if (labelerInput) {
+            // 기존 ID로부터 새로운 ID 생성
+            var newButtonId = button.id.startsWith("btn_")
+              ? "input_" + button.id.substring(4)
+              : button.id.startsWith("input_")
+              ? "btn_" + button.id.substring(6)
+              : "input_" + button.textContent.replace(/\s+/g, "_");
+
+            // 새로운 ID로 변경
+            button.id = newButtonId;
+
+            // 추가된 labeler를 리스트에 저장
+            labelerListInInput.push(button.textContent);
+
+            // 새로운 위치로 이동
+            if (newButtonId.startsWith("btn_")) {
+              labelerDiv.appendChild(button);
+              // Remove label from labelerListInInput when moved to labelerDiv
+              labelerListInInput = labelerListInInput.filter(
+                (label) => label !== button.textContent
+              );
+            } else {
+              labelerInput.appendChild(button);
+            }
+          }
+        }
+
+        // 각 labeler에 대한 버튼을 생성하여 div에 추가
+        labelerList.forEach(function (labeler) {
+          var button = document.createElement("button");
+          button.className = "labeler-btn";
+          button.textContent = labeler;
+          button.id = "btn_" + labeler.replace(/\s+/g, "_"); // 공백을 언더스코어로 대체하여 아이디로 사용
+          button.addEventListener("click", function () {
+            addButtonToLabelerInput(button);
+          });
+
+          // 버튼을 모달 창의 div 안에 추가
+          if (labelerDiv) {
+            labelerDiv.appendChild(button);
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    labelerAddButtonState = true;
+  }
+}
+function resetElements() {
+  var labelerAddText = "설정";
+  document.getElementById("findPersonTitle").textContent = labelerAddText;
+  toggleSearch("");
+}
+
+var removedCheckerButton = null;
+function onCheckerAddButtonClick(grp_idx) {
+  var labelerAddText = "검수자 추가";
+  document.getElementById("findPersonTitle").textContent = labelerAddText;
+  toggleSearch("checker");
+
+  fetch("/dataManagement/getInspector", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -378,24 +497,45 @@ function onLabelerAddButtonClick(grp_idx) {
   })
     .then((response) => response.json())
     .then((data) => {
-      var labelerList = data.labeler_list;
-      var labelerDiv = document.getElementById("labelerAll");
-
-      // 각 labeler에 대한 버튼을 생성하여 div에 추가
-      labelerList.forEach(function (labeler) {
+      var inspectorNames = data.inspector_list.inspector_list[0];
+      var checkerAllElement = document.getElementById("checkerAll");
+      inspectorNames.forEach(function (inspectorName) {
         var button = document.createElement("button");
-        button.className = "labeler-btn";
-        button.textContent = labeler;
-        // button.addEventListener("click", function () {
-        //   // 버튼이 클릭되면 해당 labeler를 div에 추가
-        //   labelerDiv.textContent += labeler + " ";
-        // });
+        button.className = "checker-btn";
+        button.textContent = inspectorName;
+        button.id = "btn_" + inspectorName.replace(/\s+/g, "_");
 
-        // 버튼을 모달 창의 div 안에 추가
-        labelerDiv.appendChild(button);
+        button.addEventListener("click", function () {
+          addButtonToCheckerAll(button);
+        });
+
+        checkerAllElement.appendChild(button);
+
+        var checkerInput = document.getElementById("checkerInput");
+        function addButtonToCheckerAll(button) {
+          if (checkerInput) {
+            checkerInput.value += button.textContent;
+            removedCheckerButton = button;
+            checkerAllElement.removeChild(button);
+          }
+        }
       });
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+
+function onCheckerDelete() {
+  var checkerInput = document.getElementById("checkerInput");
+  var checkerAllElement = document.getElementById("checkerAll");
+
+  if (removedCheckerButton) {
+    // 삭제한 버튼을 다시 checkerAllElement에 추가
+    checkerAllElement.appendChild(removedCheckerButton);
+    removedCheckerButton = null;
+  }
+
+  // 기존에 입력된 내용도 초기화
+  checkerInput.value = "";
 }

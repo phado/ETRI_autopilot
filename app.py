@@ -433,7 +433,7 @@ def getLabeler():
     return result_json
 
 
-@app.route('/dataManagement/getInspector')
+@app.route('/dataManagement/getInspector', methods=['POST'])
 def getInspector():
     """
     그룹 아이디로 검수자 조회
@@ -444,7 +444,7 @@ def getInspector():
     try:
 
         result_json = make_response_json([])
-        grp_idx = '0' # todo 하드 코딩
+        grp_idx = 0 # todo 하드 코딩
         # grp_idx = session['grp_idx']
 
         labeler_list = db_get_inspector(mariadb_pool,grp_idx)
@@ -456,6 +456,8 @@ def getInspector():
         result_json = fail_message_json(result_json)
 
     return result_json
+        # result_json['labeler_list'] =  [('검수자1'),('검수자2'),('검수자3')]
+
 
 @app.route('/modelManagement/getDevloper', methods=['POST'])
 def getDevloper():
@@ -481,7 +483,7 @@ def getDevloper():
 
     return result_json
 
-@app.route('/modelManagement/getDataSet')
+@app.route('/modelManagement/getDataSet', methods=['POST'])
 def getDataSet():
     """
     모델 추가  - 모델 추가_데이터셋 팝업

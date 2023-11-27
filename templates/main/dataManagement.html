@@ -178,37 +178,52 @@
                 />
                 <div style="display: flex; align-items: center; margin-top: 24px">
                   <div style="flex-grow: 1" >라벨러 설정</div>
-                  <button class="labeler-add-button" onclick="onLabelerAddButtonClick('{{grp_idx}}')">추가</button>
+                  <button class="labeler-add-button" onclick="onLabelerAddButtonClick('{{grp_idx}}')">+ 추가</button>
                 </div>
-                <textarea
+                <div class="labeler-set-textarea" id="labelerInput"></div>
+
+                <!-- <textarea
                   type="text"
                   id="labelerInput"
                   style="margin-top: 8px;resize: none;"
                   class="labeler-option-input"
-                ></textarea>
+                ></textarea> -->
 
                 <div style="margin-top: 24px; margin-bottom: 8px">
                   검수자 설정
                 </div>
                 <input class="checker-option-button" id="checkerInput"></input>
-                <button class="checker-search-button">search</button>
+                <button class="labeler-add-button" onclick="onCheckerAddButtonClick('{{grp_idx}}')">+ 추가</button>
+                <button class="checker-cancel-button" onclick="onCheckerDelete()">취소</button>
               </div>
               <div class="modal-input2">
-                <div style="margin-top: 24px; margin-bottom: 8px" id="findPersonTitle">&nbsp;</div>
+                <div style="margin-top: 24px; margin-bottom: 8px" id="findPersonTitle">설정</div>
 
-                <div class="modal-input2-box">
-                  <div class="modal-input2-search">
+                <div class="modal-input2-box" >
+                  <div class="modal-input2-search" id="labelerSearch">
                     <input
                       type="text"
                       class="labeler-add-input"
                       placeholder="검색어 입력"
                     />
-                    <button class="labeler-add-button">검색</button>
+                    <button class="search-person-button">검색</button>
                   </div>
-                  <div class="labeler-add-textarea" id="labelerAll"  style="resize: none;" readonly></div>
-                  <div class="modal-input2-button">
-                    <button class="labeler-cancel-button">취소</button>
+                  <!-- 라벨러 검색 -->
+                  <div class="labeler-add-textarea hidden" id="labelerAll"  style="resize: none;" readonly></div>
+                  <div class="modal-input2-button hidden" id="labelerButton">
+                    <button class="labeler-cancel-button" onclick="resetElements()">취소</button>
                     <button class="labeler-confirm-button">확인</button>
+                  </div>
+                  <!-- 검수자 검색 -->
+                  <div class="labeler-add-textarea2 hidden" id="checkerAll"  style="resize: none;" readonly></div>
+                  <div class="modal-input2-button2 hidden" id="checkerButton">
+                    <button class="labeler-cancel-button2" onclick="resetElements()">취소</button>
+                    <button class="labeler-confirm-button2">확인</button>
+                  </div>
+                  <div class="labeler-add-textarea3" id="basicAll"  style="resize: none;" readonly></div>
+                  <div class="modal-input2-button3" id="basicButton">
+                    <button class="labeler-cancel-button3">취소</button>
+                    <button class="labeler-confirm-button3">확인</button>
                   </div>
                 </div>
                 <button class="labeler-cancel-button"   onclick="closeCreateModal()" >취소</button>

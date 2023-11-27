@@ -88,7 +88,12 @@
                   style="display: flex; align-items: center; margin-top: 24px"
                 >
                   <div style="flex-grow: 1">데이터셋명</div>
-                  <button class="dataset-search-button">검색</button>
+                  <button
+                    class="dataset-search-button"
+                    onclick="getDataSet('{{grp_idx}}')"
+                  >
+                    검색
+                  </button>
                 </div>
                 <input
                   type="text"
@@ -106,15 +111,25 @@
                   "
                 >
                   <div style="flex-grow: 1">개발자 설정</div>
-                  <button class="developer-search-button" onclick="onDevloperAddButtonClick('{{grp_idx}}')">추가</button>
+                  <button
+                    class="developer-search-button"
+                    onclick="onDevloperAddButtonClick('{{grp_idx}}')"
+                  >
+                    추가
+                  </button>
                 </div>
-                <textarea
+                <div
                   type="text"
                   id="developer"
-                  style="margin-top: 5px; resize: none; text-align: left"
+                  style="
+                    margin-top: 5px;
+                    resize: none;
+                    text-align: left;
+                    border: 1px solid #9b9b9b;
+                    width: 100%;
+                  "
                   class="labeler-option-input"
-                >
-                </textarea>
+                ></div>
 
                 <div
                   style="margin-top: 8px; display: flex; align-items: center"
@@ -131,8 +146,11 @@
                 </div>
               </div>
               <div class="modal-input2">
-                <div style="margin-top: 24px; margin-bottom: 8px">
-                  데이터셋 추가
+                <div
+                  style="margin-top: 24px; margin-bottom: 8px"
+                  id="findTitle"
+                >
+                  설정
                 </div>
                 <div class="modal-input2-box">
                   <div class="modal-input2-search">
@@ -143,8 +161,46 @@
                     />
                     <button class="dataset-add-button">검색</button>
                   </div>
-                  <div class="dataset-add-textarea" id = "devloperAll"   style="resize: none;" readonly></div>
-                  <div class="modal-input2-button">
+                  <div
+                    class="dataset-add-textarea"
+                    id="datasetAll"
+                    style="resize: none"
+                    readonly
+                  ></div>
+                  <div class="modal-input2-button hidden" id="datasetButton">
+                    <button
+                      class="dataset-cancel-button"
+                      onclick="resetElements()"
+                    >
+                      취소
+                    </button>
+                    <button class="dataset-confirm-button">확인</button>
+                  </div>
+
+                  <div
+                    class="dataset-add-textarea"
+                    id="developerAll"
+                    style="resize: none"
+                    readonly
+                  ></div>
+                  <div class="modal-input2-button hidden" id="developerButton">
+                    <button
+                      class="dataset-cancel-button"
+                      onclick="resetElements()"
+                      ㅋ
+                    >
+                      취소
+                    </button>
+                    <button class="dataset-confirm-button">확인</button>
+                  </div>
+
+                  <div
+                    class="dataset-add-textarea"
+                    id="basicAll"
+                    style="resize: none"
+                    readonly
+                  ></div>
+                  <div class="modal-input2-button" id="basicButton">
                     <button class="dataset-cancel-button">취소</button>
                     <button class="dataset-confirm-button">확인</button>
                   </div>
