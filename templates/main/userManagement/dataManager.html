@@ -8,7 +8,10 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/userManagement/dataManager.css')}}"
     />
-
+    <script
+    type="text/javascript"
+    src="{{ url_for('static', filename='js//main/userManagement/dataManager.js') }}"
+  ></script>
     <title>DataManagement</title>
   </head>
   <body>
@@ -98,7 +101,7 @@
               </td>
               <td class="data-cell" style="width: 200px">{{_[9]}}</td>
               <th class="data-cell">
-                <img
+                <img onclick = "detailOpenModal('{{_[0]}}', '{{_[2]}}')"
                   src="{{url_for('static', filename='/image/detail.svg')}}"
                 />
               </th>
@@ -117,6 +120,39 @@
           </tbody>
         </table>
       </div>
+      <!-- detail 모달 -->
+      <div id="detailModal" class="detailModal">
+        <div class="detailmodal-content">
+          <div class="detailmodal-title">
+            <div class="detailmodal-title-name"></div>
+            <span
+              class="detailmodal-close"
+              id="closeDetailModalBtn"
+              onclick="closeDetailModal()"
+              >&times;</span
+            >
+          </div>
+          <div class="labeler-data">
+            <div class="labeler-data-title">라벨러 등록 데이터</div>
+            <div class="labeler-table">
+              <div class="labeler-row">
+                <div class="labeler-cell">데이터 1</div>
+              </div>
+            </div>
+          </div>     
+          <div class="checker-data">
+            <div class="checker-data-title">검수자 등록 데이터</div>
+            <div class="checker-table">
+              <div class="checker-row">
+                <div class="checker-cell">데이터 1</div>
+              </div>
+            </div>
+          </div>
+          <button class="detail-modal-comfirm">확인</button>
+          <button class="detail-modal-cancel"    onclick="closeDetailModal()">취소</button>
+        </div>
+      </div>
+      <!-- detail 모달 -->
       <div class="pagination">
         <a href="#" class="page-link">&laquo; </a>
         <a href="#" class="page-link">&lt; </a>

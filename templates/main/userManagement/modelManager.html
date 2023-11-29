@@ -8,6 +8,10 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/userManagement/modelManager.css')}}"
     />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js//main/userManagement/modelManager.js') }}"
+    ></script>
     <title>DataManagement</title>
   </head>
   <body>
@@ -87,6 +91,7 @@
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"
+                  onclick="detailOpenModal('{{_[0]}}', '{{_[2]}}')"
                 />
               </th>
               <th class="data-cell">
@@ -99,6 +104,33 @@
           </tbody>
         </table>
       </div>
+      <!-- detail 모달 -->
+      <div id="detailModal" class="detailModal">
+        <div class="detailmodal-content">
+          <div class="detailmodal-title">
+            <div class="detailmodal-title-name"></div>
+            <span
+              class="detailmodal-close"
+              id="closeDetailModalBtn"
+              onclick="closeDetailModal()"
+              >&times;</span
+            >
+          </div>
+          <div class="developer-data">
+            <div class="developer-data-title">개발자 등록 데이터</div>
+            <div class="developer-table">
+              <div class="developer-row">
+                <div class="developer-cell">데이터 1</div>
+              </div>
+            </div>
+          </div>
+          <button class="detail-modal-comfirm">확인</button>
+          <button class="detail-modal-cancel" onclick="closeDetailModal()">
+            취소
+          </button>
+        </div>
+      </div>
+      <!-- detail 모달 -->
       <div class="pagination">
         <a href="#" class="page-link">&laquo; </a>
         <a href="#" class="page-link">&lt; </a>
