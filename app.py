@@ -12,6 +12,8 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 mariadb_pool = get_pool_conn()
+
+
 # ------------------------------------------------------------------------------------------------------
 # -----------------------------------------로그인 관련 페이지-----------------------------------------------
 @app.route('/login', methods=['GET', 'POST'])
@@ -52,11 +54,11 @@ def login():
     else:
         return render_template('login/login.html')
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     # 세션에서 사용자 정보 삭제
-    session.pop('user_id', None)
-    return 'Logged out successfully'
+    session.clear()
+    return {'message': 'Logged out successfully'}
 
 
 @app.route('/register', methods=['POST'])
@@ -158,6 +160,7 @@ def resetPwd():
 
     return json_result
 
+
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------메인 페이지-----------------------------------------------
 # 1. 데이터 관리 탭
@@ -196,7 +199,7 @@ def dataManagement():
         usr_nick= session['usr_nick']
         grp_nm_en= session['grp_nm_en']
         usr_nm= session['usr_nm']
-
+        # usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
 
         if board_cnt['status'] =='200'  and board_list['status'] =='200':
             result_json = success_message_json(result_json)
@@ -244,6 +247,7 @@ def modelManagement():
         usr_nick= session['usr_nick']
         grp_nm_en= session['grp_nm_en']
         usr_nm= session['usr_nm']
+        #  usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
 
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
@@ -280,12 +284,21 @@ def userManagementSystemManager():
 
         board_list = db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
+
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+        #  usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
+
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
-    return render_template("main/userManagement/systemManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/userManagement/systemManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json,usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
 @app.route('/userManagement_dataManager')
 def userManagementDataManager():
@@ -315,12 +328,21 @@ def userManagementDataManager():
                                        session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
                                         session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
+        
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+        #  usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
+
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
-    return render_template("main/userManagement/dataManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/userManagement/dataManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json,usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
 
 
@@ -352,12 +374,21 @@ def userManagementModelManager():
                                        session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
         board_cnt = db_count_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount,
                                         session['usr_id'], tbl_type,session['usr_nick'],session['grp_nm_en'])
+        
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+        #  usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
+
         if board_cnt['status'] == '200' and board_list['status'] == '200':
             result_json = success_message_json(result_json)
     except Exception as e:
         print(e)
         result_json = fail_message_json(result_json)
-    return render_template("main/userManagement/modelManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json)
+    return render_template("main/userManagement/modelManager.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json,usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
 # 4. 시스템 관리 탭
 @app.route('/systemManagement_agencyManagement')
@@ -366,8 +397,28 @@ def systemManagementAgencyManager():
     시스템 관리 / 기관 관리
     :return:
     """
-    return render_template("main/systemManagement/agencyManagement.html")
+    usr_idx= session['usr_idx']
+    usr_id= session['usr_id']
+    grp_idx=session['grp_idx']
+    usr_nick= session['usr_nick']
+    grp_nm_en= session['grp_nm_en']
+    usr_nm= session['usr_nm']
+    #  usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm
+    return render_template("main/systemManagement/agencyManagement.html", usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 
+# ------------------------------------------------------------------------------------------------------
+# -----------------------------------------페이지-----------------------------------------------
+@app.route('/common')
+def common():
+    # 세션에서 사용자 정보 삭제
+    usr_idx= session['usr_idx']
+    usr_id= session['usr_id']
+    grp_idx=session['grp_idx']
+    usr_nick= session['usr_nick']
+    grp_nm_en= session['grp_nm_en']
+    usr_nm= session['usr_nm']
+
+    render_template("common/common.html"  , usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------세부 페이지 데이터셋 추가-----------------------------------
 @app.route('/dataManagement/dataSetDetail', methods=['POST'])

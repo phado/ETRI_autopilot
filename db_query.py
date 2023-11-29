@@ -225,13 +225,13 @@ def db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show
             query = "SELECT tpm.prj_idx, tpm.prj_name, tg.grp_nm_en, tg.grp_nm_kr, tpd.ds_name,tpm.prj_create_date, tpm.prj_modify_date FROM tb_prj_models tpm LEFT JOIN tb_prj_datasets tpd ON tpd.ds_idx = tpm.ds_idx LEFT JOIN tb_groups tg ON tpd.grp_idx = tg.grp_idx WHERE tpm.is_valid = 1;"
 
         elif tabel_type == 'tb_users_1':  # 사용자 관리 / 시스템 관리자 목록( tup.pms_cd = 1)
-            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid = 1 and tup.pms_cd = 1 group by tu.usr_idx;"
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_nm,tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid = 1 and tup.pms_cd = 1 group by tu.usr_idx;"
 
         elif tabel_type == 'tb_users_2':  # 사용자 관리 / 데이터 관리자 목록( tup.pms_cd = 2)
-            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 2 group by tu.usr_idx;"
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en,tu.usr_nm, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 2 group by tu.usr_idx;"
 
         elif tabel_type == 'tb_users_3':  # 사용자 관리 / 모델 관리( tup.pms_cd = 3)
-            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 3 group by tu.usr_idx;"
+            query = "SELECT tu.usr_idx, tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_nm, tu.usr_tel, tu.usr_mail, group_concat(tcp.name) as name, group_concat(tup.pms_cd) as pms_cd, tu.usr_last_date from tb_users tu left join tb_groups tg ON tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx left join tb_cmn_permission tcp on tup.pms_cd =tcp.pms_cd where tu.is_valid =1 and tup.pms_cd = 3 group by tu.usr_idx;"
 
         cursor.execute(query)
         board_result = cursor.fetchall()
@@ -343,7 +343,7 @@ def db_data_set_detail(mariadb_pool, dataset_idx):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"select tpd.ds_path, tu.usr_nick, from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+        query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
         cursor.execute(query)
         json_result['data_set_info'] = cursor.fetchall()
 

@@ -77,25 +77,26 @@
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[2]}}</td>
               <td class="data-cell">{{_[3]}}</td>
-              <td class="data-cell"></td>
               <td class="data-cell">{{_[4]}}</td>
               <td class="data-cell">{{_[5]}}</td>
+              <td class="data-cell">{{_[6]}}</td>
+
               <td class="data-cell">
-                {% if _[6] == '데이터 관리자' %}
+                {% if _[7] == '데이터 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
               <td class="data-cell">
-                {% if _[6] == '데이터 라벨러' %}
+                {% if _[7] == '데이터 라벨러' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
               <td class="data-cell">
-                {% if _[6] == '데이터 검수자' %}
+                {% if _[7] == '데이터 검수자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
-              <td class="data-cell" style="width: 200px">{{_[8]}}</td>
+              <td class="data-cell" style="width: 200px">{{_[9]}}</td>
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/detail.svg')}}"

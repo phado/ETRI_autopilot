@@ -178,7 +178,7 @@
                 />
                 <div style="display: flex; align-items: center; margin-top: 24px">
                   <div style="flex-grow: 1" >라벨러 설정</div>
-                  <button class="labeler-add-button" onclick="onLabelerAddButtonClick('{{grp_idx}}')">+ 추가</button>
+                  <button class="labeler-add-button" id="labeleraddbutton" onclick="onLabelerAddButtonClick('{{grp_idx}}')">+ 추가</button>
                 </div>
                 <div class="labeler-set-textarea" id="labelerInput"></div>
 
@@ -211,8 +211,8 @@
                   <!-- 라벨러 검색 -->
                   <div class="labeler-add-textarea hidden" id="labelerAll"  style="resize: none;" readonly></div>
                   <div class="modal-input2-button hidden" id="labelerButton">
-                    <button class="labeler-cancel-button" onclick="resetElements()">취소</button>
-                    <button class="labeler-confirm-button">확인</button>
+                    <button class="labeler-cancel-button1" onclick="resetElements()">취소</button>
+                    <button class="labeler-confirm-button1">확인</button>
                   </div>
                   <!-- 검수자 검색 -->
                   <div class="labeler-add-textarea2 hidden" id="checkerAll"  style="resize: none;" readonly></div>
@@ -222,17 +222,16 @@
                   </div>
                   <div class="labeler-add-textarea3" id="basicAll"  style="resize: none;" readonly></div>
                   <div class="modal-input2-button3" id="basicButton">
-                    <button class="labeler-cancel-button3">취소</button>
-                    <button class="labeler-confirm-button3">확인</button>
+                    <!-- <button class="labeler-cancel-button3">취소</button>
+                    <button class="labeler-confirm-button3">확인</button> -->
                   </div>
                 </div>
                 <button class="labeler-cancel-button"   onclick="closeCreateModal()" >취소</button>
                 <button
                   class="labeler-confirm-button"
                   onclick="datasetCreateSend('{{grp_nm_en}}')"
-                >
-                  확인
-                </button>
+                >생성
+              </button>
               </div>
             </div>
           </div>

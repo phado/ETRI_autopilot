@@ -201,18 +201,13 @@ function openCreateModal() {
 function closeCreateModal() {
   var modal = document.getElementById("myModal");
   modal.style.display = "none";
+  location.reload();
 }
 
 function modelsetCreateSend(company_name) {
   var project_name = document.getElementById("modelsetNameInput").value;
-  // var project_name = document.getElementById("datasetNameInput").value;
-
   // // todo
-  var developerInput = document.getElementById("developer").value;
-  var devel_nick = developerInput.split("\n").map(function (item) {
-    return item.trim();
-  });
-
+  var devel_nick = selectedDevelopers;
   var data_set = document.getElementById("dataset-name").value;
 
   var jsonData = {
@@ -245,6 +240,7 @@ function modelsetCreateSend(company_name) {
         var modalTitle = "데이터셋 추가 완료";
         var modalMessage = "데이터셋 추가가 성공적으로 완료되었습니다.";
         openconfirmPopup(modalTitle, modalMessage);
+        selectedDevelopers = "";
       }
     })
     .catch((error) => {
@@ -262,11 +258,14 @@ function modelsetCreateSend(company_name) {
 }
 
 // 모델 생성 모달
+let selectedDevelopers = [];
+
 function onDevloperAddButtonClick(grp_idx) {
   // 개발자 추가 텍스트를 변경
   var labelerAddText = "개발자 추가";
   document.getElementById("findTitle").textContent = labelerAddText;
   toggleSearch("developer");
+
   fetch("/modelManagement/getDevloper", {
     method: "POST",
     headers: {
@@ -291,9 +290,15 @@ function onDevloperAddButtonClick(grp_idx) {
         button.addEventListener("click", function () {
           if (this.parentElement === developerAllElement) {
             developerElement.appendChild(this);
+            selectedDevelopers.push(developer); // 선택된 개발자를 리스트에 추가
           } else {
             developerAllElement.appendChild(this);
+            selectedDevelopers = selectedDevelopers.filter(
+              (dev) => dev !== developer
+            ); // 선택 해제된 개발자를 리스트에서 제거
           }
+
+          console.log(selectedDevelopers);
         });
 
         developerAllElement.appendChild(button);

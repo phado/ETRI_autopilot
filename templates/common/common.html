@@ -25,12 +25,28 @@
 
   <body>
     <header>
-      <img
-        src="{{url_for('static', filename='/image/username.svg')}}"
-        alt="Image"
-        class="img-username"
-        style="float: right; padding: 20px"
-      />
+      <div class="img-container">
+        <!-- <img
+          src="{{url_for('static', filename='/image/username.svg')}}"
+          alt="Image"
+          class="img-username"
+        /> -->
+
+         
+        <button class="custom-button"    onclick="showOverlayBox()">
+          <img
+            src="{{url_for('static', filename='/image/username.svg')}}"
+            alt="Image"
+            class="img-username"
+          />
+          <div class="userName">{{usr_nick}}</div>
+          <img
+            src="{{url_for('static', filename='/image/userdown.svg')}}"
+            alt="Image"
+            class="img-username"
+          />
+        </button>
+      </div>
     </header>
 
     <aside class="side-bar">
@@ -108,5 +124,150 @@
     </aside>
 
     <section>{% block content %}{% endblock %}</section>
+    <!-- userinfo -->
+    <div id="overlayBox" class="overlay-box">
+      <img
+        src="{{url_for('static', filename='/image/userInfoClose.svg')}}"
+        alt="Close"
+        class="close-button"
+        onclick="hideOverlayBox()"
+      />
+      <img
+        src="{{url_for('static', filename='/image/userInfoPhoto.svg')}}"
+        alt="User Photo"
+        class="user-photo"
+      />
+      <div class="user-name">{{usr_nick}}</div>
+      <div class="button-area">
+        <button class="profile-button" onclick="profileClick()">
+          <img
+            src="{{url_for('static', filename='/image/userProfile.svg')}}"
+            alt="User Profile"
+            class="user-Profile"
+          />
+          <div class="profile-name">프로필</div>
+        </button>
+        <button class="logout-button">
+          <img
+            src="{{url_for('static', filename='/image/userLogout.svg')}}"
+            alt="User Logout"
+            class="user-Logout"
+          />
+          <div class="logout-text" onclick="userLogout('{{usr_id}}')">로그아웃</div>
+        </button>
+      </div>
+    </div>
+    <!-- userinfo -->
+    <!--프로필 모달 -->
+    <div id="profileModal" class="profilemodal">
+      <div class="profilemodal-content">
+        <div class="profilemodal-title">
+          <div class="profilemodal-title-name">프로필</div>
+          <span class="close" id="closeModalBtn" onclick="closeProfileModal()"
+            >&times;</span
+          >
+        </div>
+        <div class="profilemodal-input">
+          <div class="profilemodal-input1">
+            <div >아이디</div>
+            <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"   value="{{usr_id}}"
+            />
+            <div class="profile-input-title">닉네임</div>
+            <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"  value="{{usr_nick}}"
+            />
+            <div class="profile-input-title">비밀번호</div>
+              <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"
+            />   
+            <div class="profile-input-title">비밀번호 확인</div>
+              <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"
+            />
+
+            <div class="profile-secession-container">
+              <button
+                class="profile-secession-button"
+                onclick="userSecession()"
+              >
+                탈퇴하기
+              </button>
+              <div class="profile-secession-text">
+                회원님의 계정을 삭제합니다. 삭제된 계정은 다시 복원할 수 없습니다.
+              </div>
+            </div>
+          </div>
+          <div class="profilemodal-input2">
+            <div >이름</div>
+            <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input" 
+            />
+            <div class="profile-input-title">휴대폰 번호</div>
+            <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"
+            />
+            <div class="profile-input-title">E-mail</div>
+              <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"
+            />   
+            <div class="profile-input-title">기관명</div>
+              <input
+              type="text"
+              placeholder="5~30글자/영문,한글,숫자,특수문자"
+              class="profile-input"  value="{{grp_nm_en}}"
+            />
+
+            <button class="profile-modify-button">수정</button>
+             
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--프로필 모달 -->
+      <!-- 확인 취소모달 -->
+      <div id="confirmcancelPopup" class="confirmcancelPopup">
+        <div class="confirmcancelPopup-content">
+          <span
+            class="confirmcancelPopup-close"
+            onclick="closeconfirmcancelPopup()"
+            >&times;</span
+          >
+          <div class="confirmcancelPopup-container">
+            <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
+              확인 취소 모달
+            </div>
+            <div
+              class="confirmcancelPopup-message"
+              id="confirmcancelpopupMessage"
+            >
+              확인 취소 모달입니다.
+            </div>
+          </div>
+          <button class="confirmBtn" onclick="confirmcancelpopupOk()">
+            확인
+          </button>
+          <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel()">
+            취소
+          </button>
+        </div>
+      </div>
+      <!-- 확인 취소 모달 -->
   </body>
 </html>

@@ -8,8 +8,11 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/userManagement/systemManager.css')}}"
     />
-
-    <title>DataManagement</title>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/main/userManagement/systemManager.js') }}"
+    ></script>
+    <title>systemManager</title>
   </head>
   <body>
     {% extends 'common/common.html' %} {% block content %}
@@ -50,46 +53,57 @@
               <div class="modal-input1">
                 <div class="input-area">
                   <div class="input-title">사용자 ID</div>
-                  <input type="text" />
+                  <input type="text" id="userIdInput" />
                   <div class="input-title">닉네임</div>
-                  <input type="text" />
+                  <input type="text" id="nicknameInput" />
                   <div class="input-title">기관명</div>
-                  <input type="text" />
+                  <input type="text" id="organizationInput" />
                   <div class="input-title">사용자 이름</div>
-                  <input type="text" />
+                  <input type="text" id="userNameInput" />
                   <div class="input-title">휴대폰 번호</div>
-                  <input type="text" />
+                  <input type="text" id="phoneInput" />
                   <div class="input-title">E-mail</div>
-                  <input type="text" />
+                  <input type="text" id="emailInput" />
                   <img
                     src="{{url_for('static', filename='/image/line.svg')}}"
                     style="margin-top: 24px"
                   />
                 </div>
-                <div class="button-area">
+                <div class="sytemmanager-button-area">
                   <button class="management-button" style="margin-top: 16px">
                     시스템 관리자
                   </button>
                   <img
                     class="box-image"
+                    id="box-image-1"
                     src="{{url_for('static', filename='/image/box.svg')}}"
+                    onclick="toggleImage('box-image-1')"
                   /><br />
                   <button class="management-button">데이터 관리자</button>
                   <img
                     class="box-image"
+                    id="box-image-2"
                     src="{{url_for('static', filename='/image/box.svg')}}"
+                    onclick="toggleImage('box-image-2')"
                   /><br />
                   <button class="management-button">모델 관리자</button>
                   <img
                     class="box-image"
+                    id="box-image-3"
                     src="{{url_for('static', filename='/image/box.svg')}}"
+                    onclick="toggleImage('box-image-3')"
                   />
                   <img
                     src="{{url_for('static', filename='/image/line.svg')}}"
                     style="margin-top: 24px"
                   />
                   <button class="modal-cancel-button">취소</button>
-                  <button class="modal-confirm-button">확인</button>
+                  <button
+                    class="modal-confirm-button"
+                    onclick="logInputValues()"
+                  >
+                    확인
+                  </button>
                 </div>
               </div>
             </div>
@@ -116,7 +130,6 @@
               <th class="data-cell" style="width: 64px">
                 <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
-              <th class="data-cell">데이터셋명</th>
               <th class="data-cell">사용자ID</th>
               <th class="data-cell">닉네임</th>
               <th class="data-cell">기관명</th>
@@ -145,29 +158,28 @@
               <th class="data-cell" style="width: 64px">
                 <img src="{{url_for('static', filename='/image/box.svg')}}" />
               </th>
-              <td class="data-cell"></td>
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[2]}}</td>
               <td class="data-cell">{{_[3]}}</td>
-              <td class="data-cell"></td>
               <td class="data-cell">{{_[4]}}</td>
               <td class="data-cell">{{_[5]}}</td>
+              <td class="data-cell">{{_[6]}}</td>
               <td class="data-cell">
-                {% if _[6] == '시스템 관리자' %}
+                {% if _[7] == '시스템 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
               <td class="data-cell">
-                {% if _[6] == '데이터 관리자' %}
+                {% if _[7] == '데이터 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
               <td class="data-cell">
-                {% if _[6] == '모델 관리자' %}
+                {% if _[7] == '모델 관리자' %}
                 <img src="{{url_for('static', filename='/image/check.svg')}}" />
                 {% endif %}
               </td>
-              <td class="data-cell" style="width: 200px">{{_[8]}}</td>
+              <td class="data-cell" style="width: 200px">{{_[9]}}</td>
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/modify.svg')}}"
@@ -183,28 +195,7 @@
           </tbody>
         </table>
       </div>
-      <script>
-        //상세정보 모달 js
-        var detailModal = document.getElementById("detailModal");
-        var openDetailModalBtn = document.getElementById("openDetailModalBtn");
-        var closeDetailModalBtn = document.getElementById(
-          "closeDetailModalBtn"
-        );
 
-        openDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "block";
-        });
-
-        closeDetailModalBtn.addEventListener("click", function () {
-          detailModal.style.display = "none";
-        });
-
-        window.addEventListener("click", function (event) {
-          if (event.target == detailModal) {
-            detailModal.style.display = "none";
-          }
-        });
-      </script>
       <div class="pagination">
         <a href="#" class="page-link">&laquo; </a>
         <a href="#" class="page-link">&lt; </a>

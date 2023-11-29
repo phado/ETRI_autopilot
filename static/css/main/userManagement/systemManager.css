@@ -187,11 +187,11 @@
 
 .input-area input {
   margin-top: 8px;
-  width: 438px;
+  width: 426px;
   height: 36px;
   border-radius: 5px;
   border: 1px solid #9b9b9b;
-  padding: 0px;
+  padding-left: 12px;
 }
 
 .management-button {

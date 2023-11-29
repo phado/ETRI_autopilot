@@ -170,10 +170,14 @@
 
 .modal-title-name {
   position: relative;
-  top: 10px;
+  top: 12px;
   left: 20px;
-  font-size: 18px;
-  font-weight: bold;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 .modal-input {
   display: flex;
@@ -263,6 +267,9 @@
   gap: 4px;
   border: none;
 }
+#labeleraddbutton {
+  margin-right: -8px;
+}
 .checker-cancel-button {
   width: 61px;
   height: 20px;
@@ -281,13 +288,15 @@
   border: 1px solid #9b9b9b;
   padding-top: 7px;
   padding-left: 11px;
+  overflow-y: auto;
 }
 .labeler-add-textarea {
-  width: 270px;
+  width: 258px;
   height: 260px;
   border: none;
   margin-left: 16px;
   margin-top: 16px;
+  overflow-y: auto;
 }
 .labeler-add-textarea:focus {
   border: none;
@@ -305,20 +314,37 @@
   border: none;
 }
 .labeler-cancel-button {
-  margin-left: 170px;
-  margin-top: 7px;
+  margin-left: 179px;
+  margin-top: 5px;
   background: #9a9a9a;
 }
 .labeler-confirm-button {
   background: #3d5eec;
 }
-
+.labeler-cancel-button1,
+.labeler-confirm-button1 {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.labeler-cancel-button1 {
+  margin-left: 177px;
+  margin-top: 5px;
+  background: #9a9a9a;
+}
+.labeler-confirm-button1 {
+  background: #3d5eec;
+}
 .labeler-add-textarea2 {
-  width: 270px;
+  width: 258px;
   height: 260px;
   border: none;
   margin-left: 16px;
   margin-top: 16px;
+  overflow-y: auto;
 }
 .labeler-add-textarea2:focus {
   border: none;
@@ -336,23 +362,14 @@
   border: none;
 }
 .labeler-cancel-button2 {
-  margin-left: 170px;
-  margin-top: 7px;
+  margin-left: 177px;
+  margin-top: 5px;
   background: #9a9a9a;
 }
 .labeler-confirm-button2 {
   background: #3d5eec;
 }
-.labeler-add-textarea3 {
-  width: 270px;
-  height: 260px;
-  border: none;
-  margin-left: 16px;
-  margin-top: 16px;
-}
-.labeler-add-textarea3:focus {
-  border: none;
-}
+
 .modal-input2-button3 {
   border-top: 1px solid #ccc;
 }
@@ -366,8 +383,8 @@
   border: none;
 }
 .labeler-cancel-button3 {
-  margin-left: 170px;
-  margin-top: 7px;
+  margin-left: 175px;
+  margin-top: 5px;
   background: #9a9a9a;
 }
 .labeler-confirm-button3 {

@@ -307,6 +307,7 @@ function openCreateModal() {
 function closeCreateModal() {
   var modal = document.getElementById("myModal");
   modal.style.display = "none";
+  location.reload();
 }
 
 function datasetCreateSend(company_name) {
@@ -317,6 +318,7 @@ function datasetCreateSend(company_name) {
   var labeler_nick = labelerInput.split("\n").map(function (item) {
     return item.trim();
   });
+  var labeler_nick = labelerListInInput;
 
   var inp_nick = document.getElementById("checkerInput").value;
 

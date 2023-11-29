@@ -5,3 +5,238 @@ header {
   border-bottom: 1px solid #c4c4c4;
   height: 80px;
 }
+.custom-button {
+  width: 147px;
+  height: 40px;
+  padding: 0px 10px;
+  border-radius: 999px;
+  border: 1px solid #e9e9e9;
+  gap: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: white;
+  text-decoration: none;
+  font-size: 14px;
+
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  bottom: 20px;
+}
+.userName {
+  margin-left: 4px; /* 원하는 간격으로 조절 */
+}
+.img-username {
+  cursor: pointer;
+}
+
+.overlay-box {
+  position: fixed;
+  width: 148px;
+  height: 170px;
+  top: 0;
+  left: 0;
+  display: none;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.close-button {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  cursor: pointer;
+}
+.user-photo {
+  position: absolute;
+  top: 18px;
+  left: 44px;
+}
+.user-name {
+  position: absolute;
+  top: 76px;
+  left: 50%; /* Set left to 50% */
+  transform: translateX(-50%); /* Move the element back by half of its width */
+  font-size: 16px;
+  font-weight: bold;
+  color: #828282;
+  white-space: nowrap; /* Prevent text from wrapping */
+
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+.button-area {
+  position: absolute;
+
+  width: 136px;
+  height: 63px;
+  top: 96px;
+  left: 6px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+.logout-button,
+.profile-button {
+  display: flex;
+  align-items: center;
+  width: 136px;
+  height: 32px;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+  background-color: white;
+  margin-bottom: 1px;
+}
+.user-Logout,
+.user-Profile {
+  border-radius: 50%;
+  margin-right: 6px;
+  margin-left: 7px;
+}
+.profile-name,
+.logout-text {
+  color: #333;
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+/* ----------------------------------------------------------------------------------------- */
+/* 데이터셋 생성 모달 css */
+.profilemodal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.profilemodal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  width: 784px;
+  max-width: 100%;
+  height: 484px;
+}
+
+.profilemodal-title {
+  height: 40px;
+  background: #edf0ff;
+}
+
+.close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.profilemodal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+  font-size: 18px;
+}
+.profilemodal-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profilemodal-input1 {
+  width: calc((1 / 2) * 100% - 12px);
+  padding: 24px;
+}
+
+.profilemodal-input2 {
+  width: calc((1 / 2) * 100% - 12px);
+  padding: 24px;
+}
+
+.profilemodal-input1,
+.profilemodal-input2 {
+  height: 444px;
+  box-sizing: border-box;
+}
+.profile-input {
+  margin-top: 8px;
+  width: 100%;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+
+  padding-left: 12px;
+  box-sizing: border-box;
+}
+.profile-input-title {
+  margin-top: 24px;
+}
+
+.profile-secession-container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 8px; /* 간격 조절 */
+}
+
+.profile-secession-button {
+  margin-top: 16px;
+  width: 65px;
+  height: 20px;
+  border-radius: 5px;
+  gap: 4px;
+  background-color: white;
+  color: #6e6e6e;
+  border: 1px solid #6e6e6e;
+}
+.profile-secession-text {
+  padding-top: 14px;
+  font-family: Roboto;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: -0.03em;
+  text-align: left;
+
+  color: #c7c7c7;
+}
+
+.profile-modify-button {
+  background: #3d5eec;
+  color: white;
+  width: 43px;
+  height: 20px;
+  border-radius: 5px;
+  border: none;
+  gap: 4px;
+
+  float: right;
+  margin-top: 16px;
+  margin-right: -5px;
+}
+/* ----------------------------------------------------------------------------------------- */

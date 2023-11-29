@@ -17,34 +17,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (userIcon) {
           if (ul.style.display === "block") {
-            // 열렸을 때의 SVG 이미지로 교체
             userIcon.innerHTML =
               '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 10.828L16.95 15.778L18.364 14.364L12 8L5.63601 14.364L7.05101 15.778L12.001 10.828L12 10.828Z" fill="#B7B7B7"/></svg>';
           } else {
-            // 닫혔을 때의 SVG 이미지로 교체
             userIcon.innerHTML =
               '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 13.172L16.95 8.222L18.364 9.636L12 16L5.63601 9.636L7.05101 8.222L12.001 13.172L12 13.172Z" fill="#B7B7B7"/></svg>';
           }
         }
       }
 
-      // 이벤트 전파를 막음
       event.stopPropagation();
     });
 
-    // 토글 내부의 각 아이템에 대한 이벤트 핸들러 추가
     const listItems = toggle.querySelectorAll("ul li");
     listItems.forEach(function (item) {
       item.addEventListener("click", function (event) {
-        // 이벤트 전파를 막음
         event.stopPropagation();
       });
     });
   });
 
-  // 문서 전체에 대한 클릭 이벤트 핸들러 추가
   document.addEventListener("click", function () {
-    // 모든 토글 닫기
     toggles.forEach(function (toggle) {
       const ul = toggle.querySelector("ul");
       const userIcon = toggle.querySelector(".userIcon");
@@ -59,3 +52,55 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+function showOverlayBox() {
+  var overlayBox = document.getElementById("overlayBox");
+
+  var imgUsername = document.querySelector(".img-username");
+  var imgRect = imgUsername.getBoundingClientRect();
+
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  overlayBox.style.top = imgRect.bottom + scrollTop + 6 + "px";
+  overlayBox.style.left = imgRect.left - 12 + "px";
+
+  overlayBox.style.display = "block";
+}
+function hideOverlayBox() {
+  var overlayBox = document.getElementById("overlayBox");
+  overlayBox.style.display = "none";
+}
+
+function profileClick() {
+  var profileModal = document.getElementById("profileModal");
+  profileModal.style.display = "block";
+}
+
+function closeProfileModal() {
+  var profileModal = document.getElementById("profileModal");
+  profileModal.style.display = "none";
+}
+
+function userLogout() {
+  var modalTitle = "로그아웃";
+  var modalMessage = "접속중인 환경에서 로그아웃을 하시겠습니까?";
+  openconfirmcancelPopup(modalTitle, modalMessage);
+}
+
+function confirmcancelpopupOk() {
+  fetch("/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message === "Logged out successfully") {
+        window.location.href = "/login";
+      } else {
+        console.error("Logout failed:", data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
