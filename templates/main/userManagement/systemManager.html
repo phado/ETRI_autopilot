@@ -12,6 +12,10 @@
       type="text/javascript"
       src="{{ url_for('static', filename='js/main/userManagement/systemManager.js') }}"
     ></script>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
+    ></script>
     <title>systemManager</title>
   </head>
   <body>
@@ -41,13 +45,13 @@
       </div>
       <div class="data-list-container">
         <div class="data-list-title">시스템 관리자</div>
-        <button class="data-list-create" id="openModalBtn">+ Create</button>
+        <!-- <button class="data-list-create">+ Create</button> -->
         <!-- 데이터셋 생성 모달 -->
         <div id="myModal" class="modal">
           <div class="modal-content">
             <div class="modal-title">
               <div class="modal-title-name">시스템 관리자</div>
-              <span class="close" id="closeModalBtn">&times;</span>
+              <span class="close" onclick="closeManagerModify()">&times;</span>
             </div>
             <div class="modal-input">
               <div class="modal-input1">
@@ -97,7 +101,12 @@
                     src="{{url_for('static', filename='/image/line.svg')}}"
                     style="margin-top: 24px"
                   />
-                  <button class="modal-cancel-button">취소</button>
+                  <button
+                    class="modal-cancel-button"
+                    onclick="closeManagerModify()"
+                  >
+                    취소
+                  </button>
                   <button
                     class="modal-confirm-button"
                     onclick="logInputValues()"
@@ -109,20 +118,6 @@
             </div>
           </div>
         </div>
-        <script>
-          // create 모달 js
-          var modal = document.getElementById("myModal");
-          var openModalBtn = document.getElementById("openModalBtn");
-          var closeModalBtn = document.getElementById("closeModalBtn");
-
-          openModalBtn.addEventListener("click", function () {
-            modal.style.display = "block";
-          });
-
-          closeModalBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-          });
-        </script>
 
         <table class="data-table">
           <thead>
@@ -183,6 +178,7 @@
               <th class="data-cell">
                 <img
                   src="{{url_for('static', filename='/image/modify.svg')}}"
+                  onclick="systemManagerModify('{{_[0]}}')"
                 />
               </th>
               <th class="data-cell">
@@ -195,7 +191,51 @@
           </tbody>
         </table>
       </div>
-
+      <!-- 확인 모달 -->
+      <div id="confirmPopup" class="confirmPopup">
+        <div class="confirmPopup-content">
+          <span class="confirmPopup-close" onclick="closeconfirmPopup()"
+            >&times;</span
+          >
+          <div class="confirmPopup-container">
+            <div class="confirmPopup-title" id="confirmpopupTitle"></div>
+            <div class="confirmPopup-message" id="confirmpopupMessage"></div>
+          </div>
+          <button class="confirmBtn" onclick="confirmpopupOk()">확인</button>
+        </div>
+      </div>
+      <!-- 확인 모달 -->
+      <!-- 확인 취소모달 -->
+      <div id="confirmcancelPopup" class="confirmcancelPopup">
+        <div class="confirmcancelPopup-content">
+          <span
+            class="confirmcancelPopup-close"
+            onclick="closeconfirmcancelPopup()"
+            >&times;</span
+          >
+          <div class="confirmcancelPopup-container">
+            <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
+              확인 취소 모달
+            </div>
+            <div
+              class="confirmcancelPopup-message"
+              id="confirmcancelpopupMessage"
+            >
+              확인 취소 모달입니다.
+            </div>
+          </div>
+          <button
+            class="confirmBtn"
+            onclick="systemManagerConfirmcancelpopupOk()"
+          >
+            확인
+          </button>
+          <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel()">
+            취소
+          </button>
+        </div>
+      </div>
+      <!-- 확인 취소 모달 -->
       <div class="pagination">
         <a href="#" class="page-link">&laquo; </a>
         <a href="#" class="page-link">&lt; </a>

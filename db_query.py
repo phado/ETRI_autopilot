@@ -88,6 +88,45 @@ def db_register(mariadb_pool, usr_id, usr_nick_name, usr_pwd, usr_name, usr_phon
 
     return reg_json_result
 
+def db_changePermission(mariadb_pool, permissions, usr_idx):
+    """
+    권한 설정
+    """
+    reg_json_result = make_response_json([])
+    connection = None
+    cursor = None
+
+    try:
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        # 사용자의 모든 권한 삭제
+        delete_query = "DELETE FROM tb_usr_permission WHERE usr_idx = %(usr_idx)s"
+        cursor.execute(delete_query, {"usr_idx": usr_idx})
+
+        # 새로운 권한 추가
+        insert_query = "INSERT INTO tb_usr_permission (usr_idx, pms_cd) VALUES (%(usr_idx)s, %(permission)s)"
+        for permission in permissions:
+            cursor.execute(insert_query, {"usr_idx": usr_idx, "permission": permission})
+
+        connection.commit()
+        reg_json_result = success_message_json(reg_json_result)
+
+    except Exception as e:
+        print(e)
+        reg_json_result = fail_message_json(reg_json_result)
+        if connection:
+            connection.rollback()
+
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+    return reg_json_result
+
+
 
 def db_find_id(mariadb_pool, usr_name, usr_phone):
     """
@@ -163,7 +202,7 @@ def db_count_id(mariadb_pool, usr_id):
     return json_result
 
 
-def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
+def db_reset_pwd(mariadb_pool, new_pwd, usr_idx):
     """
     비빌번호 변경
     :param usr_id:
@@ -177,7 +216,7 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_id):
         connection = mariadb_pool.get_connection()
 
         cursor = connection.cursor()
-        query = f"update tb_users tu set tu.usr_pw='{new_pwd}' where tu.usr_idx ='{usr_id}';"
+        query = f"update tb_users tu set tu.usr_pw='{new_pwd}' where tu.usr_idx ='{usr_idx}';"
         cursor.execute(query)
         connection.commit()
 
@@ -363,37 +402,6 @@ def db_data_set_detail(mariadb_pool, dataset_idx):
         return json_result
 
 
-# def db_data_set_detail(mariadb_pool,dataset_idx):
-#     """
-#     데이터셋 상세 정보 조회
-#     @param mariadb_pool:
-#     @param dataset_idx:
-#     @return:
-#     """
-#     try:
-#         json_result = make_response_json([])
-#
-#         connection = mariadb_pool.get_connection()
-#         cursor = connection.cursor()
-#
-#         query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
-#         cursor.execute(query)
-#         json_result['data_set_info'] = cursor.fetchall()
-#
-#         query = f"select tu.usr_nick, tud.ds_idx ,tud.usr_ds_cnt_frame,tud.usr_ds_all_frame , tud.usr_ds_complete ,tud.inp_stat_idx,tsc.stat_cd ,tsc.stat_nm_en ,tsc.stat_nm_kr, tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx =tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx where tud.ds_idx =  {int(dataset_idx)} ;"
-#         cursor.execute(query)
-#         json_result['data_set_labeler_info'] = cursor.fetchall()
-#
-#         json_result = success_message_json(json_result)
-#     except Exception as e:
-#         print(e)
-#         json_result = fail_message_json(json_result)
-#
-#     finally:
-#         if cursor: cursor.close()
-#         if connection: connection.close()
-#
-#         return json_result
 
 def db_model_detail(mariadb_pool, model_idx):
     """
@@ -801,6 +809,62 @@ def db_change_labeling_done(mariadb_pool, usr_nick, ds_name):
 
         json_result['dataset_labeled_fixed'] = '0'
 
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+
+def db_systemManager_detail(mariadb_pool, managerIdx):
+    """
+    시스템 관리자 상세 정보 조회
+    @param mariadb_pool:
+    @param dataset_idx:
+    @return:
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"select tu.usr_id, tu.usr_nick, tg.grp_nm_en, tu.usr_nm, tu.usr_tel, tu.usr_mail, group_concat(tup.pms_cd),tu.usr_idx as pms_cd from tb_users tu left join tb_groups tg on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup on tup.usr_idx = tu.usr_idx where tu.usr_idx = {int(managerIdx)} group by tu.usr_idx;"
+        cursor.execute(query)
+        json_result['systemManagerInfo'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        return json_result
+    
+
+def db_get_user_info(mariadb_pool, usr_idx):
+    """
+    유저 인덱스로 로그인 프로필에서 정보 확인 
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+        cursor = connection.cursor()
+
+        query = f"SELECT tb_users.usr_id, tb_users.usr_nick, tb_users.usr_nm, tb_users.usr_tel, tb_users.usr_mail, tb_groups.grp_nm_en FROM tb_users JOIN tb_groups ON tb_users.grp_idx = tb_groups.grp_idx WHERE tb_users.usr_idx = {int(usr_idx)};"
+
+        cursor.execute(query)
+
+        json_result['userInfo'] = cursor.fetchall()
+
+        json_result = success_message_json(json_result)
     except Exception as e:
         print(e)
         json_result = fail_message_json(json_result)

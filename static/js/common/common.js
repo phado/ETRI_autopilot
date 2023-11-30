@@ -69,9 +69,37 @@ function hideOverlayBox() {
   overlayBox.style.display = "none";
 }
 
-function profileClick() {
+function profileClick(usr_idx) {
   var profileModal = document.getElementById("profileModal");
   profileModal.style.display = "block";
+  fetch("/common/profileData", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      usr_idx: usr_idx,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      var userId = data.userInfo.userInfo[0][0];
+      var userNick = data.userInfo.userInfo[0][1];
+      var userName = data.userInfo.userInfo[0][2];
+      var userPhone = data.userInfo.userInfo[0][3];
+      var userEmail = data.userInfo.userInfo[0][4];
+      var userEnter = data.userInfo.userInfo[0][5];
+      document.getElementById("profileUserId").value = userId;
+      document.getElementById("profileUserNick").value = userNick;
+      document.getElementById("profileUserName").value = userName;
+      document.getElementById("profileUserPhone").value = userPhone;
+      document.getElementById("profileUserEmail").value = userEmail;
+      document.getElementById("profileUserEnter").value = userEnter;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function closeProfileModal() {
@@ -103,4 +131,34 @@ function confirmcancelpopupOk() {
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+
+function passwordModify(usr_idx) {
+  var newPassword = document.getElementById("newPassword").value;
+  var newPasswordCheck = document.getElementById("newPasswordCheck").value;
+  if (newPassword == newPasswordCheck) {
+    fetch("/resetPwd", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        usr_idx: usr_idx,
+        new_pwd: newPassword,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        var modalTitle = "비밀번호 변경";
+        var modalMessage = "비밀번호가 변경되었습니다.";
+        openconfirmPopup(modalTitle, modalMessage);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    var modalTitle = "비밀번호 변경";
+    var modalMessage = "비밀번호가 일치하지 않습니다.";
+    openconfirmPopup(modalTitle, modalMessage);
+  }
 }

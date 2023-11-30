@@ -2,8 +2,8 @@ from flask import Flask, request, render_template,session, redirect, url_for
 from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
     db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, \
-    db_change_confirm_done, db_change_labeling_done
-from user_management import def_login, def_find_id, def_find_pwd
+    db_change_confirm_done, db_change_labeling_done, db_systemManager_detail, db_changePermission, db_get_user_info
+from user_management import def_login, def_find_id, def_find_pwd, def_reset_pwd
 from common_management import fail_message_json, make_response_json, success_message_json
 
 import os
@@ -86,6 +86,28 @@ def register():
 
     return json_result
 
+@app.route('/userManagement/systemManager/changePermission', methods=['POST'])
+def changePermission():
+    """
+        관리자 권한 변경 
+    """
+
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+
+            permissons = data['permissions']
+
+            user_idx = data['user_idx']
+
+            json_result = db_changePermission(mariadb_pool,permissons,user_idx)
+        except Exception as e:
+            print(e)
+            json_result = fail_message_json(json_result)
+
+    return json_result
+
+
 @app.route('/findId', methods=['POST'])
 def findId():
     """
@@ -143,16 +165,19 @@ def findPwd():
     return render_template("")
 
 
-@app.route('/resetPwd')
+@app.route('/resetPwd', methods=['POST'])
 def resetPwd():
     """
        비밀번호 수정
     """
     try:
-        new_pwd = request.form.get('newPwd')
-        usr_id = session['usr_id']
+        data = request.get_json()
 
-        json_result = def_find_pwd(mariadb_pool, new_pwd, usr_id)
+        new_pwd = data['new_pwd'] 
+        usr_idx = data['usr_idx']
+ 
+
+        json_result = def_reset_pwd(mariadb_pool, new_pwd, usr_idx)
 
     except Exception as e:
         print(e)
@@ -160,7 +185,9 @@ def resetPwd():
 
     return json_result
 
-
+# 회원탈퇴 쿼리 = UPDATE tb_users
+# SET is_valid = 0
+# WHERE usr_idx = '0';
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------메인 페이지-----------------------------------------------
 # 1. 데이터 관리 탭
@@ -171,7 +198,7 @@ def dataManagement():
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
     """
     try:
-        session['usr_id'] = 'test'
+        session['usr_id'] = 'gywjd1108'
 
         tbl_type = 'tb_prj_datasets'
 
@@ -218,7 +245,7 @@ def modelManagement():
     모델 목록
     :return:
     """
-    session['usr_id'] = 'test'
+    session['usr_id'] = 'gywjd1108'
     try:
         tbl_type = 'tb_prj_models'
 
@@ -264,7 +291,7 @@ def userManagementSystemManager():
     사용자관리 / 시스템 관리자
     :return:
     """
-    session['usr_id'] = 'test'
+    session['usr_id'] = 'gywjd1108'
     try:
         tbl_type = 'tb_users_1'
 
@@ -306,7 +333,7 @@ def userManagementDataManager():
     사용자관리 / 데이터 관리자
     :return:
     """
-    session['usr_id'] = 'test'
+    session['usr_id'] = 'gywjd1108'
     try:
         tbl_type = 'tb_users_2'
 
@@ -352,7 +379,7 @@ def userManagementModelManager():
     사용자관리 / 모델 관리자
     :return:
     """
-    session['usr_id'] = 'test'
+    session['usr_id'] = 'gywjd1108'
     try:
         tbl_type = 'tb_users_3'
 
@@ -410,7 +437,7 @@ def systemManagementAgencyManager():
 # -----------------------------------------페이지-----------------------------------------------
 @app.route('/common')
 def common():
-    # 세션에서 사용자 정보 삭제
+    # 세션에서 사용자 정보 가져가 title에 회원 정보 띄우기 
     usr_idx= session['usr_idx']
     usr_id= session['usr_id']
     grp_idx=session['grp_idx']
@@ -430,7 +457,7 @@ def dataSetDetail():
 
     """
     try:
-        session['usr_id'] = 'test'
+        session['usr_id'] = 'gywjd1108'
 
         result_json = make_response_json([])
 
@@ -453,6 +480,36 @@ def dataSetDetail():
 
     return result_json
 
+
+@app.route('/userManagement/systemManager/detailInfo', methods=['POST'])
+def systemManagerDetail():
+    """
+    사용자 관리 - 시스템 관리자 상세 정보
+
+    """
+    try:
+        usr_id= session['usr_id']
+
+        result_json = make_response_json([])
+
+        data = request.get_json()
+
+        managerIdx = data['managerIdx']
+
+        detail_list = db_systemManager_detail(mariadb_pool, managerIdx)
+
+        result_json = success_message_json(result_json)
+
+        result_json['systemManagerInfo'] = detail_list['systemManagerInfo']
+
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
+
 @app.route('/dataManagement/getLabeler', methods=['POST'])
 def getLabeler():
     """
@@ -468,8 +525,6 @@ def getLabeler():
         data = request.get_json()
 
         grp_idx = data['grp_idx']
-        # grp_idx = '1'
-        # grp_idx = session['grp_idx']
 
         labeler_list = db_get_labeler(mariadb_pool,grp_idx)
 
@@ -520,7 +575,7 @@ def getDevloper():
     try:
 
         result_json = make_response_json([])
-        grp_idx = '1'
+        grp_idx = '1' # todo 하드 코딩
         # grp_idx = session['grp_idx']
 
         labeler_list = db_get_devloper(mariadb_pool,grp_idx)
@@ -566,7 +621,7 @@ def ModelDetail():
 
     """
     try:
-        session['usr_id'] = 'test'
+        session['usr_id'] = 'gywjd1108'
 
 
         result_json = make_response_json([])
@@ -638,6 +693,28 @@ def changeLabelingDone():
         result_json['labeler'] = db_change_labeling_done(mariadb_pool,usr_nick,ds_name)
 
         result_json = success_message_json(result_json)
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return result_json
+
+@app.route('/common/profileData', methods=['POST'])
+def profileDataLoad():
+    """
+    현재 로그인 된 회원의 정보를 가져오는 기능 
+
+    """
+    try:
+
+        result_json = make_response_json([])
+        data = request.get_json()
+        usr_idx = data['usr_idx']
+
+        userInfo = db_get_user_info(mariadb_pool,usr_idx)
+
+        result_json['userInfo'] = userInfo
 
     except Exception as e:
         print(e)

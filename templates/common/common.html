@@ -139,7 +139,7 @@
       />
       <div class="user-name">{{usr_nick}}</div>
       <div class="button-area">
-        <button class="profile-button" onclick="profileClick()">
+        <button class="profile-button" onclick="profileClick('{{usr_idx}}')">
           <img
             src="{{url_for('static', filename='/image/userProfile.svg')}}"
             alt="User Profile"
@@ -173,27 +173,26 @@
             <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"   value="{{usr_id}}"
+              class="profile-input"  id="profileUserId" 
             />
             <div class="profile-input-title">닉네임</div>
             <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"  value="{{usr_nick}}"
+              class="profile-input"  id="profileUserNick"
             />
-            <div class="profile-input-title">비밀번호</div>
-              <input
+            <div class="profile-input-title">E-mail</div>
+            <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"
+              class="profile-input" id="profileUserEmail"
             />   
-            <div class="profile-input-title">비밀번호 확인</div>
+            <div class="profile-input-title">기관명</div>
               <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"
+              class="profile-input"  id="profileUserEnter"
             />
-
             <div class="profile-secession-container">
               <button
                 class="profile-secession-button"
@@ -211,29 +210,27 @@
             <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input" 
+              class="profile-input"  id="profileUserName"
             />
             <div class="profile-input-title">휴대폰 번호</div>
             <input
               type="text"
               placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"
+              class="profile-input" id="profileUserPhone"
             />
-            <div class="profile-input-title">E-mail</div>
-              <input
-              type="text"
-              placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"
-            />   
-            <div class="profile-input-title">기관명</div>
-              <input
-              type="text"
-              placeholder="5~30글자/영문,한글,숫자,특수문자"
-              class="profile-input"  value="{{grp_nm_en}}"
-            />
-
-            <button class="profile-modify-button">수정</button>
-             
+            <div class="profile-input-title">비밀번호</div>
+            <input
+            type="password"
+            placeholder="5~30글자/영문,한글,숫자,특수문자"
+            class="profile-input" id="newPassword"
+          />   
+          <div class="profile-input-title">비밀번호 확인</div>
+            <input
+            type="password"
+            placeholder="5~30글자/영문,한글,숫자,특수문자"
+            class="profile-input"id="newPasswordCheck"
+          />
+            <button class="profile-modify-button" onclick="passwordModify('{{usr_idx}}')">비밀번호 수정</button>
             </div>
           </div>
           </div>

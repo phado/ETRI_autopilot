@@ -225,18 +225,15 @@ header {
 
   color: #c7c7c7;
 }
-
 .profile-modify-button {
   background: #3d5eec;
   color: white;
-  width: 43px;
   height: 20px;
   border-radius: 5px;
   border: none;
   gap: 4px;
-
   float: right;
-  margin-top: 16px;
-  margin-right: -5px;
+  margin-top: 25px;
+  margin-right: 0px;
 }
 /* ----------------------------------------------------------------------------------------- */
