@@ -71,10 +71,7 @@ function toggleImage(imageId) {
     image.src = "/static/image/boxcheck.svg";
     checkedImages.push(imageId);
   }
-
   imageState.status = !imageState.status;
-
-  console.log(checkedImages);
 }
 
 function logInputValues() {

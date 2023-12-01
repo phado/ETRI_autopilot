@@ -503,7 +503,18 @@
   height: 40px;
   text-align: center;
 }
+.progress_organize {
+  position: absolute;
+  top: 433px;
+  left: 25px;
 
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
 .detialmodal-buttons {
   display: flex;
   justify-content: flex-end;
@@ -527,7 +538,7 @@
   gap: 4px;
   color: white;
   border: none;
-  margin-left: 8px;
+  margin-left: 1100px;
   margin-top: 7px;
   background: #3d5eec;
 }

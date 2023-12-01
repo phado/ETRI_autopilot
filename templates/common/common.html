@@ -196,7 +196,7 @@
             <div class="profile-secession-container">
               <button
                 class="profile-secession-button"
-                onclick="userSecession()"
+                onclick="userSecession('{{usr_idx}}')"
               >
                 탈퇴하기
               </button>
@@ -266,5 +266,47 @@
         </div>
       </div>
       <!-- 확인 취소 모달 -->
+      <!-- 확인 취소모달 -->
+      <div id="confirmcancelPopup2" class="confirmcancelPopup2">
+        <div class="confirmcancelPopup-content">
+          <span
+            class="confirmcancelPopup-close"
+            onclick="closeconfirmcancelPopup2()"
+            >&times;</span
+          >
+          <div class="confirmcancelPopup-container">
+            <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle2">
+              확인 취소 모달
+            </div>
+            <div
+              class="confirmcancelPopup-message"
+              id="confirmcancelpopupMessage2"
+            >
+              확인 취소 모달입니다.
+            </div>
+          </div>
+          <button class="confirmBtn" onclick="confirmcancelpopupOk2('{{usr_idx}}')">
+            확인
+          </button>
+          <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel2()">
+            취소
+          </button>
+        </div>
+      </div>
+      <!-- 확인 취소 모달 -->
+      <!-- 확인 모달 -->
+      <div id="confirmPopup" class="confirmPopup">
+        <div class="confirmPopup-content">
+          <span class="confirmPopup-close" onclick="closeconfirmPopup()"
+            >&times;</span
+          >
+          <div class="confirmPopup-container">
+            <div class="confirmPopup-title" id="confirmpopupTitle"></div>
+            <div class="confirmPopup-message" id="confirmpopupMessage"></div>
+          </div>
+          <button class="confirmBtn" onclick="confirmpopupOk()">확인</button>
+        </div>
+      </div>
+      <!-- 확인 모달 -->
   </body>
 </html>

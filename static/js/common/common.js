@@ -83,7 +83,6 @@ function profileClick(usr_idx) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       var userId = data.userInfo.userInfo[0][0];
       var userNick = data.userInfo.userInfo[0][1];
       var userName = data.userInfo.userInfo[0][2];
@@ -136,29 +135,68 @@ function confirmcancelpopupOk() {
 function passwordModify(usr_idx) {
   var newPassword = document.getElementById("newPassword").value;
   var newPasswordCheck = document.getElementById("newPasswordCheck").value;
-  if (newPassword == newPasswordCheck) {
-    fetch("/resetPwd", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        usr_idx: usr_idx,
-        new_pwd: newPassword,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        var modalTitle = "비밀번호 변경";
-        var modalMessage = "비밀번호가 변경되었습니다.";
-        openconfirmPopup(modalTitle, modalMessage);
+
+  var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+
+  if (passwordRegex.test(newPassword)) {
+    if (newPassword == newPasswordCheck) {
+      fetch("/resetPwd", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          usr_idx: usr_idx,
+          new_pwd: newPassword,
+        }),
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          var modalTitle = "비밀번호 변경";
+          var modalMessage = "비밀번호가 변경되었습니다.";
+          openconfirmPopup(modalTitle, modalMessage);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    } else {
+      var modalTitle = "비밀번호 변경";
+      var modalMessage = "비밀번호가 일치하지 않습니다.";
+      openconfirmPopup(modalTitle, modalMessage);
+    }
   } else {
     var modalTitle = "비밀번호 변경";
-    var modalMessage = "비밀번호가 일치하지 않습니다.";
+    var modalMessage =
+      "비밀번호는 다섯글자 이상, 숫자와 영어를 조합하여야 합니다.";
     openconfirmPopup(modalTitle, modalMessage);
   }
+}
+
+function userSecession(usr_idx) {
+  var modalTitle = "사용자 탈퇴";
+  var modalMessage = "회원님의 계정을 삭제하시겠습니까?";
+  openconfirmcancelPopup2(modalTitle, modalMessage);
+}
+
+function confirmcancelpopupOk2(usr_idx) {
+  fetch("/userSecession", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      usr_idx: usr_idx,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      closeconfirmcancelPopup2();
+      var modalTitle = "사용자 탈퇴";
+      var modalMessage = "회원님의 정보가 삭제되었습니다.";
+      openconfirmPopup(modalTitle, modalMessage);
+      window.location.href = "/login";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }

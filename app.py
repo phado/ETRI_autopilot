@@ -3,7 +3,7 @@ from db_conn import get_pool_conn
 from db_query import db_register, db_count_id, db_count_board_list, db_get_board_list, db_data_set_detail, \
     db_model_detail, db_get_labeler, db_get_devloper, db_get_dataset, db_get_inspector, \
     db_change_confirm_done, db_change_labeling_done, db_systemManager_detail, db_changePermission, db_get_user_info
-from user_management import def_login, def_find_id, def_find_pwd, def_reset_pwd
+from user_management import def_login, def_find_id, def_find_pwd, def_reset_pwd,user_secession
 from common_management import fail_message_json, make_response_json, success_message_json
 
 import os
@@ -185,9 +185,25 @@ def resetPwd():
 
     return json_result
 
-# 회원탈퇴 쿼리 = UPDATE tb_users
-# SET is_valid = 0
-# WHERE usr_idx = '0';
+@app.route('/userSecession', methods=['POST'])
+def userSecession():
+    """
+    회원 탈퇴 
+    """
+    try:
+        data = request.get_json()
+
+        usr_idx = data['usr_idx'] 
+ 
+
+        json_result = user_secession(mariadb_pool,usr_idx)
+
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+
+    return json_result
+
 # ------------------------------------------------------------------------------------------------
 # -----------------------------------------메인 페이지-----------------------------------------------
 # 1. 데이터 관리 탭
@@ -707,7 +723,6 @@ def profileDataLoad():
 
     """
     try:
-
         result_json = make_response_json([])
         data = request.get_json()
         usr_idx = data['usr_idx']
@@ -721,6 +736,8 @@ def profileDataLoad():
         result_json = fail_message_json(result_json)
 
     return result_json
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

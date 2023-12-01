@@ -47,6 +47,7 @@
             id="username"
             name="username"
             placeholder="User ID"
+            oninput="saveUsername()"
           />
         </div>
         <div class="form-group">
@@ -67,7 +68,7 @@
               <a class="forget-pwd" id="fotget-pwd">Forget Password?</a>
             </div>
             <div class="remember-id">
-              <img src="{{url_for('static', filename='/image/box.svg')}}" />
+              <img src="{{url_for('static', filename='/image/box.svg')}}" onclick="updateRememberStatus()" id="rememberImage"/>
               <div class="keep-text">Keep me signed in</div>
             </div>
             <!-- <a href="#" onclick="redirectToDataManagement()"> -->

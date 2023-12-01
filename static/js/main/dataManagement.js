@@ -1,4 +1,7 @@
 function detailOpenModal(datasetIdx, datasetname) {
+  var totalAllFrame = 0;
+  var progressAllFrame = 0;
+
   var titleElement = document.querySelector(".detailmodal-title-name");
   titleElement.textContent = "[" + datasetIdx + "]" + "  " + datasetname;
 
@@ -33,7 +36,6 @@ function detailOpenModal(datasetIdx, datasetname) {
         var complete = data.data_set_labeler_info[i][4];
         var inspect = data.data_set_labeler_info[i][5];
         var issue = data.data_set_labeler_info[i][6];
-
         // 새로운 행을 생성하고 각 셀에 데이터 추가
         var row = tbody.insertRow(-1);
 
@@ -241,7 +243,13 @@ function detailOpenModal(datasetIdx, datasetname) {
         var cell9 = row.insertCell(8);
         cell9.className = "detaildata-cell";
         cell9.id = "cell-sub";
+        totalAllFrame += parseInt(allframe, 10);
+        progressAllFrame += parseInt(progress, 10);
       }
+      var progressFramesElement = document.getElementById("progressFrames");
+      progressFramesElement.textContent = progressAllFrame;
+      var totalFramesElement = document.getElementById("totalFrames");
+      totalFramesElement.textContent = totalAllFrame;
     })
     .catch((error) => console.error("에러 발생:", error));
 }

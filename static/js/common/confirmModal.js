@@ -42,7 +42,7 @@ function confirmpopupOk() {
 }
 
 // 확인 취소 팝업 합수 --------------------------------------------------
-// var modalTitle = " ";
+// var modalTitle = "";
 // var modalMessage = "";
 // openconfirmcancelPopup(modalTitle, modalMessage);
 function openconfirmcancelPopup(modalTitle, modalMessage) {
@@ -66,6 +66,25 @@ function closeconfirmcancelPopup() {
   confirmcancelPopup.style.display = "none";
 }
 
+function openconfirmcancelPopup2(modalTitle, modalMessage) {
+  var confirmcancelPopup = document.getElementById("confirmcancelPopup2");
+  var titleElement = document.getElementById("confirmcancelpopupTitle2");
+  var messageElement = document.getElementById("confirmcancelpopupMessage2");
+
+  titleElement.textContent = modalTitle;
+  messageElement.textContent = modalMessage;
+
+  confirmcancelPopup.style.display = "block";
+  centerPopup(confirmcancelPopup);
+}
+function confirmcancelpopupCancel2() {
+  closeconfirmcancelPopup2();
+}
+
+function closeconfirmcancelPopup2() {
+  var confirmcancelPopup = document.getElementById("confirmcancelPopup2");
+  confirmcancelPopup.style.display = "none";
+}
 // 확인 취소 시 사용하는 곳 마다 다른 타이틀,메세지로 띄우기 위한 함수
 
 // function confirmcancelpopupOk() {

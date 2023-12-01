@@ -233,6 +233,34 @@ def db_reset_pwd(mariadb_pool, new_pwd, usr_idx):
 
     return json_result
 
+def db_secession_user(mariadb_pool, usr_idx):
+    """
+    유저 탈퇴 
+    """
+    try:
+        json_result = make_response_json([])
+
+        connection = mariadb_pool.get_connection()
+
+        cursor = connection.cursor()
+
+        query =  f"UPDATE tb_users SET is_valid = 0 WHERE usr_idx = {usr_idx};"
+        cursor.execute(query)
+        connection.commit()
+
+        json_result = success_message_json(json_result)
+
+    except Exception as e:
+        print(e)
+        if connection: connection.rollback()
+        json_result = fail_message_json(json_result)
+
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+    return json_result
+
 
 def db_get_board_list(mariadb_pool, page_num, search_type, search_key_word, show_data_mount, usr_id, tabel_type, usr_nick, grp_nm_en):
     """

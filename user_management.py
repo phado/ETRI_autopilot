@@ -1,4 +1,4 @@
-from db_query import db_login, db_register, db_find_id, db_reset_pwd
+from db_query import db_login, db_register, db_find_id, db_reset_pwd, db_secession_user
 from common_management import *
 
 
@@ -86,3 +86,15 @@ def def_reset_pwd(mariadb_pool, new_pwd, usr_id):
     finally:
         return json_result
 
+# sql_query = f"UPDATE tb_users SET is_valid = 0 WHERE usr_idx = {received_usr_idx};"
+def user_secession(mariadb_pool, usr_idx):
+    """
+    회원 탈퇴하기 
+    """
+    try:
+        json_result = db_secession_user(mariadb_pool, usr_idx)
+    except Exception as e:
+        print(e)
+        json_result = fail_message_json(json_result)
+    finally:
+        return json_result
