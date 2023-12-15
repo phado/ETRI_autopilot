@@ -286,7 +286,15 @@
                             <th class="detaildata-cell" id="cell-sub">
                               프로젝트
                             </th>
-                            <th class="detaildata-cell">접속 경로</th>
+                            <th class="detaildata-cell" id="cell-sub">
+                              접속 경로
+                            </th>
+                            <th class="detaildata-cell" id="cell-sub">
+                              airflow 경로
+                            </th>
+                            <th class="detaildata-cell" id="cell-sub">
+                              mlflow 경로
+                            </th>
                           </tr>
                         </thead>
                         <tbody id="detailModelManagement"></tbody>
@@ -304,6 +312,21 @@
                   </div>
                 </div>
                 <!-- detail 모달 -->
+                <!-- ifrmae 모달 -->
+                <div id="iframeModal" class="iframeModal">
+                  <div class="iframeModal-content">
+                    <div class="iframeModal-title">
+                      <span
+                        class="iframeModal-close"
+                        onclick="closeiframeModal()"
+                        >&times;</span
+                      >
+                    </div>
+                    <div class="iframe-data"></div>
+                  </div>
+                </div>
+                <!-- ifrmae 모달 -->
+                <!-- 확인 모달 -->
               </td>
               <th class="data-cell">
                 <img

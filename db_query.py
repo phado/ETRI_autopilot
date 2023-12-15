@@ -446,7 +446,7 @@ def db_model_detail(mariadb_pool, model_idx):
         cursor = connection.cursor()
         # todo
         # query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
-        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 ;"
+        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path, tpm.prj_dev_airflow_path, tpm.prj_dev_mlflow_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1;"
 
         cursor.execute(query)
 

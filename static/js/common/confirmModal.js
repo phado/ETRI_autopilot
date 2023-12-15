@@ -37,8 +37,8 @@ function closeconfirmPopup() {
 }
 
 function confirmpopupOk() {
-  location.reload();
   closeconfirmPopup();
+  location.reload();
 }
 
 // 확인 취소 팝업 합수 --------------------------------------------------

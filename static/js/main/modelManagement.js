@@ -24,6 +24,8 @@ function detailOpenModal(modelIdx, modelname) {
         var labeler = data.model_detail_info[i][0];
         var checker = data.model_detail_info[i][1];
         var root = data.model_detail_info[i][2];
+        var airroot = data.model_detail_info[i][3];
+        var mlroot = data.model_detail_info[i][4];
 
         var row = tbody.insertRow(-1);
         var cell1 = row.insertCell(0);
@@ -38,17 +40,108 @@ function detailOpenModal(modelIdx, modelname) {
         cell3.className = "detaildata-cell";
         cell3.id = "cell-sub";
         cell3.innerHTML = checker;
+
         var cell4 = row.insertCell(3);
+        cell4.id = "cell-sub";
         cell4.className = "detaildata-cell";
         var baseUrl = "http://localhost:5000/";
         if (root.includes(baseUrl)) {
           root = root.replace(baseUrl, "");
         }
         var link = document.createElement("a");
-        link.href = "http://" + root; // http:// 가 없는 경우 추가
-        link.textContent = root; // 링크에 표시될 텍스트
+        link.textContent = root;
+
+        link.onclick = function () {
+          // var detailModal = document.getElementById("detailModal");
+          // detailModal.style.display = "none";
+          var iframeModal = document.getElementById("iframeModal");
+          iframeModal.style.display = "block";
+
+          var iframeData = iframeModal.querySelector(".iframe-data");
+          iframeData.innerHTML = "";
+
+          var newIframe = document.createElement("iframe");
+          newIframe.src = "http://" + root;
+
+          newIframe.style.width = "100%";
+          newIframe.style.height = "100%";
+          newIframe.style.border = "none";
+
+          iframeData.appendChild(newIframe);
+        };
 
         cell4.appendChild(link);
+
+        var cell5 = row.insertCell(4);
+        cell5.id = "cell-sub";
+        cell5.className = "detaildata-cell";
+        var baseUrl = "http://localhost:5000/";
+        if (airroot.includes(baseUrl)) {
+          airroot = airroot.replace(baseUrl, "");
+        }
+
+        var link = document.createElement("a");
+        link.href = "http://" + airroot;
+        link.textContent = airroot;
+
+        link.onclick = function (event) {
+          event.preventDefault(); // 링크 기본 동작 중단
+
+          // var detailModal = document.getElementById("detailModal");
+          // detailModal.style.display = "none";
+
+          var iframeModal = document.getElementById("iframeModal");
+          iframeModal.style.display = "block";
+
+          var iframeData = iframeModal.querySelector(".iframe-data");
+          iframeData.innerHTML = "";
+
+          var newIframe = document.createElement("iframe");
+          newIframe.src = "http://" + airroot;
+
+          newIframe.style.width = "100%";
+          newIframe.style.height = "100%";
+          newIframe.style.border = "none";
+
+          iframeData.appendChild(newIframe);
+        };
+
+        cell5.appendChild(link);
+        var cell6 = row.insertCell(5);
+        cell6.id = "cell-sub";
+        cell6.className = "detaildata-cell";
+        var baseUrl = "http://localhost:5000/";
+        if (mlroot.includes(baseUrl)) {
+          mlroot = mlroot.replace(baseUrl, "");
+        }
+
+        var link = document.createElement("a");
+        link.href = "http://" + mlroot;
+        link.textContent = mlroot;
+
+        link.onclick = function (event) {
+          event.preventDefault(); // 링크 기본 동작 중단
+
+          // var detailModal = document.getElementById("detailModal");
+          // detailModal.style.display = "none";
+
+          var iframeModal = document.getElementById("iframeModal");
+          iframeModal.style.display = "block";
+
+          var iframeData = iframeModal.querySelector(".iframe-data");
+          iframeData.innerHTML = "";
+
+          var newIframe = document.createElement("iframe");
+          newIframe.src = "http://" + mlroot;
+
+          newIframe.style.width = "100%";
+          newIframe.style.height = "100%";
+          newIframe.style.border = "none";
+
+          iframeData.appendChild(newIframe);
+        };
+
+        cell6.appendChild(link);
       }
     })
     .catch((error) => console.error("에러 발생:", error));
@@ -307,4 +400,8 @@ function onDevloperAddButtonClick(grp_idx) {
     .catch((error) => {
       console.error("Error:", error);
     });
+}
+function closeiframeModal() {
+  var iframeModal = document.getElementById("iframeModal");
+  iframeModal.style.display = "none";
 }

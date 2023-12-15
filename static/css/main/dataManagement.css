@@ -581,3 +581,49 @@
   letter-spacing: 0em;
 }
 /* -------------------------------------------------------------------------------------------------- */
+/* iframe modal */
+#iframeModal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* 어두운 배경색 (rgba를 사용하여 투명도 조절) */
+  z-index: 9999;
+  overflow: auto;
+}
+
+/* 내용을 가운데 정렬하려면 필요한 스타일을 추가합니다. */
+#iframeModal .iframeModal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  background-color: #fff;
+}
+
+.iframeModal-title {
+  height: 30px;
+  background: #edf0ff;
+}
+
+.iframeModal-close {
+  position: absolute;
+  top: 2px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.iframe-data {
+  height: calc(100% - 30px);
+}

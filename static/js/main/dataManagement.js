@@ -59,18 +59,34 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
 
-        // var root = "1;12.167.170.54:31769" // 예시로 주어진 root 값
-        var root = data.data_set_info[0][0]; // 예시로 주어진 root 값
-        var baseUrl = "http://localhost:5000/"; // 기본 URL 값
+        var root = data.data_set_info[0][0];
+        var baseUrl = "http://localhost:5000/";
 
-        // 만약 root에 baseUrl이 포함되어 있다면 제거
         if (root.includes(baseUrl)) {
           root = root.replace(baseUrl, "");
         }
 
         var link = document.createElement("a");
-        link.href = "http://" + root; // http:// 가 없는 경우 추가
-        link.textContent = root; // 링크에 표시될 텍스트
+        link.textContent = root;
+
+        link.onclick = function () {
+          var detailModal = document.getElementById("detailModal");
+          detailModal.style.display = "none";
+          var iframeModal = document.getElementById("iframeModal");
+          iframeModal.style.display = "block";
+
+          var iframeData = iframeModal.querySelector(".iframe-data");
+          iframeData.innerHTML = "";
+
+          var newIframe = document.createElement("iframe");
+          newIframe.src = "http://" + root;
+
+          newIframe.style.width = "100%";
+          newIframe.style.height = "100%";
+          newIframe.style.border = "none";
+
+          iframeData.appendChild(newIframe);
+        };
 
         cell4.appendChild(link);
 
@@ -258,7 +274,10 @@ function closeDetailModal() {
   detailModal.style.display = "none";
   location.reload();
 }
-
+function closeiframeModal() {
+  var iframeModal = document.getElementById("iframeModal");
+  iframeModal.style.display = "none";
+}
 //삭제 아이콘 클릭 시 데이터셋 삭제 함수
 function deleteDatasetSend(company_name, project_name) {
   confirm_temp = [company_name, project_name];
