@@ -9,20 +9,21 @@
   position: absolute;
   top: 3px;
   left: 15px;
-  width: 300px;
+  width: 216px;
   height: 42px;
   font-size: 22px;
   font-weight: 600;
   line-height: 42px;
   text-align: center;
   cursor: pointer;
-  min-width: 300px;
   font-family: RobotoFont;
+  color: #ffff;
 }
 
 header {
+  background: #37466d;
   width: 100%;
-  background-color: #ffff; /* 배경색을 원하는 색으로 설정하세요 */
+  /* background-color: #ffff;  */
   box-sizing: border-box; /* padding이 너비에 포함되도록 box-sizing 설정 */
   border-bottom: 1px solid #c4c4c4;
   height: 80px;

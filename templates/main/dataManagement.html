@@ -12,7 +12,12 @@
     rel="stylesheet"
     type="text/css"
     href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
-  />
+   />
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/common/tableStyle.css')}}"
+    />
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/main/dataManagement.js') }}"
@@ -25,6 +30,7 @@
   <body>
     {% extends 'common/common.html' %} {% block content %}
     <section style="margin-left: 280px">
+      <div class="data-list-title">데이터 목록</div>
       <div class="search-container">
         <div class="custom-select">
           <select>
@@ -48,7 +54,7 @@
         <button class="search-button">조회</button>
       </div>
       <div class="data-list-container">
-        <div class="data-list-title">데이터 목록</div>
+        
         <button
           class="data-list-create"
           id="openModalBtn"
@@ -109,19 +115,19 @@
               <td class="data-cell">
                 {% if _[5] == 0 %}
                 상태없음
-              {% elif _[5] == 1 %}
-                라벨링 완료
-              {% elif _[5] == 2 %}
-                검수 진행
-              {% elif _[5] == 3 %}
-                검수 완료
-              {% elif _[5] == 4 %}
-                검수 이슈
-              {% elif _[5] == 5 %}
-                라벨링 진행
-              {% else %}
-                기타 상태
-              {% endif %}
+                {% elif _[5] == 1 %}
+                  라벨링 완료
+                {% elif _[5] == 2 %}
+                  검수 진행
+                {% elif _[5] == 3 %}
+                  검수 완료
+                {% elif _[5] == 4 %}
+                  검수 이슈
+                {% elif _[5] == 5 %}
+                  라벨링 진행
+                {% else %}
+                  기타 상태
+                {% endif %}
               </td>
               <td class="data-cell">{{_[6]}}</td>
               <td class="data-cell">{{_[7]}}</td>
@@ -255,7 +261,7 @@
                     <th class="detaildata-cell" id="cell-sub" style="width: 60px;"></th>
                     <th class="detaildata-cell" id="cell-sub">라벨러</th>
                     <th class="detaildata-cell" id="cell-sub">검수자</th>
-                    <th class="detaildata-cell" id="cell-sub">접속경로</th>
+                    <th class="detaildata-cell" id="cell-sub">라벨링</th>
                     <th class="detaildata-cell" id="cell-sub">진행도</th>
                     <th class="detaildata-cell" id="cell-sub">총프레임</th>
                     <th class="detaildata-cell" id="cell-sub">진행완료</th>

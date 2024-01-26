@@ -473,7 +473,7 @@ def dataSetDetail():
 
     """
     try:
-        session['usr_id'] = 'gywjd1108'
+        # session['usr_id'] = 'gywjd1108'
 
         result_json = make_response_json([])
 

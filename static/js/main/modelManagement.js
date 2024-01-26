@@ -1,6 +1,6 @@
 function detailOpenModal(modelIdx, modelname) {
   var titleElement = document.querySelector(".detailmodal-title-name");
-  titleElement.textContent = "[" + modelIdx + "]" + "  " + modelname;
+  titleElement.textContent = "[" + modelname + "]" + "상세정보";
 
   var detailModal = document.getElementById("detailModal");
   detailModal.style.display = "block";
@@ -48,8 +48,12 @@ function detailOpenModal(modelIdx, modelname) {
         if (root.includes(baseUrl)) {
           root = root.replace(baseUrl, "");
         }
-        var link = document.createElement("a");
-        link.textContent = root;
+        // var link = document.createElement("a");
+        // link.textContent = root;
+        var link = document.createElement("button");
+        link.id = 'link-button';
+        link.style.backgroundColor = "#2dc748";
+        link.textContent = "바로가기";
 
         link.onclick = function () {
           // var detailModal = document.getElementById("detailModal");
@@ -80,9 +84,13 @@ function detailOpenModal(modelIdx, modelname) {
           airroot = airroot.replace(baseUrl, "");
         }
 
-        var link = document.createElement("a");
+        var link = document.createElement("button");
+        link.id = 'link-button';
+        link.style.backgroundColor = "#2dc748";
+        link.textContent = "바로가기";
+        // var link = document.createElement("a");
         link.href = "http://" + airroot;
-        link.textContent = airroot;
+        // link.textContent = airroot;
 
         link.onclick = function (event) {
           event.preventDefault(); // 링크 기본 동작 중단
@@ -115,9 +123,13 @@ function detailOpenModal(modelIdx, modelname) {
           mlroot = mlroot.replace(baseUrl, "");
         }
 
-        var link = document.createElement("a");
+        var link = document.createElement("button");
+        link.id = 'link-button';
+        link.style.backgroundColor = "#2dc748";
+        link.textContent = "바로가기";
+        // var link = document.createElement("a");
         link.href = "http://" + mlroot;
-        link.textContent = mlroot;
+        // link.textContent = mlroot;
 
         link.onclick = function (event) {
           event.preventDefault(); // 링크 기본 동작 중단
