@@ -1,0 +1,100 @@
+@font-face {
+    font-family: "RobotoFont";
+    src: url("/static/font/Roboto-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+.main-content {
+    display: flex;
+    background-color: white;
+    position: relative;
+}
+
+.section {
+}
+
+/*#section1 {*/
+/*    margin-left: 32px;*/
+/*    flex: 0 0 800px;*/
+/*}*/
+
+/*#section2 {*/
+/*    flex: 0 0 800px;*/
+/*}*/
+
+/*#section3 {*/
+/*    flex: 0 0 250px;*/
+/*}*/
+
+#section1 {
+    margin-left: 32px;
+    flex: 0 0 930px;
+}
+
+#section2 {
+    flex: 0 0 930px;
+}
+
+.section_title{
+    display: inline-block;
+    margin-top: 32px;
+    font-family: RobotoFont;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.airflowIframe{
+    /*width: 780px;*/
+    width: 910px;
+    height: 800px;
+    border-radius: 5px;
+    background: #F3F3F3;
+    box-shadow: 2px 2px 4px 0px #00000033;
+    border: none;
+}
+
+.MLflowIframe{
+    /*width: 780px;*/
+    width: 910px;
+    height: 800px;
+    border-radius: 5px;
+    background: #F3F3F3;
+    box-shadow: 2px 2px 4px 0px #00000033;
+    border: none;
+}
+.ProjectIframe{
+    width: 249px;
+    height: 800px;
+    border-radius: 5px;
+    background: #F3F3F3;
+    box-shadow: 2px 2px 4px 0px #00000033;
+    border: none;
+}
+
+.iframe{
+    margin-top: 10px;
+}
+
+img{
+    cursor: pointer;
+}
+button{
+    cursor: pointer;
+}
+
+#shortcutLink{
+    display: inline-block; cursor: pointer;  text-decoration: underline;
+    color: black; margin-left: 10px;
+    font-family: "RobotoFont";
+}
