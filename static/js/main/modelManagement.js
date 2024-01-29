@@ -164,7 +164,7 @@ function deleteModelsetSend(company_name, project_name, data_set) {
 
   var modalTitle = "삭제 확인";
   var modalMessage = project_name + "의 모든 데이터를 삭제하시겠습니까?";
-  openconfirmcancelPopup(modalTitle, modalMessage);
+  confirmcancelpopup2Ok(modalTitle, modalMessage);
 }
 
 function closeDetailModal() {
@@ -175,7 +175,7 @@ function closeDetailModal() {
 }
 
 //삭제 시 나오는 모달 관련 함수
-function confirmcancelpopupOk() {
+function confirmcancelpopup2Ok() {
   // 삭제 api 호출
   company_name = confirm_temp[0];
   project_name = confirm_temp[1];
