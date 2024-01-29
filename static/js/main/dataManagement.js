@@ -27,8 +27,8 @@ function detailOpenModal(datasetIdx, datasetname) {
     .then((data) => {
       for (var i = 0; i < data.data_set_labeler_info.length; i++) {
         // root와 checker는 고정값으로 설정
-        var root = data.data_set_info[0][7]; // 고정값 설정
-        var checker = data.data_set_info[0][1]; // 고정값 설정
+        var root = data.data_set_labeler_info[i][7]; // 고정값 설정
+        var checker = data.data_set_info[i][1]; // 고정값 설정
 
         var labeler = data.data_set_labeler_info[i][0];
         var progress = data.data_set_labeler_info[i][2];
@@ -59,7 +59,8 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.className = "detaildata-cell";
         cell4.id = "cell-sub";
 
-        var root = data.data_set_info[0][0];
+        // var root = data.data_set_info[0][0];
+        var root = data.data_set_labeler_info[i][7];
         var baseUrl = "http://localhost:5000/";
 
         if (root.includes(baseUrl)) {
