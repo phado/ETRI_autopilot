@@ -151,72 +151,33 @@
                 </div>
               </div>
               <div class="modal-input2">
-                <div
-                  style="margin-top: 24px; margin-bottom: 8px"
-                  id="findTitle"
-                >
-                  설정
-                </div>
+                <div style="margin-top: 24px; margin-bottom: 8px" id="findTitle">설정</div>
                 <div class="modal-input2-box">
                   <div class="modal-input2-search">
-                    <input
-                      type="text"
-                      class="dataset-add-input"
-                      placeholder="검색어 입력"
-                    />
+                    <input type="text" class="dataset-add-input" placeholder="검색어 입력"/>
                     <button class="dataset-add-button">검색</button>
                   </div>
-                  <div
-                    class="dataset-add-textarea"
-                    id="datasetAll"
-                    style="resize: none"
-                    readonly
-                  ></div>
+                 
                   <div class="modal-input2-button hidden" id="datasetButton">
-                    <button
-                      class="dataset-cancel-button"
-                      onclick="resetElements()"
-                    >
-                      취소
-                    </button>
-                    <button class="dataset-confirm-button">확인</button>
+                    <span class="model-search-cancel-button" onclick="resetElements()">×</span>
+                    <div class="model-add-textarea" id="datasetAll" style="resize: none" readonly></div>
+                    <!-- <button class="dataset-confirm-button">확인</button> -->
                   </div>
 
-                  <div
-                    class="dataset-add-textarea"
-                    id="developerAll"
-                    style="resize: none"
-                    readonly
-                  ></div>
                   <div class="modal-input2-button hidden" id="developerButton">
-                    <button
-                      class="dataset-cancel-button"
-                      onclick="resetElements()"
-                      ㅋ
-                    >
-                      취소
-                    </button>
-                    <button class="dataset-confirm-button">확인</button>
+                    <span class="model-search-cancel-button" onclick="resetElements()">×</span>
+                    <div class="model-add-textarea" id="developerAll" style="resize: none" readonly></div>
+                    <!-- <button class="dataset-confirm-button">확인</button> -->
                   </div>
 
-                  <div
-                    class="dataset-add-textarea"
-                    id="basicAll"
-                    style="resize: none"
-                    readonly
-                  ></div>
+                  <div class="model-add-textarea" id="basicAll" style="resize: none" readonly></div>
                   <div class="modal-input2-button" id="basicButton">
-                    <button class="dataset-cancel-button">취소</button>
-                    <button class="dataset-confirm-button">확인</button>
+                    <!-- <button class="model-cancel-button">취소</button>
+                    <button class="dataset-confirm-button">확인</button> -->
                   </div>
                 </div>
-                <button class="dataset-cancel-button">취소</button>
-                <button
-                  class="dataset-confirm-button"
-                  onclick="modelsetCreateSend('{{grp_nm_en}}')"
-                >
-                  확인
-                </button>
+                <button class="model-cancel-button">취소</button>
+                <button class="dataset-confirm-button" onclick="modelsetCreateSend('{{grp_nm_en}}')">확인</button>
               </div>
             </div>
           </div>

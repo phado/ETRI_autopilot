@@ -214,7 +214,7 @@ def dataManagement():
     :return: 게시판 목록, 전체 페이지 수량, 선택된 페이지
     """
     try:
-        session['usr_id'] = 'gywjd1108'
+        # session['usr_id'] = 'gywjd1108'
 
         tbl_type = 'tb_prj_datasets'
 
@@ -261,7 +261,7 @@ def modelManagement():
     모델 목록
     :return:
     """
-    session['usr_id'] = 'gywjd1108'
+    # session['usr_id'] = 'gywjd1108'
     try:
         tbl_type = 'tb_prj_models'
 
@@ -299,6 +299,28 @@ def modelManagement():
         result_json = fail_message_json(result_json)
 
     return render_template("main/modelManagement.html", board_list=board_list['board_result'], page_cnt=board_cnt ,page_num=page_num, result_json = result_json, usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
+
+# drawIO
+@app.route('/modeling')
+def modeling():
+    try:
+        usr_idx= session['usr_idx']
+        usr_id= session['usr_id']
+        grp_idx=session['grp_idx']
+        usr_nick= session['usr_nick']
+        grp_nm_en= session['grp_nm_en']
+        usr_nm= session['usr_nm']
+
+    except Exception as e:
+        print(e)
+        result_json = fail_message_json(result_json)
+
+    return render_template('index.html', usr_idx=usr_idx, usr_id=usr_id, usr_nick=usr_nick, grp_idx=grp_idx, grp_nm_en=grp_nm_en, usr_nm=usr_nm)
+
+@app.route('/open', methods=['GET', 'POST'])
+def projectOpen():
+    return render_template('open.html')
+
 
 # 3. 사용자 관리 탭
 @app.route('/userManagement_systemManager')
@@ -544,8 +566,8 @@ def getLabeler():
 
         labeler_list = db_get_labeler(mariadb_pool,grp_idx)
 
-        # result_json['labeler_list'] = labeler_list
-        result_json['labeler_list'] =  [('하루미'),('라벨러'),('라벨링'),('하루다'),('KPST_1'),('user_3'),('음성라벨러'),('이미라벨'),('라벨러3'),('라벨링')]
+        result_json['labeler_list'] = labeler_list['labeler_list']
+        # result_json['labeler_list'] =  [('하루미'),('라벨러'),('라벨링'),('하루다'),('KPST_1'),('user_3'),('음성라벨러'),('이미라벨'),('라벨러3'),('라벨링')]
 
 
     except Exception as e:
@@ -591,13 +613,13 @@ def getDevloper():
     try:
 
         result_json = make_response_json([])
-        grp_idx = '1' # todo 하드 코딩
-        # grp_idx = session['grp_idx']
+        # grp_idx = '1' # todo 하드 코딩
+        grp_idx = session['grp_idx']
 
         labeler_list = db_get_devloper(mariadb_pool,grp_idx)
 
         result_json['devloper_list'] = labeler_list
-        result_json['devloper_list'] = [('개발1'),('개발자_2'),('개발자_3'),('개발자_4')]
+        # result_json['devloper_list'] = [('개발1'),('개발자_2'),('개발자_3'),('개발자_4')]
 
     except Exception as e:
         print(e)
@@ -615,10 +637,12 @@ def getDataSet():
     try:
 
         result_json = make_response_json([])
-        grp_idx = '1'
-        # grp_idx = session['grp_idx']
 
-        labeler_list = db_get_dataset(mariadb_pool,grp_idx)
+        result_json = make_response_json([])
+        # grp_idx = '1'
+        grp_idx = session['grp_idx']
+
+        labeler_list = db_get_dataset(mariadb_pool,grp_idx ,session['usr_nick'],session['grp_nm_en'])
 
         result_json['dataset_list'] = labeler_list
 
@@ -738,18 +762,9 @@ def profileDataLoad():
     return result_json
 
 
-# drawIO
-@app.route('/modeling')
-def modeling():  # put application's code here
-    return render_template('index.html')
-
-@app.route('/open', methods=['GET', 'POST'])
-def projectOpen():
-    return render_template('open.html')
-
-@app.route('/dataInsertModal', methods=['GET', 'POST'])
-def dataInsertModal():
-    return render_template('dataInsertModal.html')
+@app.route('/grafana')
+def load_grafana():
+    return render_template('main/systemManagement/grafana.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=5000)

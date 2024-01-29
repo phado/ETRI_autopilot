@@ -329,7 +329,7 @@ function confirmcancelpopup1Ok() {
 // ------------------------------------------------------------------------------------------------
 // 데이터셋 생성
 function openCreateModal() {
-  var modal = document.getElementById("myModal");
+  var modal = document.getElementById("datasetCreateModal");
   modal.style.display = "block";
   var parentElement = document.querySelector(".labeler-add-textarea");
   var buttons = parentElement.querySelectorAll("button");
@@ -339,7 +339,7 @@ function openCreateModal() {
 }
 
 function closeCreateModal() {
-  var modal = document.getElementById("myModal");
+  var modal = document.getElementById("datasetCreateModal");
   modal.style.display = "none";
   location.reload();
 }
@@ -348,18 +348,23 @@ function datasetCreateSend(company_name) {
   var project_name = document.getElementById("datasetNameInput").value;
 
   // todo
-  var labelerInput = document.getElementById("labelerInput").value;
-  var labeler_nick = labelerInput.split("\n").map(function (item) {
-    return item.trim();
+  var labelerInputSet = document.querySelectorAll(".labeler-set-textarea button");
+  var labelerInput = []
+  labelerInputSet.forEach(function(button) {
+    labelerInput.push(button.textContent);
   });
-  var labeler_nick = labelerListInInput;
+
+  // var labeler_nick = labelerInput.split("\n").map(function (item) {
+  //   return item.trim();
+  // });
+  // var labeler_nick = labelerListInInput;
 
   var inp_nick = document.getElementById("checkerInput").value;
 
   var jsonData = {
     company_name: company_name,
     project_name: project_name,
-    labeler_nick: labeler_nick,
+    labeler_nick: labelerInput,
     inp_nick: inp_nick,
   };
 
@@ -406,6 +411,7 @@ function showLoading() {
 // 데이터셋 생성 모달
 // 데이터셋 생성 모달
 let labelerAddButtonState = false;
+let onCheckerAddButtonState = false;
 let labelerListInInput = []; // 추가된 labeler 리스트
 function toggleSearch(searchType) {
   var basicTextarea = document.getElementById("basicAll");
@@ -445,7 +451,10 @@ function onLabelerAddButtonClick(grp_idx) {
   toggleSearch("labeler");
   var labelerAddText = "라벨러 추가";
   document.getElementById("findPersonTitle").textContent = labelerAddText;
-  if (!labelerAddButtonState) {
+  // onCheckerAddButtonState = false;
+  var labelerSelectedCheck = document.getElementById('labelerInput');
+  var labelerContainerEmptyCheck = document.getElementById('labelerAll')
+  if (labelerSelectedCheck.childElementCount == 0 && labelerContainerEmptyCheck.childElementCount == 0) {
     // 라벨러 추가 텍스트를 변경
     fetch("/dataManagement/getLabeler", {
       method: "POST",
@@ -520,46 +529,53 @@ function resetElements() {
 
 var removedCheckerButton = null;
 function onCheckerAddButtonClick(grp_idx) {
-  var labelerAddText = "검수자 추가";
-  document.getElementById("findPersonTitle").textContent = labelerAddText;
   toggleSearch("checker");
+  // labelerAddButtonState = false;
+  var labelerSelectedCheck = document.getElementById('checkerInput');
+  var labelerContainerEmptyCheck = document.getElementById('checkerAll');
+  if(labelerSelectedCheck.value == ''&&labelerContainerEmptyCheck.childElementCount ==0){
+    var labelerAddText = "검수자 추가";
+    document.getElementById("findPersonTitle").textContent = labelerAddText;
+    
 
-  fetch("/dataManagement/getInspector", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ grp_idx }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      var inspectorNames = data.inspector_list.inspector_list[0];
-      var checkerAllElement = document.getElementById("checkerAll");
-      inspectorNames.forEach(function (inspectorName) {
-        var button = document.createElement("button");
-        button.className = "checker-btn";
-        button.textContent = inspectorName;
-        button.id = "btn_" + inspectorName.replace(/\s+/g, "_");
-
-        button.addEventListener("click", function () {
-          addButtonToCheckerAll(button);
-        });
-
-        checkerAllElement.appendChild(button);
-
-        var checkerInput = document.getElementById("checkerInput");
-        function addButtonToCheckerAll(button) {
-          if (checkerInput) {
-            checkerInput.value += button.textContent;
-            removedCheckerButton = button;
-            checkerAllElement.removeChild(button);
-          }
-        }
-      });
+    fetch("/dataManagement/getInspector", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ grp_idx }),
     })
+      .then((response) => response.json())
+      .then((data) => {
+        var inspectorNames = data.inspector_list.inspector_list[0];
+        var checkerAllElement = document.getElementById("checkerAll");
+        inspectorNames.forEach(function (inspectorName) {
+          var button = document.createElement("button");
+          button.className = "checker-btn";
+          button.textContent = inspectorName;
+          button.id = "btn_" + inspectorName.replace(/\s+/g, "_");
+
+          button.addEventListener("click", function () {
+            addButtonToCheckerAll(button);
+          });
+
+          checkerAllElement.appendChild(button);
+
+          var checkerInput = document.getElementById("checkerInput");
+          function addButtonToCheckerAll(button) {
+            if (checkerInput) {
+              checkerInput.value += button.textContent;
+              removedCheckerButton = button;
+              checkerAllElement.removeChild(button);
+            }
+          }
+          onCheckerAddButtonState = true;
+        });
+      })
     .catch((error) => {
       console.error("Error:", error);
     });
+  }
 }
 
 function onCheckerDelete() {

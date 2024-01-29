@@ -63,6 +63,7 @@ function showOverlayBox() {
   overlayBox.style.left = imgRect.left - 12 + "px";
 
   overlayBox.style.display = "block";
+  overlayBox.style.zIndex ='100'; // mxGraph와 같이 랜더링 했을 때 가려지는 문제 해결
 }
 function hideOverlayBox() {
   var overlayBox = document.getElementById("overlayBox");
@@ -72,6 +73,7 @@ function hideOverlayBox() {
 function profileClick(usr_idx) {
   var profileModal = document.getElementById("profileModal");
   profileModal.style.display = "block";
+  profileModal.style.zIndex = '100000';
   fetch("/common/profileData", {
     method: "POST",
     headers: {
