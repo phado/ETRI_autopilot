@@ -13,6 +13,11 @@
       type="text/css"
       href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/common/tableStyle.css')}}"
+    />
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
@@ -21,11 +26,11 @@
       type="text/javascript"
       src="{{ url_for('static', filename='js/main/modelManagement.js') }}"
     ></script>
-    <title>modelManagement</title>
   </head>
   <body>
     {% extends 'common/common.html' %} {% block content %}
     <section style="margin-left: 280px">
+      <div class="data-list-title">모델 목록</div>
       <div class="search-container">
         <div class="custom-select">
           <select>
@@ -45,16 +50,16 @@
         <input type="text" class="search-box" placeholder="검색" />
 
         <button class="search-button">조회</button>
+        <button
+        class="data-list-create"
+        id="openModalBtn"
+        onclick="openCreateModal()"
+      >
+        + Create
+      </button>
       </div>
       <div class="data-list-container">
-        <div class="data-list-title">모델 목록</div>
-        <button
-          class="data-list-create"
-          id="openModalBtn"
-          onclick="openCreateModal()"
-        >
-          + Create
-        </button>
+
         <!-- 데이터셋 생성 모달 -->
         <div id="myModal" class="modal">
           <div class="modal-content">
@@ -287,13 +292,13 @@
                               프로젝트
                             </th>
                             <th class="detaildata-cell" id="cell-sub">
-                              접속 경로
+                              라벨링
                             </th>
                             <th class="detaildata-cell" id="cell-sub">
-                              airflow 경로
+                              Airflow
                             </th>
                             <th class="detaildata-cell" id="cell-sub">
-                              mlflow 경로
+                              MLflow
                             </th>
                           </tr>
                         </thead>

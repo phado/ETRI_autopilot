@@ -1,0 +1,78 @@
+@font-face {
+  font-family: "RobotoFont";
+  src: url("/static/font/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f0f0f0; /* 예시로 배경색 추가 */
+  position: relative;
+}
+.chart-content {
+  display: flex;
+  width: 100%;
+  overflow: auto;
+}
+.title-content {
+  height: 111px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pieChart,
+.barChart {
+  width: 48%;
+  height: 600px;
+  margin-top: 80px;
+  margin-left: 100px;
+
+}
+
+
+#datePickerInput,#datePickerInput2 {
+  width: 120px;
+  height: 32px;
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  overflow: hidden;
+  outline: none;
+}
+
+.search-button {
+  width: 54px;
+  height: 32px;
+  padding: 8px, 14px, 8px, 14px;
+  border-radius: 5px;
+  gap: 10px;
+  background-color: #565656;
+  border: none;
+  color: white;
+}
+.selectDateContent {
+  display: flex;
+  align-items: center;
+
+}
+
+.startDateTitle,
+.endDateTitle,
+.startDate,
+.endDate,
+.search-button {
+  margin-right: 10px;
+}
+
+.startDate, .endDate {
+  padding-left: 10px;
+}

@@ -1,0 +1,100 @@
+-webkit-keyframes blink{
+  0% {opacity:0;}
+  50% {opacity:1;}
+}
+@-moz-keyframes blink{
+  0% {opacity:0;}
+  50% {opacity:1;}
+}
+@keyframes blink{
+  0% {opacity:0;}
+  50% {opacity:1;}
+}
+
+@font-face {
+  font-family: "RobotoFont";
+  src: url("/static/font/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+button {
+  width: 70px;
+  height: 28px;
+  color: white;
+  background: #9a9a9;
+  color: #526eff;
+  border: none;
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.main-content {
+  flex: 1;
+  background-color: #f0f0f0; /* 예시로 배경색 추가 */
+  position: relative;
+}
+.main-content-wrap {
+  display: flex;
+  align-items: center;
+  margin-left: 110px;
+}
+
+.wp-contents {
+  
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px;
+
+  align-items: center;
+}
+
+.wp-contents-card {
+  background-color : white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20%;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 10px;
+}
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-on {
+  background-color: green;
+  -webkit-animation: blink 1s ease-in-out infinite alternate;
+  -moz-animation: blink 1s ease-in-out infinite alternate;
+  animation: blink 1s ease-in-out infinite alternate;
+  
+}
+
+.wp-contents-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.wp-contents-card-on {
+  box-shadow: 0 0 0 2px green;
+}
+
+
+
+ /* .wp-contents-monitor th {
+  text-align: center;
+} */
+.wp-contents-monitor td {
+  text-align: center;
+} 
+

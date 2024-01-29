@@ -3,7 +3,7 @@ function detailOpenModal(datasetIdx, datasetname) {
   var progressAllFrame = 0;
 
   var titleElement = document.querySelector(".detailmodal-title-name");
-  titleElement.textContent = "[" + datasetIdx + "]" + "  " + datasetname;
+  titleElement.textContent = "[" + datasetname + "]" + " 상세정보"
 
   var detailModal = document.getElementById("detailModal");
   detailModal.style.display = "block";
@@ -66,12 +66,17 @@ function detailOpenModal(datasetIdx, datasetname) {
           root = root.replace(baseUrl, "");
         }
 
-        var link = document.createElement("a");
-        link.textContent = root;
+        // var link = document.createElement("a");
+        // link.textContent = root;
+
+        var link = document.createElement("button");
+        link.id = 'dateset-progress-detail-button';
+        link.style.backgroundColor = "#2dc748";
+        link.textContent = "바로가기";
 
         link.onclick = function () {
-          var detailModal = document.getElementById("detailModal");
-          detailModal.style.display = "none";
+          // var detailModal = document.getElementById("detailModal");
+          // detailModal.style.display = "none";
           var iframeModal = document.getElementById("iframeModal");
           iframeModal.style.display = "block";
 

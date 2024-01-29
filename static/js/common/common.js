@@ -122,7 +122,7 @@ function confirmcancelpopupOk() {
     .then((response) => response.json())
     .then((data) => {
       if (data.message === "Logged out successfully") {
-        window.location.href = "/login";
+        window.location.href = "/";
       } else {
         console.error("Logout failed:", data.message);
       }
@@ -194,7 +194,7 @@ function confirmcancelpopupOk2(usr_idx) {
       var modalTitle = "사용자 탈퇴";
       var modalMessage = "회원님의 정보가 삭제되었습니다.";
       openconfirmPopup(modalTitle, modalMessage);
-      window.location.href = "/login";
+      window.location.href = "/";
     })
     .catch((error) => {
       console.error("Error:", error);

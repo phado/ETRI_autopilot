@@ -1,0 +1,470 @@
+@font-face {
+  font-family: "RobotoFont";
+  src: url("/static/font/Roboto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.dropdown-box, .searchType, .search-inputbox{
+  margin-right: 10px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f0f0f0;
+  position: relative;
+}
+.data-table-content {
+  height: 642px;
+  width: 100%;
+  overflow: auto;
+  cursor: default;
+  margin-top: 15px;
+}
+.search-content {
+  /* height: 111px; */
+  /* width: 100%; */
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin-left: 5%;
+  margin-top: 97px;
+}
+.dropdown-box {
+  /* position: absolute; */
+  width: 171px;
+  height: 32px;
+  top: 100px;
+  /* margin-left: 5%; */
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  overflow: hidden;
+}
+
+select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  appearance: none;
+  padding: 0 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-inputbox {
+  /* position: absolute; */
+  width: 290px;
+  height: 30px;
+  top: 100px;
+  /* margin-left: 8%; */
+  border-radius: 5px;
+  border: 1px solid #d9d9d9;
+  background: #f0f0f0;
+  padding-left: 10px;
+}
+
+.search-button {
+  /* position: absolute; */
+  width: 54px;
+  height: 34px;
+  top: 100px;
+  left: 602px;
+  padding: 8px, 14px, 8px, 14px;
+  border-radius: 5px;
+  gap: 10px;
+  background-color: #565656;
+  border: none;
+  color: white;
+}
+
+.data-table-text {
+  position: absolute;
+  width: 710px;
+  height: 21px;
+  top: 43px;
+  margin-left: 5%;
+  font-family: RobotoFont;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.data-table-create-button {
+  position: absolute; /* 절대 위치 설정 */
+  top: 84px;
+  right: 0; /* 테이블 오른쪽에 위치하도록 설정 */
+  margin: 15px; /* 여백 조정 */
+  background-color: #3d5eec;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right : 6%;
+}
+
+.data-table-title {
+  height: 57px;
+  text-align: left;
+  padding: 0%;
+}
+.data-table {
+  position: relative;
+  top: -17px;
+  /* left: 40px; */
+  border-collapse: collapse;
+  border: 1px solid #ccc; /* 모든 셀에 하단 경계선 설정 */
+  border-radius: 5px;
+  margin-top: 18px;
+  margin-left: 5%;
+  min-width: 1700px;
+  background-color: white;
+  width:90%;
+}
+
+.center{
+  text-align: center;
+}
+
+.firstcell{
+  padding-left: 30px;
+}
+.data-table .data-cell {
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+  font-family: RobotoFont;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+}
+
+.data-table td {
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+}
+
+/* -------------------------------------------------------------------------------------------------- */
+/* 데이터셋 생성 모달 css */
+.distributionCreateModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.distributionCreateModal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 486px;
+  max-width: 100%;
+  height: 445px;
+}
+
+.distributionCreateModal-title {
+  height: 40px;
+  background: #edf0ff;
+}
+
+.distributionCreateModal-close {
+  position: absolute;
+  top: 5px;
+  left: 460px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.distributionCreateModal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+
+  font-family: RobotoFont;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.distributionCreateModal-input-area {
+  margin-left: 24px;
+  margin-top: 24px;
+}
+.selectbox {
+  border: 1px solid #9b9b9b;
+}
+
+.input-title {
+  margin-top: 24px;
+  font-family: RobotoFont;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.input-area {
+  margin-top: 8px;
+  font-family: RobotoFont;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+select {
+  width: 438px;
+  height: 38px;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0px 4px 10px 0px #00000040;
+  margin-top: -3px;
+}
+.input-dataset {
+  width: 432px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  background: white;
+  box-shadow: 0px 4px 10px 0px #00000040;
+  padding-left: 8px;
+}
+
+.input-title-container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+.distributionCreateModal-table {
+  width: 438px;
+  max-height: 204px; /* 최대 높이를 지정 */
+  overflow-y: auto; /* 세로 스크롤이 필요한 경우 스크롤이 표시되도록 함 */
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #9b9b9b;
+  box-shadow: 0px 4px 10px 0px #00000040;
+}
+.detail-textarea {
+  width: 425px;
+  height: 100px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  padding-top: 7px;
+  padding-left: 11px;
+  resize: none;
+  overflow-y: auto;
+}
+.distributionCreateModalButtons button {
+  margin-top: 10px;
+  width: 43px;
+  height: 20px;
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.distributionCreateModalCancelButton {
+  margin-left: 374px;
+  background: #9a9a9a;
+}
+.distributionCreateModalOkButton {
+  margin-left: 2px;
+  background: #3d5eec;
+}
+/* -------------------------------------------------------------------------------------------------- */
+/* 데이터셋 detail 모달 css */
+.distributionDetailModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.distributionDetailModal-content {
+  background-color: #fefefe;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 486px;
+  max-width: 100%;
+  height: 468px;
+}
+
+.distributionDetailModal-title {
+  height: 40px;
+  background: #edf0ff;
+}
+
+.distributionDetailModal-close {
+  position: absolute;
+  top: 5px;
+  left: 460px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.distributionDetailModal-title-name {
+  position: relative;
+  top: 10px;
+  left: 20px;
+
+  font-family: RobotoFont;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.distributionDetailModal-input-area {
+  margin-left: 24px;
+  margin-top: 24px;
+}
+.selectbox {
+  border: 1px solid #9b9b9b;
+}
+
+.input-title {
+  margin-top: 24px;
+  font-family: RobotoFont;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.input-area {
+  margin-top: 8px;
+  font-family: RobotoFont;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+select {
+  width: 438px;
+  height: 38px;
+  border-radius: 5px;
+  background: white;
+  box-shadow: 0px 4px 10px 0px #00000040;
+}
+.input-dataset {
+  width: 432px;
+  height: 36px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  background: white;
+  box-shadow: 0px 4px 10px 0px #00000040;
+}
+
+.input-title-container {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+}
+.distributionDetailModal-table {
+  width: 438px;
+  max-height: 204px; /* 최대 높이를 지정 */
+  overflow-y: auto; /* 세로 스크롤이 필요한 경우 스크롤이 표시되도록 함 */
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #9b9b9b;
+  box-shadow: 0px 4px 10px 0px #00000040;
+}
+.detail-textarea {
+  width: 425px;
+  height: 100px;
+  border-radius: 5px;
+  border: 1px solid #9b9b9b;
+  padding-top: 7px;
+  padding-left: 11px;
+  resize: none;
+  overflow-y: auto;
+}
+.distributionDetailModalButtons button {
+  margin-top: 10px;
+  width: 43px;
+  height: 20px;
+  padding: 3px, 10px, 3px, 10px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.distributionDetailModalCancelButton {
+  margin-left: 374px;
+  background: #9a9a9a;
+}
+.distributionDetailModalOkButton {
+  margin-left: 2px;
+  background: #3d5eec;
+}
+img{
+  cursor: pointer;
+}
+button{
+  cursor: pointer;
+}
+
+
+
+/*페이지네이션*/
+.pagination {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 8px;
+  margin: 0 7px;
+  text-decoration: none;
+  color: #333;
+}
+
+page-link {
+  padding: 5px;
+  margin: 0 3px;
+  color: black;
+  text-decoration: none;
+}
+
+.active-page {
+  background: #3853ff;
+  color: white;
+  border-radius: 50%;
+  display: inline-block;
+}

@@ -21,6 +21,7 @@
       src="{{ url_for('static', filename='js/common/common.js') }}"
     ></script>
     <meta charset="UTF-8" />
+    <title>AI 자율주행 플랫폼</title>
   </head>
 
   <body>
@@ -32,7 +33,7 @@
           class="img-username"
         /> -->
 
-         
+        <h1 class="title-logo">AI 자율주행 플랫폼</h1>
         <button class="custom-button"    onclick="showOverlayBox()">
           <img
             src="{{url_for('static', filename='/image/username.svg')}}"
@@ -88,13 +89,13 @@
             class="down-img"
           />
           <ul>
-            <a href="/userManagement_systemManager">
+            <a class="sub-togle" href="/userManagement_systemManager">
               <li class="sub-li" style="margin-top: 14px">시스템 관리자</li>
             </a>
-            <a href="/userManagement_dataManager">
+            <a class="sub-togle" href="/userManagement_dataManager">
               <li class="sub-li">데이터 관리자</li>
             </a>
-            <a href="/userManagement_modelManager">
+            <a class="sub-togle" href="/userManagement_modelManager">
               <li class="sub-li">모델 관리자</li>
             </a>
           </ul>

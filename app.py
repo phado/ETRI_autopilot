@@ -16,7 +16,7 @@ mariadb_pool = get_pool_conn()
 
 # ------------------------------------------------------------------------------------------------------
 # -----------------------------------------로그인 관련 페이지-----------------------------------------------
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
 
     """
@@ -473,7 +473,7 @@ def dataSetDetail():
 
     """
     try:
-        session['usr_id'] = 'gywjd1108'
+        # session['usr_id'] = 'gywjd1108'
 
         result_json = make_response_json([])
 
@@ -738,6 +738,18 @@ def profileDataLoad():
     return result_json
 
 
+# drawIO
+@app.route('/modeling')
+def modeling():  # put application's code here
+    return render_template('index.html')
+
+@app.route('/open', methods=['GET', 'POST'])
+def projectOpen():
+    return render_template('open.html')
+
+@app.route('/dataInsertModal', methods=['GET', 'POST'])
+def dataInsertModal():
+    return render_template('dataInsertModal.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0',port=5000)

@@ -8,15 +8,20 @@
       type="text/css"
       href="{{ url_for('static', filename='css/main/userManagement/modelManager.css')}}"
     />
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='css/common/tableStyle.css')}}"
+  />
     <script
       type="text/javascript"
       src="{{ url_for('static', filename='js//main/userManagement/modelManager.js') }}"
     ></script>
-    <title>DataManagement</title>
   </head>
   <body>
     {% extends 'common/common.html' %} {% block content %}
     <section style="margin-left: 280px">
+      <div class="data-list-title">모델 관리자</div>
       <div class="search-container">
         <div class="custom-select">
           <select>
@@ -39,7 +44,6 @@
         <button class="search-button">조회</button>
       </div>
       <div class="data-list-container">
-        <div class="data-list-title">모델 관리자</div>
         <button class="data-list-create" id="openModalBtn">+ Create</button>
         <table class="data-table">
           <thead>
