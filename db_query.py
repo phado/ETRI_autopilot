@@ -411,10 +411,12 @@ def db_data_set_detail(mariadb_pool, dataset_idx):
         cursor = connection.cursor()
 
         query = f"select tpd.ds_path, tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
+        # query = f"select tu.usr_nick from tb_prj_datasets tpd left join tb_usr_inspection tui on tpd.ds_idx = tui.ds_idx left join tb_users tu on tui.usr_idx = tu.usr_idx where tpd.ds_idx = {int(dataset_idx)} and tpd.is_valid =1;"
         cursor.execute(query)
         json_result['data_set_info'] = cursor.fetchall()
 
-        query = f"select tu.usr_nick,tud.ds_idx ,tud.usr_ds_cnt_frame, tud.usr_ds_all_frame ,  tud.usr_ds_complete , tsc.stat_idx,  tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx = tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx  WHERE tud.ds_idx = {int(dataset_idx)};"
+        # query = f"select tu.usr_nick,tud.ds_idx ,tud.usr_ds_cnt_frame, tud.usr_ds_all_frame ,  tud.usr_ds_complete , tsc.stat_idx,  tud.inp_stat_desc from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx = tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx  WHERE tud.ds_idx = {int(dataset_idx)};"
+        query = f"select tu.usr_nick,tud.ds_idx ,tud.usr_ds_cnt_frame, tud.usr_ds_all_frame ,  tud.usr_ds_complete , tsc.stat_idx,  tud.inp_stat_desc ,tud.ds_path  from tb_usr_datasets tud left join tb_users tu on tud.usr_idx = tu.usr_idx left join tb_usr_inspection tui on tud.ds_idx = tui.ds_idx left join tb_state_code tsc on tud.inp_stat_idx = tsc.stat_idx  WHERE tud.ds_idx = {int(dataset_idx)} GROUP BY  tu.usr_nick ;;"
         cursor.execute(query)
         json_result['data_set_labeler_info'] = cursor.fetchall()
 

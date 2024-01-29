@@ -27,7 +27,7 @@ function detailOpenModal(datasetIdx, datasetname) {
     .then((data) => {
       for (var i = 0; i < data.data_set_labeler_info.length; i++) {
         // root와 checker는 고정값으로 설정
-        var root = data.data_set_info[0][0]; // 고정값 설정
+        var root = data.data_set_info[0][7]; // 고정값 설정
         var checker = data.data_set_info[0][1]; // 고정값 설정
 
         var labeler = data.data_set_labeler_info[i][0];
@@ -284,11 +284,11 @@ function deleteDatasetSend(company_name, project_name) {
 
   var modalTitle = "삭제 확인";
   var modalMessage = project_name + "의 모든 데이터를 삭제하시겠습니까?";
-  openconfirmcancelPopup(modalTitle, modalMessage);
+  confirmcancelpopup1Ok(modalTitle, modalMessage);
 }
 
 //삭제 시 나오는 모달 관련 함수
-function confirmcancelpopupOk() {
+function confirmcancelpopup1Ok() {
   // 삭제 api 호출
   company_name = confirm_temp[0];
   project_name = confirm_temp[1];
