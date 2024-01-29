@@ -79,10 +79,10 @@ function detailOpenModal(modelIdx, modelname) {
         var cell5 = row.insertCell(4);
         cell5.id = "cell-sub";
         cell5.className = "detaildata-cell";
-        var baseUrl = "http://localhost:5000/";
-        if (airroot.includes(baseUrl)) {
-          airroot = airroot.replace(baseUrl, "");
-        }
+        // var baseUrl = "http://localhost:5000/";
+        // if (airroot.includes(baseUrl)) {
+        //   airroot = airroot.replace(baseUrl, "");
+        // }
 
         var link = document.createElement("button");
         link.id = 'link-button';
@@ -263,8 +263,8 @@ function getDataSet(grp_idx) {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // datasetList  = data.dataset_list.dataset_list
-        datasetList = ["데이터셋1", "데이터셋2", "데이터셋3", "데이터셋4"];
+        datasetList  = data.dataset_list.dataset_list
+        // datasetList = ["데이터셋1", "데이터셋2", "데이터셋3", "데이터셋4"];
         var datasetAllElement = document.getElementById("datasetAll");
         var datasetNameElement = document.getElementById("dataset-name");
         var selectedButton = null; // 이전에 선택한 버튼을 저장할 변수
@@ -366,52 +366,56 @@ function modelsetCreateSend(company_name) {
 let selectedDevelopers = [];
 
 function onDevloperAddButtonClick(grp_idx) {
-  // 개발자 추가 텍스트를 변경
-  var labelerAddText = "개발자 추가";
-  document.getElementById("findTitle").textContent = labelerAddText;
+  var devContainerEmptyCheck = document.getElementById('developer');
   toggleSearch("developer");
 
-  fetch("/modelManagement/getDevloper", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ grp_idx }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      var developerList = data.devloper_list;
+  if(devContainerEmptyCheck.childElementCount == 0){
+     // 개발자 추가 텍스트를 변경
+    var labelerAddText = "개발자 추가";
+    document.getElementById("findTitle").textContent = labelerAddText;
 
-      var developerAllElement = document.getElementById("developerAll");
-      var developerElement = document.getElementById("developer");
-
-      developerAllElement.innerHTML = "";
-      developerList.forEach(function (developer) {
-        var button = document.createElement("button");
-        button.className = "developer-btn";
-        button.textContent = developer;
-        button.id = "developer-button-" + developer.replace(/\s+/g, "_"); // Generate unique id
-
-        button.addEventListener("click", function () {
-          if (this.parentElement === developerAllElement) {
-            developerElement.appendChild(this);
-            selectedDevelopers.push(developer); // 선택된 개발자를 리스트에 추가
-          } else {
-            developerAllElement.appendChild(this);
-            selectedDevelopers = selectedDevelopers.filter(
-              (dev) => dev !== developer
-            ); // 선택 해제된 개발자를 리스트에서 제거
-          }
-
-          console.log(selectedDevelopers);
-        });
-
-        developerAllElement.appendChild(button);
-      });
+    fetch("/modelManagement/getDevloper", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ grp_idx }),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        var developerList = data.devloper_list.devloper_list;
+
+        var developerAllElement = document.getElementById("developerAll");
+        var developerElement = document.getElementById("developer");
+
+        developerAllElement.innerHTML = "";
+        developerList.forEach(function (developer) {
+          var button = document.createElement("button");
+          button.className = "developer-btn";
+          button.textContent = developer;
+          button.id = "developer-button-" + developer.replace(/\s+/g, "_"); // Generate unique id
+
+          button.addEventListener("click", function () {
+            if (this.parentElement === developerAllElement) {
+              developerElement.appendChild(this);
+              selectedDevelopers.push(developer); // 선택된 개발자를 리스트에 추가
+            } else {
+              developerAllElement.appendChild(this);
+              selectedDevelopers = selectedDevelopers.filter(
+                (dev) => dev !== developer
+              ); // 선택 해제된 개발자를 리스트에서 제거
+            }
+
+            console.log(selectedDevelopers);
+          });
+
+          developerAllElement.appendChild(button);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 }
 function closeiframeModal() {
   var iframeModal = document.getElementById("iframeModal");

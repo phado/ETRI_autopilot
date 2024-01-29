@@ -459,8 +459,8 @@ def db_model_detail(mariadb_pool, model_idx):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
         # todo
-        # query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
-        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path, tpm.prj_dev_airflow_path, tpm.prj_dev_mlflow_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1;"
+        query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path, tpm.prj_dev_airflow_path, tpm.prj_dev_mlflow_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1 and tpm.prj_idx = {int(model_idx)};"
+        # query = f"SELECT tu.usr_nick, tpm.prj_name ,tpm.prj_dev_path, tpm.prj_dev_airflow_path, tpm.prj_dev_mlflow_path FROM tb_prj_models tpm right join tb_dev_prj tdp ON tpm.prj_idx = tdp.prj_idx left join tb_users tu on tu.usr_idx =tdp.usr_idx where tpm.is_valid =1 and tu.is_valid =1;"
 
         cursor.execute(query)
 
@@ -497,7 +497,8 @@ def db_get_labeler(mariadb_pool, grp_idx):
         query = f"select tu.usr_nick from tb_users tu left join tb_usr_permission tup on tu.usr_idx = tup.usr_idx left join tb_groups tg on tu.grp_idx = tg.grp_idx where tup.pms_cd = 4 and tg.grp_idx = {int(grp_idx)};"
         cursor.execute(query)
 
-        json_result['labeler_list'] = cursor.fetchall()
+        tmp_result = [label[0] for label in cursor.fetchall()]
+        json_result['labeler_list'] = tmp_result
 
         json_result = success_message_json(json_result)
     except Exception as e:
@@ -561,7 +562,8 @@ def db_get_devloper(mariadb_pool, grp_idx):
         query = f"select tu.usr_nick from tb_users tu left join tb_usr_permission tup on tu.usr_idx = tup.usr_idx left join tb_groups tg on tu.grp_idx = tg.grp_idx where tup.pms_cd = 6 and tg.grp_idx = {int(grp_idx)};"
         cursor.execute(query)
 
-        json_result['devloper_list'] = cursor.fetchall()
+        tmp_result = [label[0] for label in cursor.fetchall()]
+        json_result['devloper_list'] = tmp_result
 
         json_result = success_message_json(json_result)
     except Exception as e:
@@ -573,9 +575,8 @@ def db_get_devloper(mariadb_pool, grp_idx):
         if connection: connection.close()
 
         return json_result
-
-
-def db_get_dataset(mariadb_pool, grp_idx):
+    
+def db_get_dataset(mariadb_pool, grp_idx, usr_nick, grp_nm_en):
     """
     모델 추가 - 그룹에 속한 데이터셋 조회
     figma : 모델 추가_데이터셋 추가에서 조회
@@ -589,11 +590,16 @@ def db_get_dataset(mariadb_pool, grp_idx):
         connection = mariadb_pool.get_connection()
         cursor = connection.cursor()
 
-        query = f"select DISTINCT tpm.prj_name from tb_users tu join tb_groups tg on tu.grp_idx = tg.grp_idx join tb_dev_prj tdp on tu.usr_idx = tdp.usr_idx join tb_prj_models tpm on tdp.prj_idx = tpm.prj_idx where tg.grp_idx = {int(grp_idx)};"
+        # query = f"select DISTINCT tpm.prj_name from tb_users tu join tb_groups tg on tu.grp_idx = tg.grp_idx join tb_dev_prj tdp on tu.usr_idx = tdp.usr_idx join tb_prj_models tpm on tdp.prj_idx = tpm.prj_idx where tg.grp_idx = {int(grp_idx)};"
+
+        query = f"SELECT tpd.ds_name from tb_prj_datasets tpd left join tb_groups tg     ON tpd.grp_idx =tg.grp_idx left join tb_datasets_state tds     on tds.ds_idx =tpd.ds_idx left join tb_usr_datasets tud     on tud.usr_idx = tpd.ds_idx left join tb_users tu     on tu.grp_idx = tg.grp_idx left join tb_usr_permission tup     on tu.usr_idx = tup.usr_idx WHERE tpd.is_valid =1     AND tg.grp_nm_en='{grp_nm_en}'    AND tu.usr_nick='{usr_nick}';"
 
         cursor.execute(query)
 
-        json_result['dataset_list'] = cursor.fetchall()
+        tmp_result = [label[0] for label in cursor.fetchall()]
+        json_result['dataset_list'] = tmp_result
+
+        # json_result['dataset_list'] = cursor.fetchall()
 
         json_result = success_message_json(json_result)
     except Exception as e:

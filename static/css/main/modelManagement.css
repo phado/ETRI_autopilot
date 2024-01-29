@@ -115,24 +115,25 @@
   border: none;
 }
 .dataset-add-button {
-  width: 43px;
-  height: 19px;
+  width: 46px;
+  height: 25px;
   border-radius: 5px;
   gap: 10px;
   background: #565656;
   color: white;
+  margin-top: 5px;
 }
-.dataset-add-textarea {
-  margin-top: 16px;
+.model-add-textarea {
+  /* margin-top: 16px; */
   margin-left: 16px;
   width: 270px;
   height: 260px;
   border: none;
 }
-.modal-input2-button {
+/* .modal-input2-button {
   border-top: 1px solid #ccc;
-}
-.dataset-cancel-button,
+} */
+.model-search-cancel-button,
 .dataset-confirm-button {
   width: 43px;
   height: 19px;
@@ -141,9 +142,25 @@
   color: white;
   border: none;
 }
-.dataset-cancel-button {
+.model-search-cancel-button {
+  margin-left: 261px;
+  margin-top: 20px;
+  /* background: #9a9a9a; */
+  color: black;
+  cursor:grab;
+}
+.model-cancel-button,
+.dataset-confirm-button {
+  width: 43px;
+  height: 19px;
+  border-radius: 5px;
+  gap: 4px;
+  color: white;
+  border: none;
+}
+.model-cancel-button {
   margin-left: 178px;
-  margin-top: 5px;
+  margin-top: 20px;
   background: #9a9a9a;
 }
 .dataset-confirm-button {
@@ -167,7 +184,7 @@
   color: #b4c0ff;
 }
 #datasetAll {
-  margin-top: 16px;
+  /* margin-top: 16px; */
   margin-left: 16px;
 }
 .dataset-btn {
