@@ -55,24 +55,14 @@ function detailOpenModal(modelIdx, modelname) {
         link.style.backgroundColor = "#2dc748";
         link.textContent = "바로가기";
 
+        var labelingOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
         link.onclick = function () {
-          // var detailModal = document.getElementById("detailModal");
-          // detailModal.style.display = "none";
-          var iframeModal = document.getElementById("iframeModal");
-          iframeModal.style.display = "block";
-
-          var iframeData = iframeModal.querySelector(".iframe-data");
-          iframeData.innerHTML = "";
-
-          var newIframe = document.createElement("iframe");
-          newIframe.src = "http://" + root;
-
-          newIframe.style.width = "100%";
-          newIframe.style.height = "100%";
-          newIframe.style.border = "none";
-
-          iframeData.appendChild(newIframe);
-        };
+          if (labelingOpenedWindow && !labelingOpenedWindow.closed) {
+            labelingOpenedWindow.focus();
+          }else {
+            labelingOpenedWindow = window.open("http://" + root, '_blank');
+          }
+        }
 
         cell4.appendChild(link);
 
@@ -92,28 +82,14 @@ function detailOpenModal(modelIdx, modelname) {
         link.href = "http://" + airroot;
         // link.textContent = airroot;
 
-        link.onclick = function (event) {
-          event.preventDefault(); // 링크 기본 동작 중단
-
-          // var detailModal = document.getElementById("detailModal");
-          // detailModal.style.display = "none";
-
-          var iframeModal = document.getElementById("iframeModal");
-          iframeModal.style.display = "block";
-
-          var iframeData = iframeModal.querySelector(".iframe-data");
-          iframeData.innerHTML = "";
-
-          var newIframe = document.createElement("iframe");
-          newIframe.src = "http://" + airroot;
-
-          newIframe.style.width = "100%";
-          newIframe.style.height = "100%";
-          newIframe.style.border = "none";
-
-          iframeData.appendChild(newIframe);
-        };
-
+        var airflowOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
+        link.onclick = function () {
+          if (airflowOpenedWindow && !airflowOpenedWindow.closed) {
+            airflowOpenedWindow.focus();
+          }else {
+            airflowOpenedWindow = window.open("http://" + airroot, '_blank');
+          }
+        }
         cell5.appendChild(link);
         var cell6 = row.insertCell(5);
         cell6.id = "cell-sub";
@@ -131,27 +107,14 @@ function detailOpenModal(modelIdx, modelname) {
         link.href = "http://" + mlroot;
         // link.textContent = mlroot;
 
-        link.onclick = function (event) {
-          event.preventDefault(); // 링크 기본 동작 중단
-
-          // var detailModal = document.getElementById("detailModal");
-          // detailModal.style.display = "none";
-
-          var iframeModal = document.getElementById("iframeModal");
-          iframeModal.style.display = "block";
-
-          var iframeData = iframeModal.querySelector(".iframe-data");
-          iframeData.innerHTML = "";
-
-          var newIframe = document.createElement("iframe");
-          newIframe.src = "http://" + mlroot;
-
-          newIframe.style.width = "100%";
-          newIframe.style.height = "100%";
-          newIframe.style.border = "none";
-
-          iframeData.appendChild(newIframe);
-        };
+        var mlflowOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
+        link.onclick = function () {
+          if (mlflowOpenedWindow && !mlflowOpenedWindow.closed) {
+            mlflowOpenedWindow.focus();
+          }else {
+            mlflowOpenedWindow = window.open("http://" + mlroot, '_blank');
+          }
+        }
 
         cell6.appendChild(link);
       }
@@ -164,7 +127,7 @@ function deleteModelsetSend(company_name, project_name, data_set) {
 
   var modalTitle = "삭제 확인";
   var modalMessage = project_name + "의 모든 데이터를 삭제하시겠습니까?";
-  confirmcancelpopup2Ok(modalTitle, modalMessage);
+  openconfirmcancelPopup(modalTitle, modalMessage);
 }
 
 function closeDetailModal() {
@@ -420,4 +383,8 @@ function onDevloperAddButtonClick(grp_idx) {
 function closeiframeModal() {
   var iframeModal = document.getElementById("iframeModal");
   iframeModal.style.display = "none";
+}
+
+function moveToMxGraph(){
+  window.location.href= '/modeling';
 }

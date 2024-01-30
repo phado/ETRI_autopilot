@@ -1,148 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='css/main/modelManagement.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='css/common/confirmModal.css')}}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='css/common/tableStyle.css')}}"
-    />
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/common/confirmModal.js') }}"
-    ></script>
-    <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='js/main/modelManagement.js') }}"
-    ></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" href="{{ url_for('static', filename='css/main/modelManagement.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static', filename='css/common/confirmModal.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static', filename='css/common/tableStyle.css')}}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/common/confirmModal.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='js/main/modelManagement.js') }}" type="text/javascript"></script>
   </head>
   <body>
     {% extends 'common/common.html' %} {% block content %}
     <section style="margin-left: 280px">
       <div class="data-list-title">모델 목록</div>
-      <div class="search-container">
-        <div class="custom-select">
-          <select>
-            <option value="all">전체</option>
-            <option value="modelname">모델명</option>
-            <option value="organization">기관명</option>
-          </select>
-          <div class="select-icon">
-            <img
-              src="{{url_for('static', filename='/image/down.svg')}}"
-              alt="Dropdown"
-              class="dropdown-icon"
-            />
+        <div class="search-container">
+          <div class="custom-select">
+            <select>
+              <option value="all">전체</option>
+              <option value="modelname">모델명</option>
+              <option value="organization">기관명</option>
+            </select>
+            <div class="select-icon">
+              <img class="dropdown-icon" src="{{url_for('static', filename='/image/down.svg')}}" alt="Dropdown">
+            </div>
           </div>
+
+          <input class="search-box" type="text" placeholder="검색">
+
+          <button class="search-button">조회</button>
+          <button class="data-list-create" id="openModalBtn" onclick="openCreateModal()">
+            + Create
+          </button>
         </div>
 
-        <input type="text" class="search-box" placeholder="검색" />
-
-        <button class="search-button">조회</button>
-        <button
-        class="data-list-create"
-        id="openModalBtn"
-        onclick="openCreateModal()"
-      >
-        + Create
-      </button>
-      </div>
-      <div class="data-list-container">
-
         <!-- 데이터셋 생성 모달 -->
-        <div id="myModal" class="modal">
+        <div class="modal" id="myModal">
           <div class="modal-content">
             <div class="modal-title">
               <div class="modal-title-name">모델 생성</div>
-              <span
-                class="close"
-                id="closeModalBtn"
-                onclick="closeCreateModal()"
-                >&times;</span
-              >
+              <span class="close" id="closeModalBtn" onclick="closeCreateModal()">&times;</span>
             </div>
             <div class="modal-input">
               <div class="modal-input1">
                 <div>모델명</div>
-                <input
-                  type="text"
-                  id="modelsetNameInput"
-                  placeholder="5~30글자/영문,한글,숫자,특수문자"
-                  style="margin-top: 8px"
-                  class="model-name-input"
-                />
+                <input class="model-name-input" id="modelsetNameInput" type="text" placeholder="5~30글자/영문,한글,숫자,특수문자" style="margin-top: 8px">
                 <div style="margin-top: 24px">개발환경 경로</div>
-                <input
-                  type="text"
-                  placeholder="영문,한글,숫자,특수문자"
-                  style="margin-top: 8px"
-                  class="dataset-root-input"
-                />
-                <div
-                  style="display: flex; align-items: center; margin-top: 24px"
-                >
+                <input class="dataset-root-input" type="text" placeholder="영문,한글,숫자,특수문자" style="margin-top: 8px">
+                <div style="display: flex; align-items: center; margin-top: 24px">
                   <div style="flex-grow: 1">데이터셋명</div>
-                  <button
-                    class="dataset-search-button"
-                    onclick="getDataSet('{{grp_idx}}')"
-                  >
+                  <button class="dataset-search-button" onclick="getDataSet('{{grp_idx}}')">
                     검색
                   </button>
                 </div>
-                <input
-                  type="text"
-                  id="dataset-name"
-                  placeholder="5~30글자/영문,한글,숫자,특수문자"
-                  style="margin-top: 8px"
-                  class="dataset-name-input"
-                />
-                <div
-                  style="
-                    margin-top: 24px;
-                    margin-bottom: 8px;
-                    display: flex;
-                    align-items: center;
-                  "
-                >
+                <input class="dataset-name-input" id="dataset-name" type="text" placeholder="5~30글자/영문,한글,숫자,특수문자" style="margin-top: 8px">
+                <div style=" margin-top: 24px; margin-bottom: 8px; display: flex; align-items: center;">
                   <div style="flex-grow: 1">개발자 설정</div>
-                  <button
-                    class="developer-search-button"
-                    onclick="onDevloperAddButtonClick('{{grp_idx}}')"
-                  >
+                  <button class="developer-search-button" onclick="onDevloperAddButtonClick('{{grp_idx}}')">
                     추가
                   </button>
                 </div>
-                <div
-                  type="text"
-                  id="developer"
-                  style="
-                    margin-top: 5px;
-                    resize: none;
-                    text-align: left;
-                    border: 1px solid #9b9b9b;
-                    width: 100%;
-                  "
-                  class="labeler-option-input"
-                ></div>
-
-                <div
-                  style="margin-top: 8px; display: flex; align-items: center"
-                >
-                  <img
-                    style="margin-right: 6px; margin-top: -14px"
-                    src="{{url_for('static', filename='/image/alert.svg')}}"
-                  />
+                <div class="labeler-option-input" id="developer" type="text" style=" margin-top: 5px; resize: none; text-align: left; border: 1px solid #9b9b9b; width: 100%;"></div>
+                <div style="margin-top: 8px; display: flex; align-items: center">
+                  <img src="{{url_for('static', filename='/image/alert.svg')}}" style="margin-right: 6px; margin-top: -14px">
                   <div class="alert-text">
                     프로젝트 생성 요청 시 성공적으로 생성되면 성공이라는
                     스테이터스 코드, 접속 URL(IP:port)리턴, 개발환경 접속 시
@@ -151,10 +70,10 @@
                 </div>
               </div>
               <div class="modal-input2">
-                <div style="margin-top: 24px; margin-bottom: 8px" id="findTitle">설정</div>
+                <div id="findTitle" style="margin-top: 24px; margin-bottom: 8px">설정</div>
                 <div class="modal-input2-box">
                   <div class="modal-input2-search">
-                    <input type="text" class="dataset-add-input" placeholder="검색어 입력"/>
+                    <input class="dataset-add-input" type="text" placeholder="검색어 입력">
                     <button class="dataset-add-button">검색</button>
                   </div>
                  
@@ -189,7 +108,7 @@
           <thead>
             <tr class="data-table-title">
               <th class="data-cell" style="width: 64px">
-                <img src="{{url_for('static', filename='/image/box.svg')}}" />
+                <img src="{{url_for('static', filename='/image/box.svg')}}">
               </th>
               <th class="data-cell">모델명</th>
               <th class="data-cell">기관명</th>
@@ -197,22 +116,20 @@
               <th class="data-cell">마지막 수정일</th>
               <th class="data-cell">상세정보</th>
               <th class="data-cell">
-                <img
-                  src="{{url_for('static', filename='/image/modify.svg')}}"
-                />
+                <img src="{{url_for('static', filename='/image/modify.svg')}}">
               </th>
               <th class="data-cell">
-                <img
-                  src="{{url_for('static', filename='/image/delete.svg')}}"
-                />
+                <img src="{{url_for('static', filename='/image/delete.svg')}}">
               </th>
             </tr>
           </thead>
           <tbody>
             {% for _ in board_list %}
+            <!-- _1 : 
+            _2 : modelIdx -->
             <tr>
               <th class="data-cell" style="width: 64px">
-                <img src="{{url_for('static', filename='/image/box.svg')}}" />
+                <img src="{{url_for('static', filename='/image/box.svg')}}">
               </th>
               <td class="data-cell">{{_[1]}}</td>
               <td class="data-cell">{{_[3]}}</td>
@@ -220,32 +137,19 @@
               <td class="data-cell">{{_[6]}}</td>
 
               <td class="data-cell">
-                <img
-                  src="{{url_for('static', filename='/image/detail.svg')}}"
-                  id="openDetailModalBtn"
-                  onclick="detailOpenModal('{{_[0]}}', '{{_[1]}}')"
-                />
+                <img id="openDetailModalBtn" src="{{url_for('static', filename='/image/detail.svg')}}" onclick="detailOpenModal('{{_[0]}}', '{{_[1]}}')">
                 <!-- detail 모달 -->
-                <div id="detailModal" class="detailModal">
+                <div class="detailModal" id="detailModal">
                   <div class="detailmodal-content">
                     <div class="detailmodal-title">
                       <div class="detailmodal-title-name"></div>
-                      <span
-                        class="detailmodal-close"
-                        id="closeDetailModalBtn"
-                        onclick="closeDetailModal()"
-                        >&times;</span
-                      >
+                      <span class="detailmodal-close" id="closeDetailModalBtn" onclick="closeDetailModal()">&times;</span>
                     </div>
                     <div class="detailmodal-input">
                       <table class="detaildata-table">
                         <thead>
                           <tr class="detaildata-table-title">
-                            <th
-                              class="detaildata-cell"
-                              id="cell-sub"
-                              style="width: 20px"
-                            ></th>
+                            <th class="detaildata-cell" id="cell-sub" style="width: 20px"></th>
                             <th class="detaildata-cell" id="cell-sub">
                               개발자
                             </th>
@@ -267,10 +171,7 @@
                       </table>
                       <div class="detialmodal-buttons">
                         <!-- <button class="cancel-button" onclick="closeDetailModal()">취소</button> -->
-                        <button
-                          class="confirm-button"
-                          onclick="closeDetailModal() "
-                        >
+                        <button class="confirm-button" onclick="closeDetailModal() ">
                           확인
                         </button>
                       </div>
@@ -278,43 +179,23 @@
                   </div>
                 </div>
                 <!-- detail 모달 -->
-                <!-- ifrmae 모달 -->
-                <div id="iframeModal" class="iframeModal">
-                  <div class="iframeModal-content">
-                    <div class="iframeModal-title">
-                      <span
-                        class="iframeModal-close"
-                        onclick="closeiframeModal()"
-                        >&times;</span
-                      >
-                    </div>
-                    <div class="iframe-data"></div>
-                  </div>
-                </div>
-                <!-- ifrmae 모달 -->
+                
                 <!-- 확인 모달 -->
               </td>
               <th class="data-cell">
-                <img
-                  src="{{url_for('static', filename='/image/modify.svg')}}"
-                />
+                <img src="{{url_for('static', filename='/image/modify.svg')}}" onclick="moveToMxGraph()">
               </th>
               <th class="data-cell">
-                <img
-                  src="{{url_for('static', filename='/image/delete.svg')}}"
-                  onclick="deleteModelsetSend('{{grp_nm_en}}','{{_[1]}}','{{_[4]}}')"
-                />
+                <img src="{{url_for('static', filename='/image/delete.svg')}}" onclick="deleteModelsetSend('{{grp_nm_en}}','{{_[1]}}','{{_[4]}}')">
               </th>
             </tr>
             {% endfor %}
           </tbody>
         </table>
         <!-- 확인 모달 -->
-        <div id="confirmPopup" class="confirmPopup">
+        <div class="confirmPopup" id="confirmPopup">
           <div class="confirmPopup-content">
-            <span class="confirmPopup-close" onclick="closeconfirmPopup()"
-              >&times;</span
-            >
+            <span class="confirmPopup-close" onclick="closeconfirmPopup()">&times;</span>
             <div class="confirmPopup-container">
               <div class="confirmPopup-title" id="confirmpopupTitle"></div>
               <div class="confirmPopup-message" id="confirmpopupMessage"></div>
@@ -324,40 +205,27 @@
         </div>
         <!-- 확인 모달 -->
         <!-- 확인 취소모달 -->
-        <div id="confirmcancelPopup" class="confirmcancelPopup">
+        <div class="confirmcancelPopup" id="confirmcancelPopup">
           <div class="confirmcancelPopup-content">
-            <span
-              class="confirmcancelPopup-close"
-              onclick="closeconfirmcancelPopup()"
-              >&times;</span
-            >
+            <span class="confirmcancelPopup-close" onclick="closeconfirmcancelPopup()">&times;</span>
             <div class="confirmcancelPopup-container">
-              <div
-                class="confirmcancelPopup-title"
-                id="confirmcancelpopupTitle"
-              >
+              <div class="confirmcancelPopup-title" id="confirmcancelpopupTitle">
                 확인 취소 모달
               </div>
-              <div
-                class="confirmcancelPopup-message"
-                id="confirmcancelpopupMessage"
-              >
+              <div class="confirmcancelPopup-message" id="confirmcancelpopupMessage">
                 확인 취소 모달입니다.
               </div>
             </div>
             <button class="confirmBtn" onclick="confirmcancelpopupOk()">
               확인
             </button>
-            <button
-              class="confirmcancelBtn"
-              onclick="confirmcancelpopupCancel()"
-            >
+            <button class="confirmcancelBtn" onclick="confirmcancelpopupCancel()">
               취소
             </button>
           </div>
         </div>
         <!-- 확인 취소 모달 -->
-      </div>
+      
       <script>
         window.addEventListener("click", function (event) {
           if (event.target == detailModal) {
@@ -366,15 +234,15 @@
         });
       </script>
       <div class="pagination">
-        <a href="#" class="page-link">&laquo; </a>
-        <a href="#" class="page-link">&lt; </a>
-        <a href="#" class="page-link active">1</a>
-        <a href="#" class="page-link">2</a>
-        <a href="#" class="page-link">3</a>
-        <a href="#" class="page-link">4</a>
-        <a href="#" class="page-link">5</a>
-        <a href="#" class="page-link">&gt; </a>
-        <a href="#" class="page-link"> &raquo;</a>
+        <a class="page-link" href="#">&laquo; </a>
+        <a class="page-link" href="#">&lt; </a>
+        <a class="page-link active" href="#">1</a>
+        <a class="page-link" href="#">2</a>
+        <a class="page-link" href="#">3</a>
+        <a class="page-link" href="#">4</a>
+        <a class="page-link" href="#">5</a>
+        <a class="page-link" href="#">&gt; </a>
+        <a class="page-link" href="#"> &raquo;</a>
       </div>
     </section>
     {% endblock %}

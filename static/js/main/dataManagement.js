@@ -75,24 +75,14 @@ function detailOpenModal(datasetIdx, datasetname) {
         link.style.backgroundColor = "#2dc748";
         link.textContent = "바로가기";
 
+        var labelingOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
         link.onclick = function () {
-          // var detailModal = document.getElementById("detailModal");
-          // detailModal.style.display = "none";
-          var iframeModal = document.getElementById("iframeModal");
-          iframeModal.style.display = "block";
-
-          var iframeData = iframeModal.querySelector(".iframe-data");
-          iframeData.innerHTML = "";
-
-          var newIframe = document.createElement("iframe");
-          newIframe.src = "http://" + root;
-
-          newIframe.style.width = "100%";
-          newIframe.style.height = "100%";
-          newIframe.style.border = "none";
-
-          iframeData.appendChild(newIframe);
-        };
+          if (labelingOpenedWindow && !labelingOpenedWindow.closed) {
+            labelingOpenedWindow.focus();
+          }else {
+            labelingOpenedWindow = window.open("http://" + root, '_blank');
+          }
+        }
 
         cell4.appendChild(link);
 
@@ -590,4 +580,25 @@ function onCheckerDelete() {
 
   // 기존에 입력된 내용도 초기화
   checkerInput.value = "";
+}
+
+
+function handleFileSelect(evt) {
+  var fileInput = document.getElementById('fileInput');
+  // var datasetSelectContainer = document.getElementsByClassName('table-area')[0]; 
+  var files = evt.target.files; // FileList 객체
+  var file = files[0]; // 첫 번째 파일
+  var reader = new FileReader();
+
+  // 파일을 모두 읽은 후 실행되는 함수
+  reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) {
+          // 파일 경로를 변수에 저장
+          var filePath = evt.target.result;
+          fileInput.value = filePath;
+      }
+  };
+
+  // 파일을 읽어들임
+  reader.readAsDataURL(file);
 }
