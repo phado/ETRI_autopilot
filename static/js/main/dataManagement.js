@@ -27,7 +27,7 @@ function detailOpenModal(datasetIdx, datasetname) {
     .then((data) => {
       for (var i = 0; i < data.data_set_labeler_info.length; i++) {
         // root와 checker는 고정값으로 설정
-        var root = data.data_set_labeler_info[i][7]; // 고정값 설정
+        const root = data.data_set_labeler_info[i][7]; // 고정값 설정
         var checker = data.data_set_info[i][1]; // 고정값 설정
 
         var labeler = data.data_set_labeler_info[i][0];
@@ -60,7 +60,7 @@ function detailOpenModal(datasetIdx, datasetname) {
         cell4.id = "cell-sub";
 
         // var root = data.data_set_info[0][0];
-        var root = data.data_set_labeler_info[i][7];
+        // var root = data.data_set_labeler_info[i][7];
         var baseUrl = "http://localhost:5000/";
 
         if (root.includes(baseUrl)) {
@@ -75,14 +75,25 @@ function detailOpenModal(datasetIdx, datasetname) {
         link.style.backgroundColor = "#2dc748";
         link.textContent = "바로가기";
 
-        var labelingOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
+        // var labelingOpenedWindow = null; //같은 주소의 창이 열려있는지 확인 하기 위한 변수
         link.onclick = function () {
-          if (labelingOpenedWindow && !labelingOpenedWindow.closed) {
-            labelingOpenedWindow.focus();
-          }else {
-            labelingOpenedWindow = window.open("http://" + root, '_blank');
-          }
-        }
+          // var detailModal = document.getElementById("detailModal");
+          // detailModal.style.display = "none";
+          var iframeModal = document.getElementById("iframeModal");
+          iframeModal.style.display = "block";
+
+          var iframeData = iframeModal.querySelector(".iframe-data");
+          iframeData.innerHTML = "";
+
+          var newIframe = document.createElement("iframe");
+          newIframe.src = "http://" + root;
+
+          newIframe.style.width = "100%";
+          newIframe.style.height = "100%";
+          newIframe.style.border = "none";
+
+          iframeData.appendChild(newIframe);
+        };
 
         cell4.appendChild(link);
 
