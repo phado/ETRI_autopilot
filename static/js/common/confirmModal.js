@@ -55,6 +55,7 @@ function openconfirmcancelPopup(modalTitle, modalMessage) {
 
   confirmcancelPopup.style.display = "block";
   centerPopup(confirmcancelPopup);
+  confirmcancelpopup2Ok()
 }
 
 function confirmcancelpopupCancel() {
